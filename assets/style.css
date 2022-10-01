@@ -1,0 +1,84 @@
+.error-message-text {
+  color: red;
+  padding-left: 12px;
+}
+.event-info * {
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+.event-info-area .col {
+  border-top: 1px solid #cfcfcf;
+}
+.manage-title-line {
+  background-color: red;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: white;
+}
+.title-line {
+  background-color: #1E1E1E;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: white;
+}
+.answer-box .v-text-field.v-text-field--enclosed .v-text-field__details {
+  display: none;
+}
+.message-none .v-text-field__details {
+  display: none;
+}
+.question-box {
+  background-color: white;
+  color: #1E1E1E;
+  min-height: 35px !important;
+  margin-top: 10px;
+  margin-bottom: 12px;
+  border-radius: 5px;
+}
+.link {
+  color: #1976D2 !important;
+  /* transition: all 1s ease 0s !important; */
+}
+.link:hover {
+  text-decoration: underline !important;
+}
+.link:visited {
+  color: #551a8b !important;
+}
+.col-title {
+  font-weight: bold;
+}
+.hissu-icon {
+  float: left;
+  margin-right: 5px;
+}
+.date-text * {
+  padding-right: 6px;
+  text-align: right;
+}
+.user-thumbnail {
+  border-radius: 50% !important;
+  width: 30px;
+  height: 30px;
+  float: left;
+}
+.v-dialog.dialog-height-100 {
+  height: 100%;
+}
+.back-brain-icon-e {
+  background-image: url('~@/static/img/brain-juice-e.png');
+  background-size: contain;
+  background-position-x: 98%;
+  background-color: #1E1E1E;
+  color: white;
+  font-weight: bold;
+}
+.h2-event {
+  font-weight: bold;
+  background-color: #1E1E1E;
+  color: white;
+  border-bottom: 3px ridge skyblue;
+  text-align: center;
+  padding: 10px;
+  border-radius: 20px;
+}
