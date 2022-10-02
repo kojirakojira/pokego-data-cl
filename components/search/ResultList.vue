@@ -1,20 +1,19 @@
 <template>
   <div>
     <v-container>
-      <p />
-      <H2Common>
-        {{ getSearchPatternName(searchPattern) }}
-      </H2Common>
-    </v-container>
-    <v-container>
       <v-row>
         <v-col align="right" style="padding-bottom:0px;">
           {{ `検索結果：${psr.goPokedexList.length}件` }}
         </v-col>
       </v-row>
+      <v-row>
+        <v-col class="py-0 subtitle-2">
+          複数件ヒットしました。ポケモンを選択してください。
+        </v-col>
+      </v-row>
       <v-row v-if="psr.maybe">
         <v-col class="py-0 subtitle-2">
-          あいまい検索によって検索されました。
+          ※あいまい検索
         </v-col>
       </v-row>
       <v-row>
@@ -22,10 +21,15 @@
           <v-list outlined>
             <v-subheader>ポケモン</v-subheader>
             <v-list-item-group>
+              <!-- <v-list-item
+                v-for="p in psr.goPokedexList"
+                :key="p.pokedexId"
+                :to="{name: `search-result-${searchPattern}Result` , query: makeQuery(p.pokedexId)}"
+              > -->
               <v-list-item
                 v-for="p in psr.goPokedexList"
                 :key="p.pokedexId"
-                :to="{name: `search-result-${searchPattern}Result` , query: {pid: p.pokedexId}}"
+                @click="clickRow(p.pokedexId)"
               >
                 <v-list-item-avatar>
                   <v-img :src="require('~/static/img/no-image.png')" />
@@ -45,33 +49,35 @@
 </template>
 
 <script>
-import H2Common from '~/components/utils/H2Common'
-import SearchCommon from '~/components/search/SearchCommon'
 export default {
   name: 'ResultList',
-  components: {
-    H2Common
-  },
-  mixins: [SearchCommon],
-  data () {
-    return {
-      searchPattern: this.$route.query.sp,
-      psr: {
-        goPokedexList: [],
-        maybe: false
-      }
-
+  props: {
+    psr: {
+      required: true,
+      type: Object
+    },
+    searchPattern: {
+      required: true,
+      type: String
     }
   },
-  beforeMount () {
-    const psr = this.$route.params.psr
-    if (psr) {
-      // 検索画面からの遷移の場合
-      this.psr = psr
-      this.$store.dispatch('setPsrState', this.psr)
-    } else if (this.$store.getters.psrState) {
-      // 検索画面以外からの遷移の場合（ブラウザの更新含む）
-      this.$set(this, 'psr', this.$store.getters.psrState)
+  methods: {
+    makeQuery (pid) {
+      const query = {}
+      query.pid = pid
+      for (const q in this.$route.query) {
+        if (q !== 'name') {
+          query[q] = this.$route.query[q]
+        }
+      }
+      return query
+    },
+    clickRow (pid) {
+      const query = this.makeQuery(pid)
+      this.$router.push({
+        name: `search-result-${this.searchPattern}Result`,
+        query
+      })
     }
   }
 }

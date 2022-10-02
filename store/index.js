@@ -6,7 +6,8 @@ export const state = () => ({
     color: 'black',
     timeout: 4000
   },
-  psrState: null // PokemonSearchResult：検索結果一覧画面(resultList)にブラウザバックしてきたとき、画面復元に使う。
+
+  searchState: null // 画面復元用オブジェクト。(routeName, searchParam, (psr)をセットする)
 })
 
 export const getters = {
@@ -16,8 +17,8 @@ export const getters = {
   jwt (state) {
     return state.jwt
   },
-  psrState (state) {
-    return state.psrState
+  searchState (state) {
+    return state.searchState
   }
 }
 
@@ -31,8 +32,8 @@ export const mutations = {
   setToast (state, payload) {
     state.toast = payload
   },
-  setPsrState (state, psrState) {
-    state.psrState = psrState
+  setSearchState (state, searchState) {
+    state.searchState = searchState
   },
   RESET_VUEX_STATE (state) {
     Object.assign(state, localStorage.getItem('brain-juice'))
@@ -51,8 +52,8 @@ export const actions = {
     toast.timeout = toast.timeout || 4000
     commit('setToast', toast)
   },
-  setPsrState ({ commit }, psrState) {
-    commit('setPsrState', psrState)
+  setSearchState ({ commit }, searchState) {
+    commit('setSearchState', searchState)
   },
   nuxtClientInit ({ commit }, context) {
     const data = JSON.parse(localStorage.getItem('brain-juice')) || []
@@ -62,8 +63,8 @@ export const actions = {
     if (data.jwt) {
       commit('setJwt', data.jwt)
     }
-    if (data.psrState) {
-      commit('setPsrState', data.psrState)
+    if (data.searchState) {
+      commit('setSearchState', data.searchState)
     }
   }
 }

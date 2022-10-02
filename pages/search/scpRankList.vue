@@ -30,6 +30,26 @@
         </v-col>
       </v-row>
       <v-row>
+        <v-col cols="12" md="4" lg="4" xl="4" class="col-title">
+          <v-icon>
+            mdi-pen
+          </v-icon>
+          リーグ
+        </v-col>
+        <v-col cols="12" md="8" lg="8" xl="8">
+          <v-select
+            v-model="searchParam.league"
+            :items="leagueArr"
+            item-value="id"
+            item-text="name"
+            label="リーグを選択"
+            dense
+            outlined
+            hide-details
+          />
+        </v-col>
+      </v-row>
+      <v-row>
         <v-col cols="12" align="center">
           <v-btn
             rounded
@@ -56,7 +76,7 @@ import H2Common from '~/components/utils/H2Common'
 import SearchCommon from '~/components/search/SearchCommon'
 import ResultList from '~/components/search/ResultList'
 export default {
-  name: 'Raid',
+  name: 'ScpRankList',
   components: {
     H2Common,
     ResultList
@@ -64,14 +84,20 @@ export default {
   mixins: [SearchCommon],
   data () {
     return {
-      searchPattern: 'raid',
+      searchPattern: 'scpRankList',
       searchParam: {
-        name: ''
+        name: '',
+        league: 'sl'
       },
       psr: {
         goPokedexList: [],
         maybe: false
       },
+      leagueArr: [
+        { id: 'sl', name: 'スーパーリーグ' },
+        { id: 'hl', name: 'ハイパーリーグ' },
+        { id: 'ml', name: 'マスターリーグ' }
+      ],
       isSearchBtnClick: false
     }
   },
@@ -87,20 +113,24 @@ export default {
       this.get()
     },
     check () {
-      return this.$checkRequired(this.searchParam.name, null, 'ポケモン')
+      let msg = ''
+      msg += this.$checkRequired(this.searchParam.name, null, 'ポケモン')
+      msg += this.$checkRequired(this.searchParam.league, null, 'リーグ')
+      return msg
     },
     async get () {
       await this.$axios
-        .get('/api/raid', { params: this.searchParam })
+        .get('/api/scpRankList', { params: this.searchParam })
         .then((res) => {
           const resData = res.data
           this.setSearchState(resData)
           if (resData.pokemonSearchResult.unique) {
             // 1件のみヒットした場合
             this.$router.push({
-              name: 'search-result-raidResult',
+              name: 'search-result-scpRankListResult',
               query: {
-                pid: resData.pokedexId
+                pid: resData.pokedexId,
+                league: this.searchParam.league
               },
               params: {
                 rd: resData
