@@ -22,10 +22,18 @@ export default {
   mounted () {
     const routeName = this.$route.name
     if (!/search-result-[A-Z,a-z,0-9]*Result/.test(routeName)) {
+      // 検索結果画面でない場合
       const searchState = this.$store.getters.searchState
       if (searchState && searchState.routeName === routeName) {
-        if (searchState.searchParam) { this.$set(this, 'searchParam', searchState.searchParam) }
-        if (searchState.psr) { this.$set(this, 'psr', searchState.psr) }
+        // 画面復元用オブジェクトが存在し、routeNameが一致する場合
+        if (searchState.searchParam) {
+          // stateを直接更新しないようにするため、ディープコピー
+          this.$set(this, 'searchParam', JSON.parse(JSON.stringify(searchState.searchParam)))
+        }
+        if (searchState.psr) {
+          // stateを直接更新しないようにするため、ディープコピー
+          this.$set(this, 'psr', JSON.parse(JSON.stringify(searchState.psr)))
+        }
       }
     }
   },
@@ -43,21 +51,32 @@ export default {
         }
       })
     },
+    getToast (resData) {
+      if (resData.pokemonSearchResult.message) {
+        this.$store.dispatch('getToast', { msg: resData.pokemonSearchResult.message })
+      }
+    },
     setSearchState (resData) {
+      // 検索結果が0件の場合
+      if (!resData.pokemonSearchResult.goPokedexList.length) {
+        return
+      }
+
       const searchState = {} // 画面復元用オブジェクト
       if (!resData.pokemonSearchResult.unique) {
         // 画面復元用のオブジェクトにpsrを設定（一覧表示のため。複数件ヒットした場合のみ。）
-        searchState.psr = this.psr
+        searchState.psr = resData.pokemonSearchResult
       }
       searchState.routeName = this.$route.name
       searchState.searchParam = this.searchParam
-      this.$store.dispatch('setSearchState', searchState)
+      this.$store.dispatch('setSearchState', JSON.parse(JSON.stringify(searchState)))
     },
     isChangeQuery (before, after) {
-      let bool = true
-      for (const b in before) {
-        if (b !== after[b]) {
-          bool = false
+      let bool = false
+      for (const p in before) {
+        if (before[p] !== after[p]) {
+          bool = true
+          break
         }
       }
       return bool

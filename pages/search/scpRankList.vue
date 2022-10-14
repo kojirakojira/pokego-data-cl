@@ -123,6 +123,8 @@ export default {
         .get('/api/scpRankList', { params: this.searchParam })
         .then((res) => {
           const resData = res.data
+          this.psr = resData.pokemonSearchResult
+          this.getToast(resData)
           this.setSearchState(resData)
           if (resData.pokemonSearchResult.unique) {
             // 1件のみヒットした場合
@@ -137,8 +139,7 @@ export default {
               }
             })
           } else {
-            // 複数件ヒットした場合
-            this.psr = resData.pokemonSearchResult
+            // 複数件 or 0件ヒットした場合
             if (this.isChangeQuery(this.$route.query, this.searchParam)) {
               this.$router.replace({ name: this.$route.name, query: this.searchParam })
             }
