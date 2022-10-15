@@ -73,7 +73,7 @@ export default {
     },
     isChangeQuery (before, after) {
       let bool = false
-      for (const p in before) {
+      for (const p in after) {
         if (before[p] !== after[p]) {
           bool = true
           break

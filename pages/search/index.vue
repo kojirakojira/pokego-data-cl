@@ -31,7 +31,7 @@ export default {
     H2Common
   },
   mixins: [SearchCommon],
-  beforeMount () {
+  mounted () {
     this.$store.dispatch('setSearchState', null)
   }
 }

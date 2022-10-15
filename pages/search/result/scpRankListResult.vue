@@ -50,6 +50,7 @@
             :headers="headers"
             :items="resData.scpRankList"
             :search="search"
+            :footer-props="{ 'items-per-page-options': [50, 100, 500, 1000, -1] }"
             no-data-text="loading now..."
             no-results-text="該当するデータがありません。"
           >
@@ -116,7 +117,6 @@ export default {
         .get('/api/scpRankList', { params: this.searchParam })
         .then((res) => {
           this.resData = res.data
-          console.log(this.resData)
         })
         .catch((err) => {
           if (err.response.status !== 401) {
