@@ -38,6 +38,20 @@
       <v-row>
         <v-col
           cols="12"
+          md="6"
+          lg="6"
+          xl="6"
+          class="col-title"
+        >
+          リーグ
+        </v-col>
+        <v-col cols="12" md="6" lg="6" xl="6">
+          {{ leagueArr[resData.league] }}
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col
+          cols="12"
           md="12"
           lg="12"
           xl="12"
@@ -81,7 +95,15 @@ export default {
         league: null // league
       },
       resData: {
-        scpRankList: []
+        scpRankList: [],
+        league: ''
+      },
+      leagueArr: {
+        sl: 'スーパーリーグ(CP1500以下)',
+        gl: 'スーパーリーグ(CP1500以下)',
+        hl: 'ハイパーリーグ(CP2500以下)',
+        ul: 'ハイパーリーグ(CP2500以下)',
+        ml: 'マスターリーグ'
       },
 
       headers: [
