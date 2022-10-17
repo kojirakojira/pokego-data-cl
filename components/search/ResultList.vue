@@ -21,18 +21,13 @@
           <v-list outlined>
             <v-subheader>ポケモン</v-subheader>
             <v-list-item-group>
-              <!-- <v-list-item
-                v-for="p in psr.goPokedexList"
-                :key="p.pokedexId"
-                :to="{name: `search-result-${searchPattern}Result` , query: makeQuery(p.pokedexId)}"
-              > -->
               <v-list-item
                 v-for="p in psr.goPokedexList"
                 :key="p.pokedexId"
                 @click="clickRow(p.pokedexId)"
               >
                 <v-list-item-avatar>
-                  <v-img :src="require('~/static/img/no-image.png')" />
+                  <v-img :src="p.image ? p.image : require('~/static/img/no-image.png')" />
                 </v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-title>
