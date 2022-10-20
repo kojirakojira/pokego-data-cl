@@ -1,6 +1,9 @@
 {
-  "name": "mangadb",
+  "name": "pokego-data-cl",
   "version": "1.0.0",
+  "engines": {
+    "node": "16.x"
+  },
   "private": true,
   "scripts": {
     "dev": "cross-env HOST=0.0.0.0 PORT=3000 NODE_ENV=development nuxt",
