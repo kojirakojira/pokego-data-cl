@@ -2,7 +2,7 @@
   "name": "pokego-data-cl",
   "version": "1.0.0",
   "engines": {
-    "node": "16.x"
+    "node": "12.x"
   },
   "private": true,
   "scripts": {
@@ -20,29 +20,19 @@
     "@nuxtjs/google-adsense": "^1.3.0",
     "@nuxtjs/recaptcha": "^1.0.4",
     "@nuxtjs/vuetify": "^1.12.1",
-    "axios-push": "^0.1.0",
     "chart.js": "^2.9.4",
-    "core-js": "^3.6.5",
     "cross-env": "^7.0.3",
     "firebase": "^8.0.0",
-    "http2": "^3.3.7",
     "moment": "^2.29.1",
     "nuxt": "^2.15.7",
     "nuxt-client-init-module": "^0.1.10",
     "nuxt-memwatch": "^0.1.2",
-    "sanitize-html": "^2.1.1",
-    "sockjs": "^0.3.21",
-    "sockjs-client": "^1.5.0",
-    "stompjs": "^2.3.3",
-    "svg-z-order": "^1.2.1",
+    "sanitize-html": "^2.7.2",
+    "sass": "^1.55.0",
     "vue-chartjs": "^3.5.1",
-    "vue-ctk-date-time-picker": "^2.5.0",
     "vue-infinite-loading": "^2.4.5",
     "vue-loading-template": "^1.3.2",
-    "vue2-touch-events": "^3.2.1",
-    "vuex-persistedstate": "^4.0.0-beta.1",
-    "websocket": "^1.0.33",
-    "webstomp-client": "^1.2.6"
+    "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^3.1.0",
@@ -51,7 +41,7 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^7.10.0",
     "eslint-plugin-nuxt": "^1.0.0",
-    "node-sass": "^7.0.1",
+    "fibers": "^5.0.3",
     "sass-loader": "^10.1.1",
     "vue-svg-loader": "^0.16.0"
   }

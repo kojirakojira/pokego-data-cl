@@ -107,6 +107,18 @@ export default {
           exclude: /(node_modules)/
         })
       }
+    },
+    loaders: {
+      // SCSSを扱う.
+      scss: {
+        // デフォルト値だと動かないので、sass(Dart Sass)で上書き.
+        implementation: require('sass'),
+        // sassのオプションにfibersを設定.
+        sassOptions: {
+          // fibersプロパティではないので注意. (ややこしい)
+          fiber: require('fibers')
+        }
+      }
     }
   },
 
