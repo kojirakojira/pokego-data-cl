@@ -3,7 +3,7 @@
     <v-container>
       <p />
       <H2Common>
-        ホームのページ
+        ホーム
       </H2Common>
     </v-container>
     <v-container>

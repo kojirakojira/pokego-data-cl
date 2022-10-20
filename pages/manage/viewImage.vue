@@ -101,7 +101,6 @@ export default {
       await this.$axios
         .get('/api/secure/imageList')
         .then((res) => {
-          console.log(res.data)
           this.allImages.push(...res.data.images)
         })
         .catch((err) => {

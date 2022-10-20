@@ -222,7 +222,6 @@ export default {
       this.$store.dispatch('getToast', { msg: 'クリア完了' })
     },
     check () {
-      console.log(this.line)
       let msg = ''
       msg += this.checkString(this.line.lines, 'セリフを入力してください。\n')
       msg += this.checkString(this.line.character, 'キャラクターを入力してください。\n')
@@ -236,7 +235,6 @@ export default {
       return str ? '' : msg
     },
     checkNumber (num, msg) {
-      console.log(num.match('[^0-9]+'))
       return num && !num.match('[^0-9]+') ? '' : msg
     }
   }

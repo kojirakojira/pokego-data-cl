@@ -4,7 +4,8 @@ export default {
       searchPatternNames: {
         raid: 'レイドボスのCP検索',
         scpRankList: 'PvP順位一覧',
-        scpRankMaxMin: 'PvP最高(最低)順位個体値'
+        scpRankMaxMin: 'PvP最高(最低)順位個体値',
+        scpRank: 'PvP順位'
       },
       rules: {
         name: [

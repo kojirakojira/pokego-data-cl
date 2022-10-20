@@ -50,7 +50,6 @@ export default {
         .get('/api/topicPage')
         .then((res) => {
           this.topicPages = res.data
-          console.log(this.topicPages)
         })
         .catch((err) => {
           if (err.response.status !== 401) {
