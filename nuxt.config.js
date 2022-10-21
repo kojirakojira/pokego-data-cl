@@ -70,7 +70,8 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    'nuxt-client-init-module'
+    'nuxt-client-init-module',
+    '@nuxtjs/style-resources'
   ],
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
@@ -118,7 +119,8 @@ export default {
           fiber: require('fibers')
         }
       }
-    }
+    },
+    postcss: null
   },
 
   router: {

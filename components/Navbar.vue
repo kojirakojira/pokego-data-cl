@@ -67,6 +67,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+@import '../assets/common/mixin';
+
 .v-application--is-ltr
   .v-toolbar__content
   > .v-btn.v-btn--icon:first-child

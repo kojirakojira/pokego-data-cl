@@ -45,6 +45,7 @@
 
 <script>
 import Navbar from '~/components/Navbar.vue'
+import '~/assets/spinners.css'
 export default {
   components: {
     Navbar
@@ -66,7 +67,6 @@ export default {
 </script>
 
 <style>
-@import "~/assets/spinners.css";
 
 .center-2 {
   position: fixed;
