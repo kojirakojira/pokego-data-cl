@@ -78,7 +78,6 @@ export default {
   mixins: [SearchCommon],
   data () {
     return {
-      searchPatternName: 'レイドボスのCP検索',
       id: null, // pokedexId
       resData: {}
 

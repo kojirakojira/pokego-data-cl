@@ -89,7 +89,6 @@ export default {
   mixins: [SearchCommon],
   data () {
     return {
-      searchPatternName: 'レイドボスのCP検索',
       searchParam: {
         id: null, // pokedexId,
         league: null // league
