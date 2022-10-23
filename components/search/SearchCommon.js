@@ -53,8 +53,15 @@ export default {
       })
     },
     getToast (resData) {
-      if (resData.pokemonSearchResult.message) {
-        this.$store.dispatch('getToast', { msg: resData.pokemonSearchResult.message })
+      let msg = ''
+      if (resData.message) {
+        msg = resData.message
+      } else if (resData.pokemonSearchResult.message) {
+        msg = resData.pokemonSearchResult.message
+      }
+      if (msg) {
+        this.$store.dispatch('getToast', { msg })
+        this.isSearchBtnClick = false
       }
     },
     setSearchState (resData) {

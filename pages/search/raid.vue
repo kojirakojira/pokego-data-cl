@@ -94,26 +94,28 @@ export default {
         .get('/api/raid', { params: this.searchParam })
         .then((res) => {
           const resData = res.data
-          this.psr = resData.pokemonSearchResult
           this.getToast(resData)
-          this.setSearchState(resData)
-          if (resData.pokemonSearchResult.unique) {
+          if (resData.success) {
+            this.psr = resData.pokemonSearchResult
+            this.setSearchState(resData)
+            if (resData.pokemonSearchResult.unique) {
             // 1件のみヒットした場合
-            this.$router.push({
-              name: 'search-result-raidResult',
-              query: {
-                pid: resData.pokedexId
-              },
-              params: {
-                rd: resData
-              }
-            })
-          } else {
+              this.$router.push({
+                name: 'search-result-raidResult',
+                query: {
+                  pid: resData.pokedexId
+                },
+                params: {
+                  rd: resData
+                }
+              })
+            } else {
             // 複数件 or 0件ヒットした場合
-            if (this.isChangeQuery(this.$route.query, this.searchParam)) {
-              this.$router.replace({ name: this.$route.name, query: this.searchParam })
+              if (this.isChangeQuery(this.$route.query, this.searchParam)) {
+                this.$router.replace({ name: this.$route.name, query: this.searchParam })
+              }
+              this.isSearchBtnClick = false
             }
-            this.isSearchBtnClick = false
           }
         })
         .catch((err) => {
