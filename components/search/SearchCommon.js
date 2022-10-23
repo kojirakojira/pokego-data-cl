@@ -3,6 +3,7 @@ export default {
     return {
       searchPatternNames: {
         raid: 'レイドボスのCP検索',
+        fRTask: 'フィールドリサーチCP',
         scpRankList: 'PvP順位一覧',
         scpRankMaxMin: 'PvP最高(最低)順位個体値',
         scpRank: 'PvP順位'
