@@ -44,7 +44,7 @@
             xl="6"
             class="col-title"
           >
-            CP
+            通常時CP
           </v-col>
           <v-col cols="12" md="6" lg="6" xl="6">
             {{ `${resData.minCp} ～ ${resData.maxCp}` }}
@@ -90,6 +90,12 @@ export default {
       isLoading: true
     }
   },
+  watch: {
+    resData () {
+      // resDataに値がセットされたらLoadingを解除する。
+      this.isLoading = false
+    }
+  },
   async beforeMount () {
     this.id = this.$route.query.pid
     const resData = this.$route.params.rd
@@ -101,9 +107,6 @@ export default {
       // paramsでresDataが渡されていない場合は、APIから取得してから表示する
       await this.get()
     }
-  },
-  mounted () {
-    this.isLoading = false
   },
   methods: {
     async get () {

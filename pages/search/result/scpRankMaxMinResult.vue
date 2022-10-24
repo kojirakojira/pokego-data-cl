@@ -165,6 +165,12 @@ export default {
       mlTableData: []
     }
   },
+  watch: {
+    resData () {
+      // resDataに値がセットされたらLoadingを解除する。
+      this.isLoading = false
+    }
+  },
   async beforeMount () {
     this.id = this.$route.query.pid
     const resData = this.$route.params.rd
@@ -176,9 +182,6 @@ export default {
       // paramsでresDataが渡されていない場合は、APIから取得してから表示する
       await this.get()
     }
-  },
-  mounted () {
-    this.isLoading = false
   },
   methods: {
     async get () {

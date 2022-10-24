@@ -117,6 +117,12 @@ export default {
 
     }
   },
+  watch: {
+    resData () {
+      // resDataに値がセットされたらLoadingを解除する。
+      this.isLoading = false
+    }
+  },
   async beforeMount () {
     this.searchParam.id = this.$route.query.pid
     this.searchParam.iv = this.$route.query.iv
@@ -134,9 +140,6 @@ export default {
       await this.get()
     }
     this.setScpRankArr(this.resData)
-  },
-  mounted () {
-    this.isLoading = false
   },
   methods: {
     async get () {

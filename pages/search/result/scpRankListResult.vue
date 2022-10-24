@@ -126,6 +126,12 @@ export default {
 
     }
   },
+  watch: {
+    resData () {
+      // resDataに値がセットされたらLoadingを解除する。
+      this.isLoading = false
+    }
+  },
   async beforeMount () {
     this.searchParam.id = this.$route.query.pid
     this.searchParam.league = this.$route.query.league
@@ -138,9 +144,6 @@ export default {
       // paramsでresDataが渡されていない場合は、APIから取得してから表示する
       await this.get()
     }
-  },
-  mounted () {
-    this.isLoading = false
   },
   methods: {
     async get () {
