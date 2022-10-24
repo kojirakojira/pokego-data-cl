@@ -125,7 +125,6 @@ export default {
           const resData = res.data
           this.getToast(resData)
           if (resData.success) {
-            this.psr = resData.pokemonSearchResult
             this.setSearchState(resData)
             if (resData.pokemonSearchResult.unique) {
             // 1件のみヒットした場合
@@ -140,7 +139,8 @@ export default {
                 }
               })
             } else {
-            // 複数件 or 0件ヒットした場合
+              // 複数件 or 0件ヒットした場合
+              this.psr = resData.pokemonSearchResult
               if (this.isChangeQuery(this.$route.query, this.searchParam)) {
                 this.$router.replace({ name: this.$route.name, query: this.searchParam })
               }
