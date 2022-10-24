@@ -6,139 +6,146 @@
         {{ getSearchPatternName('scpRankMaxMin') }}
       </H2Common>
     </v-container>
-    <v-container>
-      <v-row>
-        <v-col
-          cols="12"
-          md="6"
-          lg="6"
-          xl="6"
-          class="col-title"
-        >
-          図鑑No
-        </v-col>
-        <v-col cols="12" md="6" lg="6" xl="6">
-          {{ resData.pokedexId | dispPdx }}
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col
-          cols="12"
-          md="6"
-          lg="6"
-          xl="6"
-          class="col-title"
-        >
-          ポケモン
-        </v-col>
-        <v-col cols="12" md="6" lg="6" xl="6">
-          {{ resData.name }}
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col
-          cols="12"
-          class="col-title"
-        >
-          スーパーリーグPvP順位
-        </v-col>
-        <v-col cols="12">
-          <v-simple-table>
-            <thead>
-              <tr>
-                <th v-for="(h, index) in headers" :key="index" class="text-center">
-                  {{ h.text }}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(t, tIndex) in slTableData" :key="tIndex">
-                <td
-                  v-for="(h, hIndex) in headers"
-                  :key="hIndex"
-                  :style="styleSelector(t, h)"
-                  align="center"
-                >
-                  {{ t[h.value] }}
-                </td>
-              </tr>
-            </tbody>
-          </v-simple-table>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col
-          cols="12"
-          class="col-title"
-        >
-          ハイパーリーグPvP順位
-        </v-col>
-        <v-col cols="12">
-          <v-simple-table>
-            <thead>
-              <tr>
-                <th v-for="(h, index) in headers" :key="index" class="text-center">
-                  {{ h.text }}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(t, tIndex) in hlTableData" :key="tIndex">
-                <td
-                  v-for="(h, hIndex) in headers"
-                  :key="hIndex"
-                  :style="styleSelector(t, h)"
-                  align="center"
-                >
-                  {{ t[h.value] }}
-                </td>
-              </tr>
-            </tbody>
-          </v-simple-table>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col
-          cols="12"
-          class="col-title"
-        >
-          マスターリーグPvP順位
-        </v-col>
-        <v-col cols="12">
-          <v-simple-table>
-            <thead>
-              <tr>
-                <th v-for="(h, index) in headers" :key="index" class="text-center">
-                  {{ h.text }}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(t, tIndex) in mlTableData" :key="tIndex">
-                <td
-                  v-for="(h, hIndex) in headers"
-                  :key="hIndex"
-                  :style="styleSelector(t, h)"
-                  align="center"
-                >
-                  {{ t[h.value] }}
-                </td>
-              </tr>
-            </tbody>
-          </v-simple-table>
-        </v-col>
-      </v-row>
-    </v-container>
+    <div v-if="!isLoading">
+      <v-container>
+        <v-row>
+          <v-col
+            cols="12"
+            md="6"
+            lg="6"
+            xl="6"
+            class="col-title"
+          >
+            図鑑No
+          </v-col>
+          <v-col cols="12" md="6" lg="6" xl="6">
+            {{ resData.pokedexId | dispPdx }}
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col
+            cols="12"
+            md="6"
+            lg="6"
+            xl="6"
+            class="col-title"
+          >
+            ポケモン
+          </v-col>
+          <v-col cols="12" md="6" lg="6" xl="6">
+            {{ resData.name }}
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col
+            cols="12"
+            class="col-title"
+          >
+            スーパーリーグPvP順位
+          </v-col>
+          <v-col cols="12">
+            <v-simple-table>
+              <thead>
+                <tr>
+                  <th v-for="(h, index) in headers" :key="index" class="text-center">
+                    {{ h.text }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(t, tIndex) in slTableData" :key="tIndex">
+                  <td
+                    v-for="(h, hIndex) in headers"
+                    :key="hIndex"
+                    :style="styleSelector(t, h)"
+                    align="center"
+                  >
+                    {{ t[h.value] }}
+                  </td>
+                </tr>
+              </tbody>
+            </v-simple-table>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col
+            cols="12"
+            class="col-title"
+          >
+            ハイパーリーグPvP順位
+          </v-col>
+          <v-col cols="12">
+            <v-simple-table>
+              <thead>
+                <tr>
+                  <th v-for="(h, index) in headers" :key="index" class="text-center">
+                    {{ h.text }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(t, tIndex) in hlTableData" :key="tIndex">
+                  <td
+                    v-for="(h, hIndex) in headers"
+                    :key="hIndex"
+                    :style="styleSelector(t, h)"
+                    align="center"
+                  >
+                    {{ t[h.value] }}
+                  </td>
+                </tr>
+              </tbody>
+            </v-simple-table>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col
+            cols="12"
+            class="col-title"
+          >
+            マスターリーグPvP順位
+          </v-col>
+          <v-col cols="12">
+            <v-simple-table>
+              <thead>
+                <tr>
+                  <th v-for="(h, index) in headers" :key="index" class="text-center">
+                    {{ h.text }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(t, tIndex) in mlTableData" :key="tIndex">
+                  <td
+                    v-for="(h, hIndex) in headers"
+                    :key="hIndex"
+                    :style="styleSelector(t, h)"
+                    align="center"
+                  >
+                    {{ t[h.value] }}
+                  </td>
+                </tr>
+              </tbody>
+            </v-simple-table>
+          </v-col>
+        </v-row>
+      </v-container>
+    </div>
+    <div v-else>
+      <Loading />
+    </div>
   </div>
 </template>
 
 <script>
 import H2Common from '~/components/utils/H2Common'
 import SearchCommon from '~/components/search/SearchCommon'
+import Loading from '~/components/Loading'
 export default {
   name: 'RaidResult',
   components: {
-    H2Common
+    H2Common,
+    Loading
   },
   mixins: [SearchCommon],
   data () {
@@ -158,7 +165,7 @@ export default {
       mlTableData: []
     }
   },
-  beforeMount () {
+  async beforeMount () {
     this.id = this.$route.query.pid
     const resData = this.$route.params.rd
 
@@ -167,8 +174,9 @@ export default {
       this.resData = resData
     } else {
       // paramsでresDataが渡されていない場合は、APIから取得してから表示する
-      this.get()
+      await this.get()
     }
+    this.isLoading = false
   },
   methods: {
     async get () {
