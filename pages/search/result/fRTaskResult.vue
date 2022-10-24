@@ -44,10 +44,10 @@
             xl="6"
             class="col-title"
           >
-            最高CP(最低CP)
+            CP
           </v-col>
           <v-col cols="12" md="6" lg="6" xl="6">
-            {{ `${resData.maxCp}(${resData.minCp})` }}
+            {{ `${resData.minCp} ～ ${resData.maxCp}` }}
           </v-col>
         </v-row>
         <v-row>
@@ -58,10 +58,10 @@
             xl="6"
             class="col-title"
           >
-            天候ブースト時最高CP(最低CP)
+            天候ブースト時CP
           </v-col>
           <v-col cols="12" md="6" lg="6" xl="6">
-            {{ `${resData.wbMaxCp}(${resData.wbMinCp})` }}
+            {{ `${resData.wbMinCp} ～ ${resData.wbMaxCp}` }}
           </v-col>
         </v-row>
       </v-container>
