@@ -77,7 +77,7 @@
       </v-container>
     </div>
     <div v-else>
-      <Loading />
+      <Loading :full-scr="false" />
     </div>
   </div>
 </template>
@@ -134,6 +134,8 @@ export default {
       await this.get()
     }
     this.setScpRankArr(this.resData)
+  },
+  mounted () {
     this.isLoading = false
   },
   methods: {

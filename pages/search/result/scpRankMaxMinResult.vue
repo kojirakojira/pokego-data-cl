@@ -132,7 +132,7 @@
       </v-container>
     </div>
     <div v-else>
-      <Loading />
+      <Loading :full-scr="false" />
     </div>
   </div>
 </template>
@@ -176,6 +176,8 @@ export default {
       // paramsでresDataが渡されていない場合は、APIから取得してから表示する
       await this.get()
     }
+  },
+  mounted () {
     this.isLoading = false
   },
   methods: {
