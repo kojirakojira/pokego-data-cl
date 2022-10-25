@@ -53,12 +53,28 @@
         <v-row>
           <v-col
             cols="12"
+            md="6"
+            lg="6"
+            xl="6"
+            class="col-title"
+          >
+            PvP順位
+          </v-col>
+          <v-col cols="12" md="6" lg="6" xl="6">
+            <p>{{ `スーパーリーグ：${resData.scpSlRank.rank}位` }}</p>
+            <p>{{ `ハイパーリーグ：${resData.scpHlRank.rank}位` }}</p>
+            <p>{{ `マスターリーグ：${resData.scpMlRank.rank}位` }}</p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col
+            cols="12"
             md="12"
             lg="12"
             xl="12"
             class="col-title"
           >
-            PvP順位
+            詳細   <span class="subtitle-2">※スマホの場合は画面を横にすると見やすいです。</span>
           </v-col>
           <v-col cols="12" md="12" lg="12" xl="12">
             <v-data-table
@@ -113,7 +129,8 @@ export default {
         { text: '(SCP)', value: 'scp' },
         { text: '(ステ積)', value: 'sp' }],
       scpRankArr: [],
-      search: ''
+      search: '',
+      isLoading: true
 
     }
   },

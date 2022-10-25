@@ -42,11 +42,11 @@
             label="例：101508(攻撃,防御,HPを6桁で入力)"
             outlined
             dense
-            rows="1"
             :rules="rules.iv"
             :counter="6"
-            maxlength="10"
+            maxlength="6"
             autocomplete="off"
+            type="number"
             @keyup.enter.exact="clickSearchBtn"
           />
         </v-col>
@@ -192,3 +192,14 @@ export default {
   }
 }
 </script>
+
+<style>
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+  -moz-appearance:textfield;
+}
+</style>
