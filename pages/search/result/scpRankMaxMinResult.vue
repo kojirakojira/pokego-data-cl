@@ -162,7 +162,8 @@ export default {
         { text: 'CP', value: 'cp' }],
       slTableData: [],
       hlTableData: [],
-      mlTableData: []
+      mlTableData: [],
+      isLoading: true
     }
   },
   watch: {

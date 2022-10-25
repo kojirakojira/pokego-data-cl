@@ -122,7 +122,8 @@ export default {
         { text: '%', value: 'percent' },
         { text: '(SCP)', value: 'scp' },
         { text: '(ステ積)', value: 'sp' }],
-      search: ''
+      search: '',
+      isLoading: true
 
     }
   },

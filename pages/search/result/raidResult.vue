@@ -86,8 +86,8 @@ export default {
   data () {
     return {
       id: null, // pokedexId
-      resData: {}
-
+      resData: {},
+      isLoading: true
     }
   },
   watch: {
