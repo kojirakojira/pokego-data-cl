@@ -2,11 +2,13 @@ export default {
   data () {
     return {
       searchPatternNames: {
-        raid: 'レイドボスのCP検索',
+        raid: 'レイドボスCP',
         fRTask: 'フィールドリサーチCP',
+        scpRank: 'PvP順位',
         scpRankList: 'PvP順位一覧',
-        scpRankMaxMin: 'PvP最高(最低)順位個体値',
-        scpRank: 'PvP順位'
+        scpRankMaxMin: 'PvP最高(最低)順位',
+        race: '種族値検索',
+        unimplPokemon: '未実装ポケモン一覧'
       },
       rules: {
         name: [
