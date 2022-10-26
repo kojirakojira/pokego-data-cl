@@ -8,6 +8,11 @@
     </v-container>
     <v-container>
       <v-row>
+        <v-col class="subtitle-2">
+          ポケデックスBJは、ポケモンGOのステータスを検索するためのサイトです。研究目的の使用、豆知識の蓄積に便利です。（多分）
+        </v-col>
+      </v-row>
+      <v-row>
         <v-col cols="12" sm="6" md="7" lg="8" xl="8">
           <v-row>
             <v-col>
