@@ -72,6 +72,7 @@ export default {
         goPokedexList: [],
         maybe: false
       },
+      labels: ['HP', 'こうげき', 'ぼうぎょ'],
       isSearchBtnClick: false
     }
   },
