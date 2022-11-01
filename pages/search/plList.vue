@@ -135,7 +135,6 @@ export default {
         })
         .then((res) => {
           const resData = res.data
-          console.log(resData)
           this.getToast(resData)
           if (resData.success) {
             this.setSearchState(resData)

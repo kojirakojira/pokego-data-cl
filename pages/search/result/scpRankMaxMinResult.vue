@@ -172,16 +172,17 @@ export default {
       this.isLoading = false
     }
   },
-  async beforeMount () {
+  beforeMount () {
     this.id = this.$route.query.pid
     const resData = this.$route.params.rd
 
     if (resData) {
       // paramsでresDataが渡されている場合は、そのまま表示する
       this.resData = resData
+      this.addTableData(this.resData)
     } else {
       // paramsでresDataが渡されていない場合は、APIから取得してから表示する
-      await this.get()
+      this.get()
     }
   },
   methods: {
