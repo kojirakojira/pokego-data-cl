@@ -19,7 +19,7 @@
             図鑑No
           </v-col>
           <v-col cols="12" md="6" lg="6" xl="6">
-            {{ resData.pokedexId | dispPdx }}
+            {{ resData.race.pokedexId | dispPdx }}
           </v-col>
         </v-row>
         <v-row>
@@ -48,15 +48,15 @@
           </v-col>
           <v-col cols="12" md="6" lg="6" xl="6" class="type">
             <span
-              :style="`background-color: rgb(${resData.type1Color.r},${resData.type1Color.g},${resData.type1Color.b};`"
+              :style="`background-color: rgb(${resData.race.type1Color.r},${resData.race.type1Color.g},${resData.race.type1Color.b};`"
             >
-              {{ resData.goPokedex.type1 }}
+              {{ resData.race.goPokedex.type1 }}
             </span>
             <span
-              v-if="resData.goPokedex.type2"
-              :style="`background-color: rgb(${resData.type2Color.r},${resData.type2Color.g},${resData.type2Color.b}; margin-left:5px;`"
+              v-if="resData.race.goPokedex.type2"
+              :style="`background-color: rgb(${resData.race.type2Color.r},${resData.race.type2Color.g},${resData.race.type2Color.b}; margin-left:5px;`"
             >
-              {{ resData.goPokedex.type2 }}
+              {{ resData.race.goPokedex.type2 }}
             </span>
           </v-col>
         </v-row>
@@ -89,7 +89,7 @@
               :elems="goRadarElems"
               :min="1"
               :max="resData.statistics.goPokedexStats.goHpStats.list.length"
-              :rgb="[resData.color.r, resData.color.g, resData.color.b]"
+              :rgb="[resData.race.color.r, resData.race.color.g, resData.race.color.b]"
             />
           </v-col>
           <v-col
@@ -121,7 +121,7 @@
                   lg="8"
                   xl="10"
                 >
-                  {{ resData.goPokedex[item.id] }}
+                  {{ resData.race.goPokedex[item.id] }}
                 </v-col>
               </template>
             </v-row>
@@ -133,7 +133,7 @@
               chart-id="go-hp-line"
               title="HP"
               :elems="resData.statistics.goPokedexStats.goHpStats.list"
-              :point="resData.goPokedex.hp"
+              :point="resData.race.goPokedex.hp"
               :rgb="[0,0,255]"
               :height="100"
             />
@@ -145,7 +145,7 @@
               chart-id="go-at-line"
               title="攻撃"
               :elems="resData.statistics.goPokedexStats.goAtStats.list"
-              :point="resData.goPokedex.attack"
+              :point="resData.race.goPokedex.attack"
               :rgb="[255,0,0]"
               :height="100"
             />
@@ -157,7 +157,7 @@
               chart-id="go-df-line"
               title="ぼうぎょ"
               :elems="resData.statistics.goPokedexStats.goDfStats.list"
-              :point="resData.goPokedex.defense"
+              :point="resData.race.goPokedex.defense"
               :rgb="[0,255,0]"
               :height="100"
             />
@@ -191,7 +191,7 @@
               :elems="oriRadarElems"
               :min="1"
               :max="resData.statistics.pokedexStats.hpStats.list.length"
-              :rgb="[resData.color.r, resData.color.g, resData.color.b]"
+              :rgb="[resData.race.color.r, resData.race.color.g, resData.race.color.b]"
             />
           </v-col>
           <v-col
@@ -223,7 +223,7 @@
                   lg="8"
                   xl="10"
                 >
-                  {{ resData.pokedex[item.id] }}
+                  {{ resData.race.pokedex[item.id] }}
                 </v-col>
               </template>
             </v-row>
@@ -235,7 +235,7 @@
               chart-id="ori-hp-line"
               title="HP"
               :elems="resData.statistics.pokedexStats.hpStats.list"
-              :point="resData.pokedex.hp"
+              :point="resData.race.pokedex.hp"
               :rgb="[0,0,255]"
               :height="100"
             />
@@ -247,7 +247,7 @@
               chart-id="ori-at-line"
               title="こうげき"
               :elems="resData.statistics.pokedexStats.atStats.list"
-              :point="resData.pokedex.attack"
+              :point="resData.race.pokedex.attack"
               :rgb="[255,0,0]"
               :height="100"
             />
@@ -259,7 +259,7 @@
               chart-id="ori-df-line"
               title="ぼうぎょ"
               :elems="resData.statistics.pokedexStats.dfStats.list"
-              :point="resData.pokedex.defense"
+              :point="resData.race.pokedex.defense"
               :rgb="[0,255,0]"
               :height="100"
             />
@@ -271,7 +271,7 @@
               chart-id="ori-spAt-line"
               title="とくこう"
               :elems="resData.statistics.pokedexStats.spAtStats.list"
-              :point="resData.pokedex.specialAttack"
+              :point="resData.race.pokedex.specialAttack"
               :rgb="[255,20,147]"
               :height="100"
             />
@@ -283,7 +283,7 @@
               chart-id="ori-spDf-line"
               title="とくぼう"
               :elems="resData.statistics.pokedexStats.spDfStats.list"
-              :point="resData.pokedex.specialDefense"
+              :point="resData.race.pokedex.specialDefense"
               :rgb="[255,255,0]"
               :height="100"
             />
@@ -295,7 +295,7 @@
               chart-id="ori-speed-line"
               title="すばやさ"
               :elems="resData.statistics.pokedexStats.spStats.list"
-              :point="resData.pokedex.speed"
+              :point="resData.race.pokedex.speed"
               :rgb="[199,21,133]"
               :height="100"
             />
@@ -328,8 +328,10 @@ export default {
     return {
       id: null, // pokedexId
       resData: {
-        type1Color: {},
-        type2Color: {}
+        race: {
+          type1Color: {},
+          type2Color: {}
+        }
       },
 
       goRadarLabels: ['HP', 'こうげき', 'ぼうぎょ'],
@@ -408,9 +410,9 @@ export default {
         resData.statistics.goPokedexStats.goDfStats.list
       ]
       const goValArr = [
-        resData.goPokedex.hp,
-        resData.goPokedex.attack,
-        resData.goPokedex.defense
+        resData.race.goPokedex.hp,
+        resData.race.goPokedex.attack,
+        resData.race.goPokedex.defense
       ]
       this.goRadarElems.push(this.rank(goValArr[0], goValListArr[0]))
       this.goRadarElems.push(this.rank(goValArr[1], goValListArr[1]))
@@ -432,12 +434,12 @@ export default {
         resData.statistics.pokedexStats.dfStats.list
       ]
       const oriValArr = [
-        resData.pokedex.hp,
-        resData.pokedex.attack,
-        resData.pokedex.specialAttack,
-        resData.pokedex.speed,
-        resData.pokedex.specialDefense,
-        resData.pokedex.defense
+        resData.race.pokedex.hp,
+        resData.race.pokedex.attack,
+        resData.race.pokedex.specialAttack,
+        resData.race.pokedex.speed,
+        resData.race.pokedex.specialDefense,
+        resData.race.pokedex.defense
       ]
       for (const i in oriValArr) {
         this.oriRadarElems.push(this.rank(oriValArr[i], oriValListArr[i]))
