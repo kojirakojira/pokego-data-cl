@@ -58,13 +58,14 @@
             xl="12"
             class="col-title"
           >
-            PLとCP一覧   <span class="subtitle-2">※スマホの場合は画面を横にすると見やすいです。</span>
+            PLとCP一覧
           </v-col>
           <v-col cols="12" md="12" lg="12" xl="12">
             <v-data-table
               :headers="headers"
               :items="resData.plList"
               hide-default-footer
+              :mobile-breakpoint="200"
               :footer-props="{ 'items-per-page-options': [-1] }"
               no-data-text="loading now..."
               no-results-text="該当するデータがありません。"
