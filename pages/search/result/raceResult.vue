@@ -19,7 +19,7 @@
             図鑑No
           </v-col>
           <v-col cols="12" md="6" lg="6" xl="6">
-            {{ resData.race.pokedexId | dispPdx }}
+            {{ resData.pokedexId | dispPdx }}
           </v-col>
         </v-row>
         <v-row>
@@ -33,7 +33,7 @@
             ポケモン
           </v-col>
           <v-col cols="12" md="6" lg="6" xl="6">
-            {{ resData.name }}
+            {{ appendRemarks(resData.name, resData.remarks) }}
           </v-col>
         </v-row>
         <v-row>

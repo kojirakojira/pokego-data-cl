@@ -25,7 +25,7 @@
               <div :key="`p-name-${idx}`">
                 <v-icon large :color="`rgba(${colorArr[idx].r}, ${colorArr[idx].g}, ${colorArr[idx].b}, 0.5)`">
                   mdi-circle-half-full
-                </v-icon>{{ race.goPokedex.name }}
+                </v-icon>{{ appendRemarks(race.goPokedex.name, race.goPokedex.remarks) }}
               </div>
             </template>
           </v-col>

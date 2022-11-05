@@ -49,6 +49,13 @@ export default {
     getSearchPatternName (searchPattern) {
       return this.searchPatternNames[searchPattern]
     },
+    appendRemarks (name, remarks) {
+      let val = name
+      if (remarks) {
+        val = val + `(${remarks})`
+      }
+      return val
+    },
     getToast (resData) {
       let msg = ''
       if (resData.message) {

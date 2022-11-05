@@ -37,7 +37,7 @@
                   </v-list-item-avatar>
                   <v-list-item-content>
                     <v-list-item-title>
-                      {{ p.name }}
+                      {{ appendRemarks(p.name, p.remarks) }}
                     </v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
@@ -77,6 +77,15 @@ export default {
         this.color = 'success'
       }
       this.colorFlg = !this.colorFlg
+    }
+  },
+  methods: {
+    appendRemarks (name, remarks) {
+      let val = name
+      if (remarks) {
+        val = val + `(${remarks})`
+      }
+      return val
     }
   }
 }
