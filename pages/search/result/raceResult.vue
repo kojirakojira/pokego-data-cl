@@ -143,7 +143,7 @@
           <v-col>
             <LineGraph
               chart-id="go-at-line"
-              title="攻撃"
+              title="こうげき"
               :elems="resData.statistics.goPokedexStats.goAtStats.list"
               :point="resData.race.goPokedex.attack"
               :rgb="[255,0,0]"

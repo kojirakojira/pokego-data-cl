@@ -7,7 +7,7 @@ export const state = () => ({
     timeout: 4000
   },
 
-  searchState: null // 画面復元用オブジェクト。(routeName, searchParam, (psr)をセットする)
+  searchState: null // 画面復元用オブジェクト。(routeName, (psr)をセットする)
 })
 
 export const getters = {

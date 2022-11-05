@@ -8,6 +8,7 @@ export default {
         scpRankList: 'PvP順位一覧',
         scpRankMaxMin: 'PvP最高(最低)順位',
         race: '種族値検索',
+        raceDiff: '種族値比較',
         plList: 'PLごとのCP一覧',
         unimplPokemon: '未実装ポケモン一覧'
       },
@@ -30,31 +31,23 @@ export default {
       // 検索結果画面でない場合
       const searchState = this.$store.getters.searchState
       if (searchState && searchState.routeName === routeName) {
-        // 画面復元用オブジェクトが存在し、routeNameが一致する場合
-        if (searchState.searchParam) {
-          // stateを直接更新しないようにするため、ディープコピー
-          this.$set(this, 'searchParam', JSON.parse(JSON.stringify(searchState.searchParam)))
-        }
         if (searchState.psr) {
           // stateを直接更新しないようにするため、ディープコピー
           this.$set(this, 'psr', JSON.parse(JSON.stringify(searchState.psr)))
         }
       }
     }
+    // queryをsearchParamに反映する
+    if (this.$route.query) {
+      this.searchParam = {}
+      for (const [key, value] of Object.entries(this.$route.query)) {
+        this.searchParam[key] = value
+      }
+    }
   },
   methods: {
     getSearchPatternName (searchPattern) {
       return this.searchPatternNames[searchPattern]
-    },
-    pushResultList (resData, searchParam) {
-      searchParam.sp = this.searchPattern
-      this.$router.push({
-        name: 'search-result-resultList',
-        query: searchParam,
-        params: {
-          psr: resData.pokemonSearchResult
-        }
-      })
     },
     getToast (resData) {
       let msg = ''
@@ -69,15 +62,19 @@ export default {
       }
     },
     setSearchState (resData) {
-      // 検索結果が0件の場合
-      if (!resData.pokemonSearchResult.goPokedexList.length) {
-        return
-      }
-
       const searchState = {} // 画面復元用オブジェクト
-      if (!resData.pokemonSearchResult.unique) {
+      if (resData.pokemonSearchResult) {
+        // psrを使用している場合
+
+        if (!resData.pokemonSearchResult.goPokedexList.length) {
+          // 検索結果が0件の場合
+          return
+        }
+
+        if (!resData.pokemonSearchResult.unique) {
         // 画面復元用のオブジェクトにpsrを設定（一覧表示のため。複数件ヒットした場合のみ。）
-        searchState.psr = resData.pokemonSearchResult
+          searchState.psr = resData.pokemonSearchResult
+        }
       }
       searchState.routeName = this.$route.name
       searchState.searchParam = this.searchParam
@@ -85,12 +82,9 @@ export default {
     },
     isChangeQuery (before, after) {
       let bool = false
-      for (const p in after) {
-        if (before[p] !== after[p]) {
-          bool = true
-          break
-        }
-      }
+      // 相互比較
+      Object.entries(before).forEach(([k, v]) => { if (before[k] !== after[k]) { bool = true } })
+      Object.entries(after).forEach(([k, v]) => { if (before[k] !== after[k]) { bool = true } })
       return bool
     }
   }
