@@ -87,7 +87,7 @@
             <RadarGraph
               chart-id="go-poke-radar"
               title="GO種族値"
-              :labels="goRadarLabels"
+              :labels="['HP', 'こうげき', 'ぼうぎょ']"
               :elems="goRadarElems"
               :min="1"
               :max="resData.statistics.goPokedexStats.goHpStats.list.length"
@@ -189,7 +189,7 @@
           >
             <RadarGraph
               title="原作種族値"
-              :labels="oriRadarLabels"
+              :labels="['HP', 'こうげき', 'とくこう', 'すばやさ', 'とくぼう', 'ぼうぎょ']"
               :elems="oriRadarElems"
               :min="1"
               :max="resData.statistics.pokedexStats.hpStats.list.length"
@@ -336,9 +336,7 @@ export default {
         }
       },
 
-      goRadarLabels: ['HP', 'こうげき', 'ぼうぎょ'],
       goRadarElems: [],
-      oriRadarLabels: ['HP', 'こうげき', 'とくこう', 'すばやさ', 'とくぼう', 'ぼうぎょ'],
       oriRadarElems: [],
 
       // レーダーチャートの隣に表示させてるやつのItem

@@ -164,7 +164,6 @@ export default {
         })
         .then((res) => {
           const resData = res.data
-          console.log(resData)
           this.setSearchState(resData)
           this.$store.dispatch('getToast', { msg: resData.msr.message })
 

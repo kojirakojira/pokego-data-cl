@@ -325,7 +325,6 @@ export default {
           }
 
           this.drawing(resData)
-          console.log(this.resData)
         })
         .catch((err) => {
           if (err.response.status !== 401) {
