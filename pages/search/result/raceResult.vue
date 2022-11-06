@@ -404,19 +404,15 @@ export default {
      */
     drawGoRadar (resData) {
       // ['HP', 'こうげき', 'ぼうぎょ']
-      const goValListArr = [
-        resData.statistics.goPokedexStats.goHpStats.list,
-        resData.statistics.goPokedexStats.goAtStats.list,
-        resData.statistics.goPokedexStats.goDfStats.list
-      ]
-      const goValArr = [
-        resData.race.goPokedex.hp,
-        resData.race.goPokedex.attack,
-        resData.race.goPokedex.defense
-      ]
-      this.goRadarElems.push(this.rank(goValArr[0], goValListArr[0]))
-      this.goRadarElems.push(this.rank(goValArr[1], goValListArr[1]))
-      this.goRadarElems.push(this.rank(goValArr[2], goValListArr[2]))
+      const gps = resData.statistics.goPokedexStats
+      const goValListArr = [gps.goHpStats.list, gps.goAtStats.list, gps.goDfStats.list]
+      const gp = resData.race.goPokedex
+      const goValArr = [gp.hp, gp.attack, gp.defense]
+      // 全ポケモン数
+      const count = gps.goHpStats.list.length
+      for (const i in goValArr) {
+        this.goRadarElems.push(count - (this.rank(goValArr[i], goValListArr[i]) - 1))
+      }
     },
     /**
      * 原作種族値のレーダーチャートの値を設定し、描画する。
@@ -425,35 +421,25 @@ export default {
      */
     drawOriRadar (resData) {
       // ['HP', 'こうげき', 'とくこう', 'すばやさ', 'とくぼう', 'ぼうぎょ']
-      const oriValListArr = [
-        resData.statistics.pokedexStats.hpStats.list,
-        resData.statistics.pokedexStats.atStats.list,
-        resData.statistics.pokedexStats.spAtStats.list,
-        resData.statistics.pokedexStats.spStats.list,
-        resData.statistics.pokedexStats.spDfStats.list,
-        resData.statistics.pokedexStats.dfStats.list
-      ]
-      const oriValArr = [
-        resData.race.pokedex.hp,
-        resData.race.pokedex.attack,
-        resData.race.pokedex.specialAttack,
-        resData.race.pokedex.speed,
-        resData.race.pokedex.specialDefense,
-        resData.race.pokedex.defense
-      ]
+      const ps = resData.statistics.pokedexStats
+      const oriValListArr = [ps.hpStats.list, ps.atStats.list, ps.spAtStats.list, ps.spStats.list, ps.spDfStats.list, ps.dfStats.list]
+      const p = resData.race.pokedex
+      const oriValArr = [p.hp, p.attack, p.specialAttack, p.speed, p.specialDefense, p.defense]
+      // 全ポケモン数
+      const count = ps.hpStats.list.length
       for (const i in oriValArr) {
-        this.oriRadarElems.push(this.rank(oriValArr[i], oriValListArr[i]))
+        this.oriRadarElems.push(count - (this.rank(oriValArr[i], oriValListArr[i]) - 1))
       }
     },
     /**
-     * 順位を求める（ソートされた配列の中で何番目に出現するかを求める。）
+     * 順位を求める。
      * @param val 値
      * @param arr 値の配列
      */
     rank (val, arr) {
       for (const i in arr) {
         if (arr[i] === val) {
-          return i * 1 + 1
+          return arr.length - (i * 1)
         }
       }
     }

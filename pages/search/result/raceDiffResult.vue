@@ -377,7 +377,8 @@ export default {
       goDataTableElems.data.forEach((data, idx) => {
         // dataset = {elems: [hpRank, atRank, dfRank], label: name, color: color}
         const dataset = {}
-        dataset.elems = [data.hpRank, data.atRank, data.dfRank]
+        const elems = [data.hpRank, data.atRank, data.dfRank]
+        dataset.elems = elems.map(r => goDataTableElems.count - r * 1 + 1)
         dataset.label = this.appendRemarks(data.name, data.remarks)
         dataset.color = this.colorArr[idx]
         datasets.push(dataset)
@@ -428,7 +429,9 @@ export default {
       oriDataTableElems.data.forEach((data, idx) => {
         // dataset = {elems: [hpRank, atRank, spAtRank, spRank, spDfRank, dfRank], label: name, color: color}
         const dataset = {}
-        dataset.elems = [data.hpRank, data.atRank, data.spAtRank, data.spRank, data.spDfRank, data.dfRank]
+        // elemsはレーダチャート描画のため値をリバースする。
+        const elems = [data.hpRank, data.atRank, data.spAtRank, data.spRank, data.spDfRank, data.dfRank]
+        dataset.elems = elems.map(r => oriDataTableElems.count - r * 1 + 1)
         dataset.label = this.appendRemarks(data.name, data.remarks)
         dataset.color = this.colorArr[idx]
         datasets.push(dataset)
@@ -436,14 +439,14 @@ export default {
       this.oriRadarDatasets.push(...datasets)
     },
     /**
-     * 順位を求める（ソートされた配列の中で何番目に出現するかを求める。）
+     * 順位を求める。
      * @param val 値
      * @param arr 値の配列
      */
     rank (val, arr) {
       for (const i in arr) {
         if (arr[i] === val) {
-          return i * 1 + 1
+          return arr.length - (i * 1)
         }
       }
     },
