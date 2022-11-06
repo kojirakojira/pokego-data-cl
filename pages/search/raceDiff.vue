@@ -22,7 +22,7 @@
               :label="`ポケモン${idx * 1 + 1}体目`"
               outlined
               dense
-              rows="1"
+              clearable
               :rules="rules.name"
               :error-messages="errMsgs[idx]"
               :counter="10"
@@ -40,6 +40,7 @@
             small
             fab
             color="info"
+            elevation="2"
             :disabled="Object.keys(searchParam).length >= 6"
             @click="() => {
               searchParam[`name${Object.keys(searchParam).length + 1}`] = ''
@@ -53,6 +54,7 @@
             small
             fab
             color="error"
+            elevation="2"
             :disabled="Object.keys(searchParam).length <= 2"
             @click="() => {
               delete searchParam[`name${Object.keys(searchParam).length}`]
@@ -88,6 +90,10 @@
         :psr="psr"
         :psr-arr-idx="psrArrIdx"
         @selected="(psr, gpIdx) => { selected(psr, gpIdx) }"
+        @close="() => {
+          dialogFlg = false
+          isSearchBtnClick = false
+        }"
       />
     </v-dialog>
   </div>

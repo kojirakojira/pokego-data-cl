@@ -1,6 +1,9 @@
 <template>
   <v-card>
     <v-card-title :class="color">
+      <v-btn icon dark @click="$emit('close')">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
       <div style="margin-left:5px; color:white;">
         {{ `ポケモン${psrArrIdx + 1}体目` }}
       </div>

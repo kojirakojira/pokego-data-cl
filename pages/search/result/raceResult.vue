@@ -46,15 +46,17 @@
           >
             タイプ
           </v-col>
-          <v-col cols="12" md="6" lg="6" xl="6" class="type">
+          <v-col cols="12" md="6" lg="6" xl="6">
             <span
               :style="`background-color: rgb(${resData.race.type1Color.r},${resData.race.type1Color.g},${resData.race.type1Color.b};`"
+              class="type"
             >
               {{ resData.race.goPokedex.type1 }}
             </span>
             <span
               v-if="resData.race.goPokedex.type2"
               :style="`background-color: rgb(${resData.race.type2Color.r},${resData.race.type2Color.g},${resData.race.type2Color.b}; margin-left:5px;`"
+              class="type"
             >
               {{ resData.race.goPokedex.type2 }}
             </span>
@@ -461,17 +463,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.type > span {
-  color: white;
-  font-weight: bold;
-  padding: 3px;
-  font-size: 80%;
-  border-radius: 4px;
-}
-#go-attack-line {
-  height: 50%
-}
+<style>
 .stats {
     vertical-align: middle;
     margin: auto;

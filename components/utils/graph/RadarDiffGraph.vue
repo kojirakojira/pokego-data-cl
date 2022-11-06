@@ -16,7 +16,7 @@ export default {
       required: true
     },
     // 要素の配列
-    elemsArr: {
+    datasets: {
       type: Array,
       required: true
     },
@@ -26,10 +26,6 @@ export default {
     },
     max: {
       type: Number,
-      required: true
-    },
-    colorArr: {
-      type: Array,
       required: true
     }
   },
@@ -47,7 +43,7 @@ export default {
         },
         responsive: true,
         legend: {
-          display: false
+          display: true
         },
         scale: {
           ticks: {
@@ -74,15 +70,16 @@ export default {
     }
   },
   mounted () {
-    for (const i in this.elemsArr) {
-      const color = this.colorArr[i]
+    this.datasets.forEach((dataset) => {
+      const color = dataset.color
       this.data.datasets.push({
-        data: this.elemsArr[i],
+        label: dataset.label,
+        data: dataset.elems,
         fill: true,
         backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.2)`,
         borderColor: `rgb(${color.r}, ${color.g}, ${color.b})`
       })
-    }
+    })
     this.renderChart(this.data, this.options)
   }
 }
