@@ -22,8 +22,11 @@ export default {
     // 点を打ちたい数値
     point: {
       type: Number,
-      required: false,
-      default: null
+      required: true
+    },
+    rank: {
+      type: Number,
+      required: true
     }
   },
   data () {
@@ -31,6 +34,7 @@ export default {
       data: {
         labels: this.elems,
         datasets: [
+          // 対象のポケモンのステータス(点)
           {
             data: [],
             fill: false,
@@ -40,6 +44,7 @@ export default {
             pointBorderColor: 'rgb(0, 0, 0, 0.6)',
             showLine: false
           },
+          // 全ポケモンのステータス
           {
             data: this.elems,
             pointRadius: 0,
@@ -53,7 +58,7 @@ export default {
       options: {
         title: {
           display: true,
-          text: this.title,
+          text: `${this.title}(${this.rank}/${this.elems.length}位)`,
           fontSize: 14
         },
         responsive: true,
