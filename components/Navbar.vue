@@ -13,7 +13,7 @@
               alt
             >
             <h1 class="title" style="margin-bottom:0px;">
-              ポケデックスBJ
+              ぽけで！！
             </h1>
           </router-link>
         </v-toolbar-title>
