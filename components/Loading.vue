@@ -17,16 +17,16 @@
 export default {
   name: 'Loading',
   props: {
-    fullScr: {
+    splitScr: {
       type: Boolean,
       required: false,
-      default: true
+      default: false
     }
   },
   computed: {
     styleSelector () {
       let style = ''
-      if (this.fullScr) {
+      if (!this.splitScr) {
         style += 'center-0 '
         if (this.$vuetify.theme.dark) {
           style += 'dark'

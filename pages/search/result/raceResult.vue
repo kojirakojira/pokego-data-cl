@@ -256,7 +256,7 @@
       </v-container>
     </div>
     <div v-else>
-      <Loading :full-scr="false" />
+      <Loading split-scr />
     </div>
   </div>
 </template>

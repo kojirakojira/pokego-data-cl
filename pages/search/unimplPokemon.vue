@@ -6,7 +6,7 @@
     <v-container>
       <v-row>
         <v-col>
-          <v-list outlined>
+          <v-list v-if="!isLoading" outlined>
             <v-subheader>ポケモン</v-subheader>
             <v-list-item-group>
               <!-- <v-list-item
@@ -29,6 +29,7 @@
               </v-list-item>
             </v-list-item-group>
           </v-list>
+          <Loading v-else split-scr />
         </v-col>
       </v-row>
     </v-container>
@@ -47,11 +48,14 @@ export default {
   data () {
     return {
       searchPattern: 'unimplPokemon',
-      unimplList: []
+      unimplList: [],
+
+      isLoading: true
     }
   },
-  beforeMount () {
-    this.get()
+  async beforeMount () {
+    await this.get()
+    this.isLoading = false
   },
   methods: {
     async get () {

@@ -33,7 +33,7 @@
     </v-row>
     <v-row v-show="isLoading">
       <v-col>
-        <Loading :full-scr="false" />
+        <Loading split-scr />
       </v-col>
     </v-row>
   </v-container>

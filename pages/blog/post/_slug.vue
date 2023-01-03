@@ -17,7 +17,7 @@
               />
               <!-- <CommentForm :form="commentForm" class="my-3 py-3" @click="submitCommentForm" /> -->
             </template>
-            <Loading v-else :full-scr="false" />
+            <Loading v-else split-scr />
           </v-col>
         </v-row>
       </v-container>
@@ -63,7 +63,6 @@ export default {
     async get () {
       await axios.get(process.env.VUE_APP_BLOG_URL + '/wp-json/wp/v2/posts?_embed&slug=' + this.slug)
         .then((res) => {
-          console.log(res)
           const rd = res.data[0]
           this.postInfo.id = rd.id
           this.postInfo.title = rd.title.rendered
