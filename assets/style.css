@@ -2,13 +2,6 @@
   color: red;
   padding-left: 12px;
 }
-.event-info * {
-  word-break: break-all;
-  white-space: pre-wrap;
-}
-.event-info-area .col {
-  border-top: 1px solid #cfcfcf;
-}
 .manage-title-line {
   background-color: red;
   margin-top: 20px;
@@ -20,20 +13,6 @@
   margin-top: 20px;
   margin-bottom: 20px;
   color: white;
-}
-.answer-box .v-text-field.v-text-field--enclosed .v-text-field__details {
-  display: none;
-}
-.message-none .v-text-field__details {
-  display: none;
-}
-.question-box {
-  background-color: white;
-  color: #1E1E1E;
-  min-height: 35px !important;
-  margin-top: 10px;
-  margin-bottom: 12px;
-  border-radius: 5px;
 }
 .link {
   color: #1976D2 !important;
@@ -47,10 +26,6 @@
 }
 .col-title {
   font-weight: bold;
-}
-.hissu-icon {
-  float: left;
-  margin-right: 5px;
 }
 .date-text * {
   padding-right: 6px;
@@ -73,7 +48,7 @@
   color: white;
   font-weight: bold;
 }
-.h2-event {
+.h2-title {
   font-weight: bold;
   background-color: #1E1E1E;
   color: white;
@@ -88,4 +63,16 @@
   padding: 3px;
   font-size: 80%;
   border-radius: 4px;
+}
+.widget-item {
+  border: 1px solid #333; 
+  border-radius: 20px 20px 10px 10px;
+}
+.required-mark {
+  background-color: #ff4500;
+    padding: 2px 4px;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
 }

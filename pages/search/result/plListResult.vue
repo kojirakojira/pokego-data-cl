@@ -1,11 +1,8 @@
 <template>
   <div>
-    <v-container>
-      <p />
-      <H2Common>
-        {{ getSearchPatternName('plList') }}
-      </H2Common>
-    </v-container>
+    <H2Common>
+      {{ getSearchPatternName('plList') }}
+    </H2Common>
     <div v-if="!isLoading">
       <v-container>
         <v-row>

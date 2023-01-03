@@ -1,11 +1,14 @@
 <template>
-  <h2 class="display-1">
-    <v-row>
-      <v-col class="h2-event h2-brain-icon">
-        <slot />
-      </v-col>
-    </v-row>
-  </h2>
+  <v-container>
+    <p />
+    <h2 class="display-1">
+      <v-row>
+        <v-col class="h2-title h2-brain-icon">
+          <slot />
+        </v-col>
+      </v-row>
+    </h2>
+  </v-container>
 </template>
 
 <script>

@@ -6,8 +6,6 @@
       <v-main>
         <nuxt />
       </v-main>
-      <!-- 余白 -->
-      <div style="height:150px;" />
       <v-footer padless>
         <v-col
           class="text-right"

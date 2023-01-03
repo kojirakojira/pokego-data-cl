@@ -1,11 +1,8 @@
 <template>
   <div>
-    <v-container>
-      <p />
-      <H2Common>
-        {{ getSearchPatternName('fRTask') }}
-      </H2Common>
-    </v-container>
+    <H2Common>
+      {{ getSearchPatternName('fRTask') }}
+    </H2Common>
     <div v-if="!isLoading">
       <v-container>
         <v-row>

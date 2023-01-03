@@ -1,11 +1,8 @@
 <template>
   <div>
-    <v-container>
-      <p />
-      <H2Common>
-        {{ getSearchPatternName(searchPattern) }}
-      </H2Common>
-    </v-container>
+    <H2Common>
+      {{ getSearchPatternName(searchPattern) }}
+    </H2Common>
     <v-container>
       <v-row>
         <v-col>

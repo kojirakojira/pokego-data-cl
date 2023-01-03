@@ -1,11 +1,8 @@
 <template>
   <div>
-    <v-container>
-      <p />
-      <H2Common>
-        {{ getSearchPatternName('scpRank') }}
-      </H2Common>
-    </v-container>
+    <H2Common>
+      {{ getSearchPatternName('scpRank') }}
+    </H2Common>
     <div v-if="!isLoading">
       <v-container>
         <v-row>

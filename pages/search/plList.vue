@@ -1,11 +1,8 @@
 <template>
   <div>
-    <v-container>
-      <p />
-      <H2Common>
-        {{ getSearchPatternName(searchPattern) }}
-      </H2Common>
-    </v-container>
+    <H2Common>
+      {{ getSearchPatternName(searchPattern) }}
+    </H2Common>
     <v-container>
       <v-row>
         <v-col cols="12" md="4" lg="4" xl="4" class="col-title">
@@ -118,8 +115,8 @@ export default {
     },
     check () {
       let msg = ''
-      msg += this.$checkRequired(this.searchParam.name, null, 'ポケモン')
-      msg += this.$checkRequired(this.searchParam.iv, null, '個体値')
+      msg += this.$checkRequired({ item: this.searchParam.name, itemName: 'ポケモン' })
+      msg += this.$checkRequired({ item: this.searchParam.iv, itemName: '個体値' })
       msg += this.checkIv(this.searchParam.iv)
       return msg
     },
