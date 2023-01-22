@@ -10,7 +10,8 @@ export default {
         race: '種族値検索',
         raceDiff: '種族値比較',
         plList: 'PLごとのCP一覧',
-        unimplPokemon: '未実装ポケモン一覧'
+        unimplPokemon: '未実装ポケモン一覧',
+        evolution: '進化ツリーと別のすがた'
       },
       rules: {
         name: [
@@ -26,22 +27,24 @@ export default {
     }
   },
   mounted () {
+    // 画面を復元する。
     const routeName = this.$route.name
     if (!/search-result-[A-Z,a-z,0-9]*Result/.test(routeName)) {
       // 検索結果画面でない場合
-      const searchState = this.$store.getters.searchState
-      if (searchState && searchState.routeName === routeName) {
-        if (searchState.psr) {
-          // stateを直接更新しないようにするため、ディープコピー
-          this.$set(this, 'psr', JSON.parse(JSON.stringify(searchState.psr)))
+
+      // クエリパラメータから検索パラメータを復元する。
+      if (this.$route.query) {
+        this.searchParam = {}
+        for (const [key, value] of Object.entries(this.$route.query)) {
+          this.searchParam[key] = value
         }
       }
-    }
-    // queryをsearchParamに反映する
-    if (this.$route.query) {
-      this.searchParam = {}
-      for (const [key, value] of Object.entries(this.$route.query)) {
-        this.searchParam[key] = value
+
+      // Vuexからpsrを復元する。
+      const searchState = this.$store.getters.searchState
+      if (searchState && searchState.psr && searchState.routeName === routeName) {
+        // stateを直接更新しないようにするため、ディープコピー
+        this.$set(this, 'psr', JSON.parse(JSON.stringify(searchState.psr)))
       }
     }
   },
@@ -68,6 +71,13 @@ export default {
         this.isSearchBtnClick = false
       }
     },
+    /**
+     * Vuex(ローカルストレージ)に"SearchState"をセットする。
+     * 検索パターン(routeName)、検索パラメータ(searchParam)、ポケモン検索結果（psr)を設定する。
+     *
+     * @param {Object} resData
+     * @returns
+     */
     setSearchState (resData) {
       const searchState = {} // 画面復元用オブジェクト
       if (resData.pokemonSearchResult) {
@@ -87,6 +97,25 @@ export default {
       searchState.searchParam = this.searchParam
       this.$store.dispatch('setSearchState', JSON.parse(JSON.stringify(searchState)))
     },
+    /**
+     * クエリパラメータを更新する。
+     *
+     * @param {Object} searchParam
+     */
+    replaceState (searchParam) {
+      const url = new URL(window.location)
+      Object.entries(searchParam).forEach(([k, v]) => {
+        url.searchParams.set(k, v)
+      })
+      window.history.replaceState({}, '', url)
+    },
+    /**
+     * クエリパラメータに差分があるかどうかを判定する。
+     *
+     * @param {Object} before
+     * @param {Object} after
+     * @returns
+     */
     isChangeQuery (before, after) {
       let bool = false
       // 相互比較

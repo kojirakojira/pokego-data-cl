@@ -96,6 +96,7 @@ export default {
             this.setSearchState(resData)
             if (resData.pokemonSearchResult.unique) {
             // 1件のみヒットした場合
+              this.replaceState(this.searchParam)
               this.$router.push({
                 name: 'search-result-scpRankMaxMinResult',
                 query: {
