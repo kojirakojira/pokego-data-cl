@@ -41,24 +41,15 @@
             xl="6"
             class="col-title"
           >
-            通常時CP
+            CP
           </v-col>
           <v-col cols="12" md="6" lg="6" xl="6">
             {{ `${resData.minCp} ～ ${resData.maxCp}` }}
           </v-col>
         </v-row>
         <v-row>
-          <v-col
-            cols="12"
-            md="6"
-            lg="6"
-            xl="6"
-            class="col-title"
-          >
-            天候ブースト時CP
-          </v-col>
-          <v-col cols="12" md="6" lg="6" xl="6">
-            {{ `${resData.wbMinCp} ～ ${resData.wbMaxCp}` }}
+          <v-col class="caption">
+            ※フィールドリサーチの報酬は、天候ブーストの影響を受けません。
           </v-col>
         </v-row>
       </v-container>
