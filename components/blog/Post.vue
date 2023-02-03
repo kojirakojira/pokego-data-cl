@@ -222,28 +222,17 @@ export default {
 
       &::before {
         position: absolute;
-        background: linear-gradient(
-          180deg,
-          red 0%,
-          red 47%,
-          black 48%,
-          black 52%,
-          white 53%,
-          white 100%);
-        border: 1px solid black;
-        color: #FFF;
-        -webkit-text-stroke: 2px #000;
-        // text-stroke: 2px #000;
-        content: '●';
-        font-size: 20px;
-        top: -3px;
+        background-image: url(https://static.brainjuice.jp/pokego/poke-ball.svg);
+        background-size: 52px;
+        content: "";
+        padding: 27px;
+        top: -5px;
         left: -5px;
-        padding: 10px 14px;
-        border-radius: 30px;
       }
 
       &:hover::before {
         transform: rotateZ(360deg);
+        transform-origin: 46% 50% 0;
         transition-duration: 1s;
       }
     }
