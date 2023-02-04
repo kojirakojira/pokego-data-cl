@@ -94,11 +94,11 @@ export default {
       }
       // 文字列をDOM(HTMLDocument)に変換する。
       let domObj = (new DOMParser()).parseFromString(this.content, 'text/html')
-      // ぽけでブログのリンクにマーカーを付ける。
+      // ペリブログのリンクにマーカーを付ける。
       domObj = this.editLink(domObj)
       // DOMParserでパースしたDOMオブジェクトを文字列に変換し、返却する。
       const content = new XMLSerializer().serializeToString(domObj)
-      // ぽけでブログの遷移をVueRouterの遷移に置き換える。
+      // ペリブログの遷移をVueRouterの遷移に置き換える。
       this.genInternalLink()
       // 画像用のポップアップリンクの生成
       this.genOverlayImageLink()
@@ -113,7 +113,7 @@ export default {
   },
   methods: {
     /**
-     * リンクを編集する。ドメインが「ぽけでブログ」の場合、
+     * リンクを編集する。ドメインが「ペリブログ」の場合、
      * internal-link-${cnt}のフォーマットでid属性を生成し、編集したタグにマーカーを付ける。
      *
      * @param domObj 記事のhtml(DOM)

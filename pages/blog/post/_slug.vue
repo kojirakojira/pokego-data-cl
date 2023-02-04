@@ -2,7 +2,7 @@
   <div>
     <div id="post">
       <p id="blog-name">
-        ぽけでブログ
+        ペリぶろぐ
       </p>
       <v-container>
         <v-row>
