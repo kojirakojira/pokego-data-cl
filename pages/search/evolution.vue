@@ -17,11 +17,11 @@
             label="例：ミュウツー"
             outlined
             dense
-            rows="1"
             :rules="rules.name"
             :counter="10"
             maxlength="10"
             autocomplete="off"
+            clearable
             @keyup.enter.exact="clickSearchBtn"
           />
         </v-col>

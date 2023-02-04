@@ -20,7 +20,8 @@
                         :pid="h.id"
                         :name="raceMap[h.id].goPokedex.name"
                         :remarks="raceMap[h.id].goPokedex.remarks"
-                        :link="h.id === id ? null : routerLink"
+                        :link="h.id === id"
+                        :click-action="() => { $router.replace({ name: routerLink, query: { pid: h.id }})}"
                         :marker="h.id === id"
                       />
                     </template>
@@ -31,11 +32,13 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="12" class="col-title">
-            別のすがた
+          <v-col cols="12">
+            <div class="col-title">
+              別のすがた
+            </div>
           </v-col>
           <v-col>
-            <v-container>
+            <v-container v-if="aotFormArr.length">
               <v-row class="another-form">
                 <v-col v-for="pid in aotFormArr" :key="`aot-form-${pid}`" class="pa-0">
                   <div :class="`block aot-form-${pid}`">
@@ -43,12 +46,15 @@
                       :pid="pid"
                       :name="raceMap[pid].goPokedex.name"
                       :remarks="raceMap[pid].goPokedex.remarks"
-                      :link="routerLink"
+                      :click-action="() => { $router.replace({ name: routerLink, query: { pid }})}"
                     />
                   </div>
                 </v-col>
               </v-row>
             </v-container>
+            <div v-else>
+              なし
+            </div>
           </v-col>
         </v-row>
         <v-row>
@@ -56,7 +62,7 @@
             同系統のポケモン
           </v-col>
           <v-col>
-            <v-container>
+            <v-container v-if="bfAfAotFormArr.length">
               <v-row class="bfaf-another-form">
                 <v-col v-for="pid in bfAfAotFormArr" :key="`aot-form-${pid}`" class="pa-0">
                   <div :class="`block bfaf-aot-form-${pid}`">
@@ -64,12 +70,15 @@
                       :pid="pid"
                       :name="raceMap[pid].goPokedex.name"
                       :remarks="raceMap[pid].goPokedex.remarks"
-                      :link="routerLink"
+                      :click-action="() => { $router.replace({ name: routerLink, query: { pid } })}"
                     />
                   </div>
                 </v-col>
               </v-row>
             </v-container>
+            <div v-else>
+              なし
+            </div>
           </v-col>
         </v-row>
       </v-container>
@@ -119,6 +128,7 @@ export default {
     await this.initial()
   },
   beforeDestroy () {
+    this.isLoading = true
     // 作成したstyleを削除する
     this.styleIdArr.forEach((id) => {
       const elem = document.getElementById(id)

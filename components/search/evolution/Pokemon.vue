@@ -1,9 +1,8 @@
 <template>
-  <nuxt-link
-    tag="div"
-    :to="{ name: link, query: { pid: pid } }"
+  <div
     class="pokemon"
-    :style="link ? 'cursor: pointer;' : 'pointer-events: none;'"
+    :style="link || clickAction ? 'cursor: pointer;' : 'pointer-events: none;'"
+    @click="clickAction()"
   >
     <div class="node" />
     <div class="pokemon-name">
@@ -13,7 +12,7 @@
       </div>
     </div>
     <div v-if="marker" class="marker" />
-  </nuxt-link>
+  </div>
 </template>
 
 <script>
@@ -33,7 +32,12 @@ export default {
       required: true
     },
     link: {
-      type: String,
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    clickAction: {
+      type: Function,
       required: false,
       default: null
     },
