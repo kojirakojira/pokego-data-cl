@@ -31,12 +31,11 @@ export default {
     const routeName = this.$route.name
     if (!/search-result-[A-Z,a-z,0-9]*Result/.test(routeName)) {
       // 検索結果画面でない場合
-
       // クエリパラメータから検索パラメータを復元する。
       if (this.$route.query) {
-        this.searchParam = {}
-        for (const [key, value] of Object.entries(this.$route.query)) {
-          this.searchParam[key] = value
+        for (const [k, v] of Object.entries(this.$route.query)) {
+          const value = v === 'false' ? false : v
+          this.$set(this.searchParam, k, value)
         }
       }
 
@@ -59,13 +58,27 @@ export default {
       }
       return val
     },
-    getToast (resData) {
-      let msg = ''
+    /**
+     * ダイアログを表示する。
+     * resData.msgLevelが'error'の場合はtrueを返却する。
+     *
+     * @param {Object} resData
+     * @returns
+     */
+    dispDialog (resData) {
       if (resData.message) {
-        msg = resData.message
-      } else if (resData.pokemonSearchResult.message) {
-        msg = resData.pokemonSearchResult.message
+        // メッセージがある場合はalertで表示する。
+        alert(resData.message)
       }
+      if (resData.msgLevel === 'error') {
+        // errorの場合は画面を描画せず前画面に戻す。
+        this.$router.back()
+        return true
+      }
+      return false
+    },
+    getToast (resData) {
+      const msg = resData.pokemonSearchResult.message ? resData.pokemonSearchResult.message : ''
       if (msg) {
         this.$store.dispatch('getToast', { msg })
         this.isSearchBtnClick = false

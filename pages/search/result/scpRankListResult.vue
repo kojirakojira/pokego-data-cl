@@ -148,7 +148,11 @@ export default {
       await this.$axios
         .get('/api/scpRankList', { params: this.searchParam })
         .then((res) => {
-          this.resData = res.data
+          const resData = res.data
+          if (this.dispDialog(resData)) {
+            return
+          }
+          this.resData = resData
         })
         .catch((err) => {
           if (err.response.status !== 401) {

@@ -268,6 +268,10 @@ export default {
           }
         })
         .then((res) => {
+          const resData = res.data
+          if (this.dispDialog(resData)) {
+            return
+          }
           this.drawing(res.data)
         })
         .catch((err) => {

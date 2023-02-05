@@ -27,6 +27,22 @@
         </v-col>
       </v-row>
       <v-row>
+        <v-col cols="12" md="4" lg="4" xl="4" class="col-title">
+          <v-icon>
+            mdi-pen
+          </v-icon>
+          最終進化の絞り込み
+        </v-col>
+        <v-col cols="12" md="8" lg="8" xl="8">
+          <v-switch
+            v-model="searchParam.finEvo"
+            inset
+            dense
+            :label="searchParam.finEvo ? '絞り込む' : '絞り込まない'"
+          />
+        </v-col>
+      </v-row>
+      <v-row>
         <v-col cols="12" align="center">
           <v-btn
             rounded
@@ -63,7 +79,8 @@ export default {
     return {
       searchPattern: 'race',
       searchParam: {
-        name: ''
+        name: '',
+        finEvo: false
       },
       psr: {
         goPokedexList: [],
@@ -93,6 +110,9 @@ export default {
         .then((res) => {
           const resData = res.data
           this.getToast(resData)
+          if (this.dispDialog(resData)) {
+            return
+          }
           if (resData.success) {
             this.setSearchState(resData)
             if (resData.pokemonSearchResult.unique) {

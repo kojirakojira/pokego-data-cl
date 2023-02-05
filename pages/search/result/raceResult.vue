@@ -279,6 +279,7 @@ export default {
   data () {
     return {
       id: null, // pokedexId
+      finEvo: false,
       resData: {
         race: {
           type1Color: {},
@@ -325,6 +326,7 @@ export default {
   },
   async beforeMount () {
     this.id = this.$route.query.pid
+    this.finEvo = this.$route.query.finEvo
     const resData = this.$route.params.rd
 
     if (resData) {
@@ -341,11 +343,16 @@ export default {
       await this.$axios
         .get('/api/race', {
           params: {
-            id: this.id
+            id: this.id,
+            finEvo: this.finEvo
           }
         })
         .then((res) => {
-          const resData = this.resData = res.data
+          const resData = res.data
+          if (this.dispDialog(resData)) {
+            return
+          }
+          this.resData = resData
           this.drawing(resData)
         })
         .catch((err) => {

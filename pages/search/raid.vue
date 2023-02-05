@@ -92,6 +92,9 @@ export default {
         .then((res) => {
           const resData = res.data
           this.getToast(resData)
+          if (this.dispDialog(resData)) {
+            return
+          }
           if (resData.success) {
             this.setSearchState(resData)
             if (resData.pokemonSearchResult.unique) {

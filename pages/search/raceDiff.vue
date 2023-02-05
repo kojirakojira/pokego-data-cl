@@ -161,6 +161,10 @@ export default {
         })
         .then((res) => {
           const resData = res.data
+          this.getToast(resData)
+          if (this.dispDialog(resData)) {
+            return
+          }
           this.setSearchState(resData)
           this.$store.dispatch('getToast', { msg: resData.msr.message })
 

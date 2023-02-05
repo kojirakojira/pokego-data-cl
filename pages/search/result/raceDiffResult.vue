@@ -314,12 +314,11 @@ export default {
           }
         })
         .then((res) => {
-          const resData = this.resData = res.data
-          if (!resData.success) {
-            alert(resData.message)
-            this.$router.back()
+          const resData = res.data
+          if (this.dispDialog(resData)) {
             return
           }
+          this.resData = resData
 
           this.drawing(resData)
         })

@@ -114,7 +114,11 @@ export default {
           }
         })
         .then((res) => {
-          this.resData = res.data
+          const resData = res.data
+          if (this.dispDialog(resData)) {
+            return
+          }
+          this.resData = resData
         })
         .catch((err) => {
           if (err.response.status !== 401) {

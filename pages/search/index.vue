@@ -91,28 +91,6 @@ export default {
   color: white;
   margin: auto;
 }
-/* .peripper {
-  position: absolute;
-  background-image: url(http://localhost:3000/img/%E3%83%9A%E3%83%AA%E3%83%83%E3%83%91%E3%83%BC%E3%81%AE%E7%9B%AE4.png);
-  width: 79.6px;
-  height: 60px;
-  background-size: contain;
-  background-position: center right;
-  right: 0;
-}
-.peripper::after {
-  position: absolute;
-  content: '';
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(30,30,30,1) 0%,
-    rgba(30,30,30,0.5) 30%,
-    rgba(30,30,30,0) 100%);
-} */
 .peripper {
   position: absolute;
   background-image: url(https://static.brainjuice.jp/pokego/peripper-eyes.png);
