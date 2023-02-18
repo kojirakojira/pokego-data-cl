@@ -27,22 +27,6 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" md="4" lg="4" xl="4" class="col-title">
-          <v-icon>
-            mdi-pen
-          </v-icon>
-          最終進化の絞り込み
-        </v-col>
-        <v-col cols="12" md="8" lg="8" xl="8">
-          <v-switch
-            v-model="searchParam.finEvo"
-            inset
-            dense
-            :label="searchParam.finEvo ? '絞り込む' : '絞り込まない'"
-          />
-        </v-col>
-      </v-row>
-      <v-row>
         <v-col cols="12" align="center">
           <v-btn
             rounded
@@ -60,7 +44,9 @@
       v-if="psr.goPokedexList.length !== 0"
       :psr="psr"
       :search-pattern="searchPattern"
+      @clickRow="clickRowResultList"
     />
+    <FilterArea :search-param="searchParam" :is-search-btn-click="isSearchBtnClick" @click="clickSearchBtn()" />
   </div>
 </template>
 
@@ -68,11 +54,13 @@
 import H2Common from '~/components/utils/H2Common'
 import SearchCommon from '~/components/search/SearchCommon'
 import ResultList from '~/components/search/ResultList'
+import FilterArea from '~/components/search/FilterArea'
 export default {
   name: 'Race',
   components: {
     H2Common,
-    ResultList
+    ResultList,
+    FilterArea
   },
   mixins: [SearchCommon],
   data () {
@@ -80,13 +68,27 @@ export default {
       searchPattern: 'race',
       searchParam: {
         name: '',
-        finEvo: false
+        type1: '',
+        type2: '',
+        finEvo: false,
+        negaFinEvo: false,
+        mega: false,
+        negaMega: false,
+        impled: false,
+        negaImpled: false,
+        tooStrong: false,
+        negaTooStrong: false,
+        region: [],
+        negaRegion: false,
+        gen: [],
+        negaGen: false
       },
       psr: {
         goPokedexList: [],
         maybe: false
       },
       labels: ['HP', 'こうげき', 'ぼうぎょ'],
+
       isSearchBtnClick: false
     }
   },
@@ -106,7 +108,7 @@ export default {
     },
     async get () {
       await this.$axios
-        .get('/api/race', { params: this.searchParam })
+        .get('/api/race' + this.spreadArray(this.searchParam))
         .then((res) => {
           const resData = res.data
           this.getToast(resData)
@@ -114,15 +116,13 @@ export default {
             return
           }
           if (resData.success) {
-            this.setSearchState(resData)
+            this.setVuexState(resData)
+            this.replaceState(this.searchParam)
             if (resData.pokemonSearchResult.unique) {
               // 1件のみヒットした場合
-              this.replaceState(this.searchParam)
               this.$router.push({
                 name: 'search-result-raceResult',
-                query: {
-                  pid: resData.pokedexId
-                },
+                query: this.makeQuery(resData.pokedexId),
                 params: {
                   rd: resData
                 }
@@ -130,9 +130,6 @@ export default {
             } else {
               // 複数件 or 0件ヒットした場合
               this.psr = resData.pokemonSearchResult
-              if (this.isChangeQuery(this.$route.query, this.searchParam)) {
-                this.$router.replace({ name: this.$route.name, query: this.searchParam })
-              }
               this.isSearchBtnClick = false
             }
           }
@@ -147,3 +144,20 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.filter-area {
+  max-width: 700px;
+  border-radius: 20px
+}
+</style>

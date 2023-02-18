@@ -23,7 +23,9 @@ export default function ({ app, store, $axios }) {
 
   // error
   $axios.onError((err) => {
-    if (err.response && err.response.status === 401) {
+    if (!err.response) {
+      store.dispatch('getToast', { msg: 'サーバとの通信に失敗しました。' })
+    } else if (err.response.status === 401) {
       store.dispatch('getToast', { msg: '再ログインが必要です。' })
       if (!store.getters.jwt) {
         store.dispatch('setJwt', null)

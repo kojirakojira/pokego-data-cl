@@ -1,31 +1,31 @@
 <template>
   <v-app>
-    <div dark>
+    <div dark style="min-height: 90vh">
       <Navbar />
       <Toast />
       <v-main>
         <nuxt />
       </v-main>
-      <v-footer padless>
-        <v-col
-          class="text-right"
-          cols="12"
-          style="padding-bottom:0px;"
-        >
-          <router-link to="/help/inquiry">
-            お問い合わせ
-          </router-link> | <router-link to="/help/privacyPolicy">
-            プライバシーポリシー
-          </router-link>
-        </v-col>
-        <v-col
-          class="text-right"
-          cols="12"
-        >
-          <a style="display:none;">©</a> 2021 — <strong>BrainJuice</strong>
-        </v-col>
-      </v-footer>
     </div>
+    <v-footer padless>
+      <v-col
+        class="text-right"
+        cols="12"
+        style="padding-bottom:0px;"
+      >
+        <router-link to="/help/inquiry">
+          お問い合わせ
+        </router-link> | <router-link to="/help/privacyPolicy">
+          プライバシーポリシー
+        </router-link>
+      </v-col>
+      <v-col
+        class="text-right"
+        cols="12"
+      >
+        <a style="display:none;">©</a> 2021 — <strong>BrainJuice</strong>
+      </v-col>
+    </v-footer>
     <div v-show="isLoading">
       <div class="center-0">
         <div class="pulse-loader center-2">

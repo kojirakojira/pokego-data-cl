@@ -160,12 +160,13 @@ export default {
           }
         })
         .then((res) => {
+          console.log(res.data)
           const resData = res.data
-          this.getToast(resData)
+          this.getToastForMulti(resData)
           if (this.dispDialog(resData)) {
             return
           }
-          this.setSearchState(resData)
+          this.setVuexState(resData)
           this.$store.dispatch('getToast', { msg: resData.msr.message })
 
           this.$set(this, 'psrArr', resData.msr.psrArr)
@@ -187,6 +188,7 @@ export default {
           }
         })
         .catch((err) => {
+          console.log(err)
           if (err.response.status !== 401) {
             alert('何らかのエラーが発生しました。')
             this.$router.back()

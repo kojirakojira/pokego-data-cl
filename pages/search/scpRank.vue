@@ -66,6 +66,7 @@
       v-if="psr.goPokedexList.length !== 0"
       :psr="psr"
       :search-pattern="searchPattern"
+      @clickRow="clickRowResultList"
     />
   </div>
 </template>
@@ -137,10 +138,10 @@ export default {
             return
           }
           if (resData.success) {
-            this.setSearchState(resData)
+            this.setVuexState(resData)
+            this.replaceState(this.searchParam)
             if (resData.pokemonSearchResult.unique) {
               // 1件のみヒットした場合
-              this.replaceState(this.searchParam)
               this.$router.push({
                 name: 'search-result-scpRankResult',
                 query: {
@@ -154,9 +155,6 @@ export default {
             } else {
               // 複数件 or 0件ヒットした場合
               this.psr = resData.pokemonSearchResult
-              if (this.isChangeQuery(this.$route.query, this.searchParam)) {
-                this.$router.replace({ name: this.$route.name, query: this.searchParam })
-              }
               this.isSearchBtnClick = false
             }
           }

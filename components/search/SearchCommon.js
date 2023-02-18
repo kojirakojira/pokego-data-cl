@@ -32,9 +32,23 @@ export default {
     if (!/search-result-[A-Z,a-z,0-9]*Result/.test(routeName)) {
       // 検索結果画面でない場合
       // クエリパラメータから検索パラメータを復元する。
+      // if (this.searchParam) {
+      //   Object.entries(this.searchParam).forEach(([k, v]) => {
+      //     console.log(`${k}: ${typeof v}`)
+      //     console.log(v)
+      //   })
+      // }
       if (this.$route.query) {
         for (const [k, v] of Object.entries(this.$route.query)) {
-          const value = v === 'false' ? false : v
+          let value = null
+          if (typeof this.searchParam[k] === 'boolean') {
+            value = v !== 'false'
+          } else if (Array.isArray(this.searchParam[k])) {
+            value = []
+            value.push(...v)
+          } else {
+            value = v
+          }
           this.$set(this.searchParam, k, value)
         }
       }
@@ -84,6 +98,13 @@ export default {
         this.isSearchBtnClick = false
       }
     },
+    getToastForMulti (resData) {
+      const msg = resData.msr.message ? resData.msr.message : ''
+      if (msg) {
+        this.$store.dispatch('getToast', { msg })
+        this.isSearchBtnClick = false
+      }
+    },
     /**
      * Vuex(ローカルストレージ)に"SearchState"をセットする。
      * 検索パターン(routeName)、検索パラメータ(searchParam)、ポケモン検索結果（psr)を設定する。
@@ -91,7 +112,7 @@ export default {
      * @param {Object} resData
      * @returns
      */
-    setSearchState (resData) {
+    setVuexState (resData) {
       const searchState = {} // 画面復元用オブジェクト
       if (resData.pokemonSearchResult) {
         // psrを使用している場合
@@ -111,15 +132,86 @@ export default {
       this.$store.dispatch('setSearchState', JSON.parse(JSON.stringify(searchState)))
     },
     /**
+     * ResultListでポケモンを選択したときの処理
+     * @param {String} pid
+     * @see ResultList.vue
+     */
+    clickRowResultList (pid) {
+      // 遷移前の画面のqueryを更新しておく
+      this.replaceState(this.searchParam)
+      // 遷移後の画面のqueryを作成する
+      const query = this.makeQuery(pid)
+      // 遷移
+      this.$router.push({
+        name: `search-result-${this.searchPattern}Result`,
+        query
+      })
+    },
+    /**
+     * Result画面用のquery（連想配列）を作成する。
+     * 遷移前の画面のクエリからnameを削除。pidを追加して返却する。
+     * @param {String} pid
+     * @returns {Object} query
+     */
+    makeQuery (pid) {
+      const query = {}
+      const urlSearchParams = new URLSearchParams(location.search)
+      for (const [k, v] of urlSearchParams.entries()) {
+        if (query[k]) {
+          // queryパラメータにキーが重複している場合は、配列を表現している。
+          if (Array.isArray(query[k])) {
+            // 既に配列に入っている場合
+            query[k].push(v)
+          } else {
+            // 配列でない場合は配列を作成して追加する。
+            const tmpV = query[k]
+            query[k] = [tmpV, v]
+          }
+        } else {
+          // 配列項目以外のすべての場合
+          query[k] = v
+        }
+      }
+
+      query.pid = pid
+      delete query.name
+
+      return query
+    },
+    /**
+     * APIへのGET送信用。配列があった場合展開する。
+     * 例：values=[a, b]→values=a&values=b
+     *
+     * @param {Object} dictionary
+     * @returns {String} queryStr
+     */
+    spreadArray (dictionary) {
+      const entries = Object.entries(dictionary)
+      if (!entries.length) {
+        return ''
+      }
+      let queryStr = '?'
+      entries.forEach(([k, v]) => {
+        if (v) {
+          if (Array.isArray(v)) {
+            v.forEach((e) => {
+              queryStr += `${k}=${e}&`
+            })
+          } else {
+            queryStr += `${k}=${v}&`
+          }
+        }
+      })
+      return queryStr.slice(0, -1)
+    },
+    /**
      * クエリパラメータを更新する。
      *
      * @param {Object} searchParam
      */
     replaceState (searchParam) {
       const url = new URL(window.location)
-      Object.entries(searchParam).forEach(([k, v]) => {
-        url.searchParams.set(k, v)
-      })
+      url.search = this.spreadArray(searchParam)
       window.history.replaceState({}, '', url)
     },
     /**

@@ -105,6 +105,18 @@
             class="col-title"
           >
             GO種族値
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs}">
+                <v-icon
+                  small
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  mdi-help-circle
+                </v-icon>
+              </template>
+              <span>各ステータスの順位を基準として表示しています。そうです。この世の中は相対評価なのです。</span>
+            </v-tooltip>
           </v-col>
         </v-row>
         <v-row>
@@ -185,6 +197,18 @@
             class="col-title"
           >
             原作種族値
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs}">
+                <v-icon
+                  small
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  mdi-help-circle
+                </v-icon>
+              </template>
+              <span>各ステータスの順位を基準として表示しています。そうです。この世界同様、ポケモンの世界でも競争が強いられているのです。</span>
+            </v-tooltip>
           </v-col>
         </v-row>
         <v-row>
@@ -278,8 +302,7 @@ export default {
   mixins: [SearchCommon],
   data () {
     return {
-      id: null, // pokedexId
-      finEvo: false,
+      searchParam: {},
       resData: {
         race: {
           type1Color: {},
@@ -325,8 +348,11 @@ export default {
     }
   },
   async beforeMount () {
-    this.id = this.$route.query.pid
-    this.finEvo = this.$route.query.finEvo
+    Object.entries(this.$route.query).forEach(([k, v]) => {
+      const key = k === 'pid' ? 'id' : k
+      this.searchParam[key] = v
+    })
+
     const resData = this.$route.params.rd
 
     if (resData) {
@@ -341,12 +367,7 @@ export default {
   methods: {
     async get () {
       await this.$axios
-        .get('/api/race', {
-          params: {
-            id: this.id,
-            finEvo: this.finEvo
-          }
-        })
+        .get('/api/race' + this.spreadArray(this.searchParam))
         .then((res) => {
           const resData = res.data
           if (this.dispDialog(resData)) {

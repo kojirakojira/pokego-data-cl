@@ -24,7 +24,7 @@
               <v-list-item
                 v-for="p in psr.goPokedexList"
                 :key="p.pokedexId"
-                @click="clickRow(p.pokedexId)"
+                @click="$emit('clickRow', p.pokedexId)"
               >
                 <v-list-item-avatar>
                   <v-img :src="p.image ? p.image : require('~/static/img/no-image.png')" />
@@ -57,23 +57,6 @@ export default {
     }
   },
   methods: {
-    makeQuery (pid) {
-      const query = {}
-      query.pid = pid
-      for (const q in this.$route.query) {
-        if (q !== 'name') {
-          query[q] = this.$route.query[q]
-        }
-      }
-      return query
-    },
-    clickRow (pid) {
-      const query = this.makeQuery(pid)
-      this.$router.push({
-        name: `search-result-${this.searchPattern}Result`,
-        query
-      })
-    },
     appendRemarks (name, remarks) {
       let val = name
       if (remarks) {
