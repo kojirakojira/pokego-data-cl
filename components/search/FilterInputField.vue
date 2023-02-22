@@ -8,7 +8,7 @@
           rounded
           small
           color="success"
-          @click="filterAreaStat = !filterAreaStat"
+          @click="$emit('showArea')"
         >
           <v-icon small>
             mdi-filter-menu
@@ -43,7 +43,7 @@
       </v-col>
     </v-row>
     <transition name="fade">
-      <div v-show="filterAreaStat">
+      <div v-show="showArea">
         <v-row>
           <v-col>
             <v-divider />
@@ -51,12 +51,12 @@
         </v-row>
         <v-row align="center">
           <v-col cols="12" md="5" lg="4" xl="4" class="col-title">
-            タイプ
+            {{ $CONST.getValue('type', $CONST.FILTER_ITEMS) }}
           </v-col>
           <v-col cols="12" md="7" lg="8" xl="8">
             <v-select
               v-model="searchParam.type1"
-              :items="type"
+              :items="$CONST.TYPE"
               item-text="v"
               item-value="k"
               clearable
@@ -64,7 +64,7 @@
             />
             <v-select
               v-model="searchParam.type2"
-              :items="type"
+              :items="$CONST.TYPE"
               item-text="v"
               item-value="k"
               clearable
@@ -79,7 +79,7 @@
         </v-row>
         <v-row align="center">
           <v-col cols="12" md="5" lg="4" xl="4" class="col-title">
-            最終進化
+            {{ $CONST.getValue('finEvo', $CONST.FILTER_ITEMS) }}
           </v-col>
           <v-col cols="12" md="7" lg="8" xl="8">
             <v-switch
@@ -113,7 +113,7 @@
         </v-row>
         <v-row align="center">
           <v-col cols="12" md="5" lg="4" xl="4" class="col-title">
-            メガシンカ
+            {{ $CONST.getValue('mega', $CONST.FILTER_ITEMS) }}
           </v-col>
           <v-col cols="12" md="7" lg="8" xl="8">
             <v-switch
@@ -147,7 +147,7 @@
         </v-row>
         <v-row align="center">
           <v-col cols="12" md="5" lg="4" xl="4" class="col-title">
-            PokémonGO実装済み
+            {{ $CONST.getValue('impled', $CONST.FILTER_ITEMS) }}
           </v-col>
           <v-col cols="12" md="7" lg="8" xl="8">
             <v-switch
@@ -181,7 +181,7 @@
         </v-row>
         <v-row align="center">
           <v-col cols="12" md="5" lg="4" xl="4" class="col-title">
-            強ポケ補正
+            {{ $CONST.getValue('tooStrong', $CONST.FILTER_ITEMS) }}
           </v-col>
           <v-col cols="12" md="7" lg="8" xl="8">
             <v-switch
@@ -215,10 +215,10 @@
         </v-row>
         <v-row align="center">
           <v-col cols="12" md="5" lg="4" xl="4" class="col-title">
-            地域
+            {{ $CONST.getValue('region', $CONST.FILTER_ITEMS) }}
           </v-col>
           <v-col cols="12" md="7" lg="8" xl="8">
-            <div v-for="r in region" :key="r.k">
+            <div v-for="r in $CONST.REGION" :key="r.k">
               <v-checkbox
                 v-model="searchParam.region"
                 :label="r.v"
@@ -250,10 +250,10 @@
         </v-row>
         <v-row align="center">
           <v-col cols="12" md="5" lg="4" xl="4" class="col-title">
-            世代
+            {{ $CONST.getValue('gen', $CONST.FILTER_ITEMS) }}
           </v-col>
           <v-col cols="12" md="7" lg="8" xl="8">
-            <div v-for="r in gen" :key="r.k">
+            <div v-for="r in $CONST.GEN" :key="r.k">
               <v-checkbox
                 v-model="searchParam.gen"
                 :label="r.v"
@@ -303,10 +303,14 @@
 
 <script>
 export default {
-  name: 'FilterArea',
+  name: 'FilterInputField',
   props: {
     searchParam: {
       type: Object,
+      required: true
+    },
+    showArea: {
+      type: Boolean,
       required: true
     },
     isSearchBtnClick: {
@@ -326,12 +330,8 @@ export default {
         { key: 'tooStrong', nega: 'negaTooStrong' },
         { key: 'region', nega: 'negaRegion' },
         { key: 'gen', nega: 'negaGen' }
-      ],
-      region: [],
-      type: [],
-      gen: [],
+      ]
 
-      filterAreaStat: false
     }
   },
   watch: {
@@ -350,11 +350,6 @@ export default {
       },
       deep: true
     }
-  },
-  mounted () {
-    this.$set(this, 'region', this.$CONST.REGION)
-    this.$set(this, 'type', this.$CONST.TYPE)
-    this.$set(this, 'gen', this.$CONST.GEN)
   },
   methods: {
     clear () {
@@ -378,3 +373,20 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.filter-area {
+  max-width: 700px;
+  border-radius: 20px
+}
+</style>

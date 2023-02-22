@@ -40,13 +40,19 @@
         </v-col>
       </v-row>
     </v-container>
+    <FilterInputField
+      :search-param="searchParam"
+      :show-area="showFilterArea"
+      :is-search-btn-click="isSearchBtnClick"
+      @showArea="showFilterArea = !showFilterArea"
+      @click="clickSearchBtn()"
+    />
     <ResultList
       v-if="psr.goPokedexList.length !== 0"
       :psr="psr"
       :search-pattern="searchPattern"
       @clickRow="clickRowResultList"
     />
-    <FilterArea :search-param="searchParam" :is-search-btn-click="isSearchBtnClick" @click="clickSearchBtn()" />
   </div>
 </template>
 
@@ -54,13 +60,13 @@
 import H2Common from '~/components/utils/H2Common'
 import SearchCommon from '~/components/search/SearchCommon'
 import ResultList from '~/components/search/ResultList'
-import FilterArea from '~/components/search/FilterArea'
+import FilterInputField from '~/components/search/FilterInputField'
 export default {
   name: 'Race',
   components: {
     H2Common,
     ResultList,
-    FilterArea
+    FilterInputField
   },
   mixins: [SearchCommon],
   data () {
@@ -89,6 +95,7 @@ export default {
       },
       labels: ['HP', 'こうげき', 'ぼうぎょ'],
 
+      showFilterArea: false,
       isSearchBtnClick: false
     }
   },
@@ -102,6 +109,7 @@ export default {
         return
       }
       this.get()
+      this.showFilterArea = false
     },
     check () {
       return this.$checkRequired({ item: this.searchParam.name, itemName: 'ポケモン' })
@@ -144,20 +152,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.filter-area {
-  max-width: 700px;
-  border-radius: 20px
-}
-</style>

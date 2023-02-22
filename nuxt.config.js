@@ -52,10 +52,7 @@ export default {
       src: '~/plugins/redirect',
       ssr: false
     },
-    {
-      src: '~/plugins/constants',
-      ssr: false
-    },
+    '~/plugins/constants',
     '~/plugins/validateUtils',
     '~/plugins/sanitize',
     '~/plugins/firebase'

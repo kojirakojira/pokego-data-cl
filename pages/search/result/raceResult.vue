@@ -4,6 +4,7 @@
       {{ getSearchPatternName('race') }}
     </H2Common>
     <div v-if="!isLoading">
+      <FilteredItems :items="filteredItems" />
       <v-container>
         <v-row>
           <v-col
@@ -291,13 +292,15 @@ import SearchCommon from '~/components/search/SearchCommon'
 import Loading from '~/components/Loading'
 import RadarGraph from '~/components/utils/graph/RadarGraph'
 import LineGraph from '~/components/utils/graph/LineGraph'
+import FilteredItems from '~/components/search/FilteredItems'
 export default {
   name: 'RaceResult',
   components: {
     H2Common,
     Loading,
     RadarGraph,
-    LineGraph
+    LineGraph,
+    FilteredItems
   },
   mixins: [SearchCommon],
   data () {
@@ -309,6 +312,7 @@ export default {
           type2Color: {}
         }
       },
+      filteredItems: [],
 
       goLineElems: [
         { key: 'hp', statsKey: 'goHpStats', title: 'HP', rgb: [0, 0, 255] },
@@ -358,30 +362,28 @@ export default {
     if (resData) {
       // paramsでresDataが渡されている場合は、そのまま表示する
       this.resData = resData
-      this.drawing(resData)
     } else {
       // paramsでresDataが渡されていない場合は、APIから取得してから表示する
-      await this.get()
+      this.resData = await this.get()
     }
+    this.drawing(this.resData)
+    this.filteredItems.push(...this.resData.filteredItems)
   },
   methods: {
     async get () {
-      await this.$axios
+      const res = await this.$axios
         .get('/api/race' + this.spreadArray(this.searchParam))
-        .then((res) => {
-          const resData = res.data
-          if (this.dispDialog(resData)) {
-            return
-          }
-          this.resData = resData
-          this.drawing(resData)
-        })
         .catch((err) => {
           if (err.response.status !== 401) {
             alert('何らかのエラーが発生しました。')
             this.$router.back()
           }
         })
+      const resData = res.data
+      if (this.dispDialog(resData)) {
+        return
+      }
+      return resData
     },
     drawing (resData) {
       this.drawGoRadar(resData)
@@ -435,7 +437,7 @@ export default {
 
 <style>
 .stats {
-    vertical-align: middle;
-    margin: auto;
+  vertical-align: middle;
+  margin: auto;
 }
 </style>
