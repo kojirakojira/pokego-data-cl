@@ -40,7 +40,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <FilterInputField
+    <FilterInputStowable
       :search-param="searchParam"
       :show-area="showFilterArea"
       :is-search-btn-click="isSearchBtnClick"
@@ -60,13 +60,13 @@
 import H2Common from '~/components/utils/H2Common'
 import SearchCommon from '~/components/search/SearchCommon'
 import ResultList from '~/components/search/ResultList'
-import FilterInputField from '~/components/search/FilterInputField'
+import FilterInputStowable from '~/components/search/FilterInputStowable'
 export default {
   name: 'Race',
   components: {
     H2Common,
     ResultList,
-    FilterInputField
+    FilterInputStowable
   },
   mixins: [SearchCommon],
   data () {
