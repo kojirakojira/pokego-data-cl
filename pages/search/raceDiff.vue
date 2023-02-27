@@ -152,15 +152,9 @@ export default {
       for (const sp in this.searchParam) {
         nameArr.push(this.searchParam[sp])
       }
-      // リストを送信したいためJSON形式でPOST送信
       await this.$axios
-        .post('/api/raceDiff', { nameArr }, {
-          headers: {
-            'content-type': 'application/json'
-          }
-        })
+        .get('/api/raceDiff' + this.spreadArray({ nameArr }))
         .then((res) => {
-          console.log(res.data)
           const resData = res.data
           this.getToastForMulti(resData)
           if (this.dispDialog(resData)) {
@@ -188,7 +182,6 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err)
           if (err.response.status !== 401) {
             alert('何らかのエラーが発生しました。')
             this.$router.back()
