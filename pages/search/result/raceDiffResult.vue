@@ -308,11 +308,7 @@ export default {
   methods: {
     async post () {
       await this.$axios
-        .post('/api/raceDiff', { idArr: this.idArr }, {
-          headers: {
-            'content-type': 'application/json'
-          }
-        })
+        .get('/api/raceDiff' + this.spreadArray({ idArr: this.idArr }))
         .then((res) => {
           const resData = res.data
           if (this.dispDialog(resData)) {
