@@ -72,38 +72,6 @@ export default {
       default: false
     }
   },
-  data () {
-    return {
-      filterKeys: [
-        { key: 'type1' },
-        { key: 'type2' },
-        { key: 'finEvo', nega: 'negaFinEvo' },
-        { key: 'mega', nega: 'negaMega' },
-        { key: 'impled', nega: 'negaImpled' },
-        { key: 'tooStrong', nega: 'negaTooStrong' },
-        { key: 'region', nega: 'negaRegion' },
-        { key: 'gen', nega: 'negaGen' }
-      ]
-
-    }
-  },
-  watch: {
-    /**
-     * 否定形は、項目に何かしら値が入ってるときだけ有効。
-     * それ以外の場合はfalseにする。
-     */
-    searchParam: {
-      handler (v) {
-        this.filterKeys.forEach((dic) => {
-          if ((typeof this.searchParam[dic.key] === 'boolean' && !v[dic.key]) ||
-           (Array.isArray(this.searchParam[dic.key]) && !v[dic.key].length)) {
-            v[dic.nega] = false
-          }
-        })
-      },
-      deep: true
-    }
-  },
   methods: {
     clear () {
       const func = (key) => {

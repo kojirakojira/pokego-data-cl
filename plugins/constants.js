@@ -24,7 +24,15 @@ export default async ({ $axios }, inject) => {
       $axios.get('/api/filterItemsConst')
     ])
       .then((res) => {
-        Object.entries(res[0].data).forEach(([k, v]) => { CONST.TYPE.push({ k, v }) })
+        Object.entries(res[0].data).forEach(([k, v]) => {
+          CONST.TYPE.push({
+            k,
+            v: v.jpn,
+            r: v.r,
+            g: v.g,
+            b: v.b
+          })
+        })
         Object.entries(res[1].data).forEach(([k, v]) => { CONST.REGION.push({ k, v }) })
         Object.entries(res[2].data).forEach(([k, v]) => { CONST.GEN.push({ k, v }) })
         Object.entries(res[3].data).forEach(([k, v]) => { CONST.FILTER_ITEMS.push({ k, v }) })

@@ -63,6 +63,7 @@
   padding: 3px;
   font-size: 80%;
   border-radius: 4px;
+  white-space: nowrap;
 }
 .widget-item {
   border: 1px solid #333; 

@@ -2,6 +2,7 @@ export default {
   data () {
     return {
       searchPatternNames: {
+        filterAll: '全ポケ絞り込み',
         raid: 'レイドボスCP',
         fRTask: 'フィールドリサーチCP',
         scpRank: 'PvP順位',
@@ -29,15 +30,10 @@ export default {
   mounted () {
     // 画面を復元する。
     const routeName = this.$route.name
-    if (!/search-result-[A-Z,a-z,0-9]*Result/.test(routeName)) {
-      // 検索結果画面でない場合
+    if (!/search-result-[A-Z,a-z,0-9]*Result/.test(routeName) &&
+    routeName.indexOf('search-list-')) {
+      // 検索結果画面でない場合、かつ一覧画面でない場合
       // クエリパラメータから検索パラメータを復元する。
-      // if (this.searchParam) {
-      //   Object.entries(this.searchParam).forEach(([k, v]) => {
-      //     console.log(`${k}: ${typeof v}`)
-      //     console.log(v)
-      //   })
-      // }
       if (this.$route.query) {
         for (const [k, v] of Object.entries(this.$route.query)) {
           let value = null
@@ -91,15 +87,8 @@ export default {
       }
       return false
     },
-    getToast (resData) {
-      const msg = resData.pokemonSearchResult.message ? resData.pokemonSearchResult.message : ''
-      if (msg) {
-        this.$store.dispatch('getToast', { msg })
-        this.isSearchBtnClick = false
-      }
-    },
-    getToastForMulti (resData) {
-      const msg = resData.msr.message ? resData.msr.message : ''
+    getToast (pokemonResult) {
+      const msg = pokemonResult.message ? pokemonResult.message : ''
       if (msg) {
         this.$store.dispatch('getToast', { msg })
         this.isSearchBtnClick = false

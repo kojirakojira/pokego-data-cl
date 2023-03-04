@@ -156,12 +156,11 @@ export default {
         .get('/api/raceDiff' + this.spreadArray({ nameArr }))
         .then((res) => {
           const resData = res.data
-          this.getToastForMulti(resData)
+          this.getToast(resData.msr)
           if (this.dispDialog(resData)) {
             return
           }
           this.setVuexState(resData)
-          this.$store.dispatch('getToast', { msg: resData.msr.message })
 
           this.$set(this, 'psrArr', resData.msr.psrArr)
 

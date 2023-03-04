@@ -133,7 +133,7 @@ export default {
         })
         .then((res) => {
           const resData = res.data
-          this.getToast(resData)
+          this.getToast(resData.pokemonSearchResult)
           if (this.dispDialog(resData)) {
             return
           }
