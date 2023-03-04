@@ -47,6 +47,9 @@
             <v-col cols="12" sm="3" md="3" lg="3" class="py-0">
               <v-checkbox v-model="chkboxSelected" hide-details label="HP" value="hp" />
             </v-col>
+            <v-col cols="12" sm="3" md="3" lg="3" class="py-0">
+              <v-checkbox v-model="chkboxSelected" hide-details label="CP" value="cp" />
+            </v-col>
           </v-row>
         </div>
       </transition>
@@ -73,38 +76,41 @@
                 <td>{{ item.index }}</td>
                 <td>
                   <v-avatar size="36" style="float:left">
-                    <v-img :src="item.image ? item.image : require('~/static/img/no-image.png')" />
+                    <v-img :src="item.goPokedex.image ? item.goPokedex.image : require('~/static/img/no-image.png')" />
                   </v-avatar>
                 </td>
                 <td>
-                  {{ item.name }}
-                  <template v-if="item.remarks">
-                    <br><span class="caption">{{ `(${item.remarks})` }}</span>
+                  {{ item.goPokedex.name }}
+                  <template v-if="item.goPokedex.remarks">
+                    <br><span class="caption">{{ `(${item.goPokedex.remarks})` }}</span>
                   </template>
                 </td>
                 <td v-show="!chkboxSelected.includes('type1')">
                   <span
-                    :style="`background-color: ${getRGB(item.type1)}; margin-right:5px;`"
+                    :style="`background-color: ${getRGB(item.goPokedex.type1)}; margin-right:5px;`"
                     class="type"
                   >
-                    {{ item.type1 }}
+                    {{ item.goPokedex.type1 }}
                   </span>
                   <span
-                    v-if="item.type2"
-                    :style="`background-color: ${getRGB(item.type2)};`"
+                    v-if="item.goPokedex.type2"
+                    :style="`background-color: ${getRGB(item.goPokedex.type2)};`"
                     class="type"
                   >
-                    {{ item.type2 }}
+                    {{ item.goPokedex.type2 }}
                   </span>
                 </td>
                 <td v-show="!chkboxSelected.includes('attack')">
-                  {{ item.attack }}
+                  {{ item.goPokedex.attack }}
                 </td>
                 <td v-show="!chkboxSelected.includes('defense')">
-                  {{ item.defense }}
+                  {{ item.goPokedex.defense }}
                 </td>
                 <td v-show="!chkboxSelected.includes('hp')">
-                  {{ item.hp }}
+                  {{ item.goPokedex.hp }}
+                </td>
+                <td v-show="!chkboxSelected.includes('cp')">
+                  {{ item.cp }}
                 </td>
               </tr>
             </template>
@@ -140,7 +146,8 @@ export default {
         { text: 'タイプ', value: 'type1' },
         { text: 'こうげき', value: 'attack' },
         { text: 'ぼうぎょ', value: 'defense' },
-        { text: 'HP', value: 'hp' }
+        { text: 'HP', value: 'hp' },
+        { text: 'CP', value: 'cp' }
       ],
       tmpHeaderItems: [],
       chkboxSelected: [],
@@ -195,6 +202,7 @@ export default {
       // paramsでresDataが渡されていない場合は、APIから取得してから表示する
       this.resData = await this.get()
     }
+    console.log(this.resData)
 
     // indexを追加してからセットする。
     this.$set(this, 'goPokedexList', this.resData.pfr.goPokedexList.map((v, i) => {
