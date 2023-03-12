@@ -300,7 +300,6 @@ export default {
   // border-color: red blue blue red;
 }
 .evolution {
-  display: table-caption;
   border: medium solid green;
 }
 

@@ -32,8 +32,8 @@
           別のすがた
         </div>
       </v-col>
-      <v-col style="justify-content: center; display: flex;">
-        <v-container v-if="aotFormArr.length">
+      <v-col>
+        <v-container v-if="aotFormArr.length" style="justify-content: center; display: grid;">
           <v-row class="another-form">
             <v-col v-for="pid in aotFormArr" :key="`aot-form-${pid}`" class="pa-0">
               <div :class="`block aot-form-${pid}`">
@@ -47,7 +47,7 @@
             </v-col>
           </v-row>
         </v-container>
-        <div v-else>
+        <div v-else align="center">
           なし
         </div>
       </v-col>
@@ -56,8 +56,8 @@
       <v-col cols="12" class="col-title">
         同系統のポケモン
       </v-col>
-      <v-col style="justify-content: center; display: flex;">
-        <v-container v-if="bfAfAotFormArr.length">
+      <v-col>
+        <v-container v-if="bfAfAotFormArr.length" style="justify-content: center; display: grid;">
           <v-row class="bfaf-another-form">
             <v-col v-for="pid in bfAfAotFormArr" :key="`aot-form-${pid}`" class="pa-0">
               <div :class="`block bfaf-aot-form-${pid}`">
@@ -71,7 +71,7 @@
             </v-col>
           </v-row>
         </v-container>
-        <div v-else>
+        <div v-else align="center">
           なし
         </div>
       </v-col>
