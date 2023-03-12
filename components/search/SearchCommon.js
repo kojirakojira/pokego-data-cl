@@ -24,28 +24,32 @@ export default {
   },
   filters: {
     dispPdx (pdxId) {
-      return pdxId ? Number(('' + pdxId).substring(0, 4)) : ''
+      return pdxId ? pdxId.substring(0, 4) * 1 : ''
     }
   },
   mounted () {
     // 画面を復元する。
     const routeName = this.$route.name
-    if (!/search-result-[A-Z,a-z,0-9]*Result/.test(routeName) &&
-    routeName.indexOf('search-list-')) {
+    if (routeName.indexOf('search-result-') && routeName.indexOf('search-list-')) {
       // 検索結果画面でない場合、かつ一覧画面でない場合
       // クエリパラメータから検索パラメータを復元する。
       if (this.$route.query) {
         for (const [k, v] of Object.entries(this.$route.query)) {
-          let value = null
           if (typeof this.searchParam[k] === 'boolean') {
-            value = v !== 'false'
+            // セットする項目の型がBooleanの場合
+            this.$set(this.searchParam, k, v !== 'false')
           } else if (Array.isArray(this.searchParam[k])) {
-            value = []
-            value.push(...v)
+            // セットする項目の型がArrayの場合
+            if (Array.isArray(v)) {
+              // セットする値がArrayの場合（queryに複数の値が設定されていた場合、配列で取得される。）
+              this.searchParam[k].push(...v)
+            } else {
+              // セットする値がStringの場合
+              this.searchParam[k].push(v)
+            }
           } else {
-            value = v
+            this.$set(this.searchParam, k, v)
           }
-          this.$set(this.searchParam, k, value)
         }
       }
 

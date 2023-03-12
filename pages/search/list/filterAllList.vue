@@ -35,20 +35,14 @@
       <transition name="fade">
         <div v-show="showColumnDisabledArea">
           <v-row>
-            <v-col cols="12" sm="3" md="3" lg="3" class="py-0">
-              <v-checkbox v-model="chkboxSelected" hide-details label="タイプ" value="type1" />
-            </v-col>
-            <v-col cols="12" sm="3" md="3" lg="3" class="py-0">
-              <v-checkbox v-model="chkboxSelected" hide-details label="こうげき" value="attack" />
-            </v-col>
-            <v-col cols="12" sm="3" md="3" lg="3" class="py-0">
-              <v-checkbox v-model="chkboxSelected" hide-details label="ぼうぎょ" value="defense" />
-            </v-col>
-            <v-col cols="12" sm="3" md="3" lg="3" class="py-0">
-              <v-checkbox v-model="chkboxSelected" hide-details label="HP" value="hp" />
-            </v-col>
-            <v-col cols="12" sm="3" md="3" lg="3" class="py-0">
-              <v-checkbox v-model="chkboxSelected" hide-details label="CP" value="cp" />
+            <v-col v-for="chkItem in disabledChkboxes" :key="`chkbox-${chkItem.label}`" class="py-0">
+              <v-checkbox
+                v-model="chkboxSelected"
+                hide-details
+                :label="chkItem.label"
+                :value="chkItem.value"
+                style="white-space: nowrap;"
+              />
             </v-col>
           </v-row>
         </div>
@@ -70,49 +64,38 @@
             no-data-text="loading now..."
             no-results-text="該当するデータがありません。"
             class="pokemon-data-table"
+            @click:row="(item) => {
+              $router.push({ name: 'search-result-abundance', query: { pid: item.goPokedex.pokedexId}})
+            }"
           >
-            <template v-slot:item="{ item }">
-              <tr>
-                <td>{{ item.index }}</td>
-                <td>
-                  <v-avatar size="36" style="float:left">
-                    <v-img :src="item.goPokedex.image ? item.goPokedex.image : require('~/static/img/no-image.png')" />
-                  </v-avatar>
-                </td>
-                <td>
-                  {{ item.goPokedex.name }}
-                  <template v-if="item.goPokedex.remarks">
-                    <br><span class="caption">{{ `(${item.goPokedex.remarks})` }}</span>
-                  </template>
-                </td>
-                <td v-show="!chkboxSelected.includes('type1')">
-                  <span
-                    :style="`background-color: ${getRGB(item.goPokedex.type1)}; margin-right:5px;`"
-                    class="type"
-                  >
-                    {{ item.goPokedex.type1 }}
-                  </span>
-                  <span
-                    v-if="item.goPokedex.type2"
-                    :style="`background-color: ${getRGB(item.goPokedex.type2)};`"
-                    class="type"
-                  >
-                    {{ item.goPokedex.type2 }}
-                  </span>
-                </td>
-                <td v-show="!chkboxSelected.includes('attack')">
-                  {{ item.goPokedex.attack }}
-                </td>
-                <td v-show="!chkboxSelected.includes('defense')">
-                  {{ item.goPokedex.defense }}
-                </td>
-                <td v-show="!chkboxSelected.includes('hp')">
-                  {{ item.goPokedex.hp }}
-                </td>
-                <td v-show="!chkboxSelected.includes('cp')">
-                  {{ item.cp }}
-                </td>
-              </tr>
+            <template v-slot:[`item.goPokedex.pokedexId`]="{ item }">
+              {{ item.goPokedex.pokedexId | getPokedexNo }}
+            </template>
+            <template v-slot:[`item.goPokedex.image`]="{ item }">
+              <v-avatar size="36" style="float:left">
+                <v-img :src="item.goPokedex.image ? item.goPokedex.image : require('~/static/img/no-image.png')" />
+              </v-avatar>
+            </template>
+            <template v-slot:[`item.goPokedex.name`]="{ item }">
+              {{ item.goPokedex.name }}
+              <template v-if="item.goPokedex.remarks">
+                <br><span class="caption">{{ `(${item.goPokedex.remarks})` }}</span>
+              </template>
+            </template>
+            <template v-slot:[`item.goPokedex.type1`]="{ item }">
+              <span
+                :style="`background-color: ${$editUtils.getRGB(item.goPokedex.type1)}; margin-right:5px;`"
+                class="type"
+              >
+                {{ item.goPokedex.type1 }}
+              </span>
+              <span
+                v-if="item.goPokedex.type2"
+                :style="`background-color: ${$editUtils.getRGB(item.goPokedex.type2)};`"
+                class="type"
+              >
+                {{ item.goPokedex.type2 }}
+              </span>
             </template>
           </v-data-table>
         </v-col>
@@ -131,6 +114,11 @@ export default {
     H2Common,
     FilteredItems
   },
+  filters: {
+    getPokedexNo (value) {
+      return value.substring(0, 4) * 1
+    }
+  },
   mixins: [SearchCommon],
   data () {
     return {
@@ -140,17 +128,24 @@ export default {
       goPokedexList: [],
       resData: {},
       headerItems: [
-        { text: '№', value: 'index' },
-        { text: '', value: 'image', sortable: false, width: '52px' },
-        { text: 'ポケモン', value: 'name', fixed: true },
-        { text: 'タイプ', value: 'type1' },
-        { text: 'こうげき', value: 'attack' },
-        { text: 'ぼうぎょ', value: 'defense' },
-        { text: 'HP', value: 'hp' },
+        { text: '№', value: 'goPokedex.pokedexId' },
+        { text: '', value: 'goPokedex.image', sortable: false, width: '52px' },
+        { text: 'ポケモン', value: 'goPokedex.name' },
+        { text: 'タイプ', value: 'goPokedex.type1' },
+        { text: 'こうげき', value: 'goPokedex.attack' },
+        { text: 'ぼうぎょ', value: 'goPokedex.defense' },
+        { text: 'HP', value: 'goPokedex.hp' },
         { text: 'CP', value: 'cp' }
       ],
       tmpHeaderItems: [],
       chkboxSelected: [],
+      disabledChkboxes: [
+        { label: 'タイプ', value: 'goPokedex.type1' },
+        { label: 'こうげき', value: 'goPokedex.attack' },
+        { label: 'ぼうぎょ', value: 'goPokedex.defense' },
+        { label: 'HP', value: 'goPokedex.hp' },
+        { label: 'CP', value: 'cp' }
+      ],
       showColumnDisabledArea: false
     }
   },
@@ -202,13 +197,9 @@ export default {
       // paramsでresDataが渡されていない場合は、APIから取得してから表示する
       this.resData = await this.get()
     }
-    console.log(this.resData)
 
     // indexを追加してからセットする。
-    this.$set(this, 'goPokedexList', this.resData.pfr.goPokedexList.map((v, i) => {
-      v.index = i + 1
-      return v
-    }))
+    this.$set(this, 'goPokedexList', this.resData.pfr.goPokedexList)
     this.$set(this, 'filteredItems', this.resData.pfr.filteredItems)
     // カラム絞り込み機能のため、ヘッダの項目を退避させる。
     this.tmpHeaderItems = this.headerItems.map((v, i) => {
@@ -231,20 +222,6 @@ export default {
         return
       }
       return resData
-    },
-    /**
-     * 引数にはタイプの日本語名を渡します。
-     * 英語名でもどっちでも良かったので、API側のデータの持ち方の都合上日本語名にしました。
-     */
-    getRGB (type) {
-      let rgb = null
-      for (const t of this.$CONST.TYPE) {
-        if (type === t.v) {
-          rgb = `rgb(${t.r}, ${t.g}, ${t.b})`
-          break
-        }
-      }
-      return rgb
     },
     clear () {
       this.chkboxSelected.splice(0)

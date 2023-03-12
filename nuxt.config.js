@@ -54,6 +54,7 @@ export default {
     },
     '~/plugins/constants',
     '~/plugins/validateUtils',
+    '~/plugins/editUtils',
     '~/plugins/sanitize',
     '~/plugins/firebase'
   ],

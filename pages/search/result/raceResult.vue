@@ -68,7 +68,7 @@
             xl="6"
             class="col-title"
           >
-            原作→GO変換弱体化対象
+            強ポケ補正
             <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs}">
                 <v-icon
@@ -129,14 +129,9 @@
             xl="6"
             align="right"
           >
-            <RadarGraph
-              chart-id="go-poke-radar"
-              title="GO種族値"
-              :labels="['HP', 'こうげき', 'ぼうぎょ']"
-              :elems="goRadarElems"
-              :min="1"
-              :max="resData.statistics.goPokedexStats.goHpStats.list.length"
-              :rgb="[resData.race.color.r, resData.race.color.g, resData.race.color.b]"
+            <GoRadarGraph
+              :race="resData.race"
+              :go-pokedex-stats="resData.statistics.goPokedexStats"
             />
           </v-col>
           <v-col
@@ -221,13 +216,10 @@
             xl="6"
             align="right"
           >
-            <RadarGraph
-              title="原作種族値"
-              :labels="['HP', 'こうげき', 'とくこう', 'すばやさ', 'とくぼう', 'ぼうぎょ']"
-              :elems="oriRadarElems"
-              :min="1"
-              :max="resData.statistics.pokedexStats.hpStats.list.length"
-              :rgb="[resData.race.color.r, resData.race.color.g, resData.race.color.b]"
+            <OriRadarGraph
+              :race="resData.race"
+              :ori-stats-items="oriStatsItems"
+              :pokedex-stats="resData.statistics.pokedexStats"
             />
           </v-col>
           <v-col
@@ -290,7 +282,8 @@
 import H2Common from '~/components/utils/H2Common'
 import SearchCommon from '~/components/search/SearchCommon'
 import Loading from '~/components/Loading'
-import RadarGraph from '~/components/utils/graph/RadarGraph'
+import GoRadarGraph from '~/components/search/graph/GoRadarGraph'
+import OriRadarGraph from '~/components/search/graph/OriRadarGraph'
 import LineGraph from '~/components/utils/graph/LineGraph'
 import FilteredItems from '~/components/search/FilteredItems'
 export default {
@@ -298,7 +291,8 @@ export default {
   components: {
     H2Common,
     Loading,
-    RadarGraph,
+    GoRadarGraph,
+    OriRadarGraph,
     LineGraph,
     FilteredItems
   },
@@ -328,20 +322,20 @@ export default {
         { key: 'speed', statsKey: 'spStats', title: 'すばやさ', rgb: [199, 21, 133] }
       ],
 
-      goRadarElems: [],
+      // レーダーチャートの横に配置する種族値(GO)
       goStatsItems: [
-        { key: 'hp', statsKey: 'goHpStats', name: 'HP' },
-        { key: 'attack', statsKey: 'goAtStats', name: 'こうげき' },
-        { key: 'defense', statsKey: 'goDfStats', name: 'ぼうぎょ' }
+        { key: 'hp', name: 'HP' },
+        { key: 'attack', name: 'こうげき' },
+        { key: 'defense', name: 'ぼうぎょ' }
       ],
-      oriRadarElems: [],
+      // レーダーチャートの横に配置する種族値(原作)
       oriStatsItems: [
-        { key: 'hp', statsKey: 'hpStats', name: 'HP' },
-        { key: 'attack', statsKey: 'atStats', name: 'こうげき' },
-        { key: 'specialAttack', statsKey: 'spAtStats', name: 'とくこう' },
-        { key: 'speed', statsKey: 'spStats', name: 'すばやさ' },
-        { key: 'specialDefense', statsKey: 'spDfStats', name: 'とくぼう' },
-        { key: 'defense', statsKey: 'dfStats', name: 'ぼうぎょ' }],
+        { key: 'hp', name: 'HP' },
+        { key: 'attack', name: 'こうげき' },
+        { key: 'specialAttack', name: 'とくこう' },
+        { key: 'speed', name: 'すばやさ' },
+        { key: 'specialDefense', name: 'とくぼう' },
+        { key: 'defense', name: 'ぼうぎょ' }],
       isLoading: true
     }
   },
@@ -366,7 +360,6 @@ export default {
       // paramsでresDataが渡されていない場合は、APIから取得してから表示する
       this.resData = await this.get()
     }
-    this.drawing(this.resData)
     this.filteredItems.push(...this.resData.filteredItems)
   },
   methods: {
@@ -384,40 +377,6 @@ export default {
         return
       }
       return resData
-    },
-    drawing (resData) {
-      this.drawGoRadar(resData)
-      this.drawOriRadar(resData)
-    },
-    /**
-     * GO種族値のレーダーチャートの値を設定し、描画する。
-     *
-     * @param resData
-     */
-    drawGoRadar (resData) {
-      // 全ポケモン数
-      const count = resData.statistics.goPokedexStats.goHpStats.list.length
-      // ['HP', 'こうげき', 'ぼうぎょ']
-      this.goStatsItems.forEach((s) => {
-        this.goRadarElems.push(
-          count - (this.rank(resData.race.goPokedex[s.key], resData.statistics.goPokedexStats[s.statsKey].list) - 1)
-        )
-      })
-    },
-    /**
-     * 原作種族値のレーダーチャートの値を設定し、描画する。
-     *
-     * @param resData
-     */
-    drawOriRadar (resData) {
-      // 全ポケモン数
-      const count = resData.statistics.pokedexStats.hpStats.list.length
-      // ['HP', 'こうげき', 'とくこう', 'すばやさ', 'とくぼう', 'ぼうぎょ']
-      this.oriStatsItems.forEach((s) => {
-        this.oriRadarElems.push(
-          count - (this.rank(resData.race.pokedex[s.key], resData.statistics.pokedexStats[s.statsKey].list) - 1)
-        )
-      })
     },
     /**
      * 順位を求める。
