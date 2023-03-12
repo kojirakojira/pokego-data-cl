@@ -254,7 +254,7 @@ export default {
       &::before {
         position: absolute;
         background-image: url(https://static.brainjuice.jp/pokego/super-ball.svg);
-        background-size: 51px;
+        background-size: 50px;
         content: "";
         padding: 26px;
         top: -10px;

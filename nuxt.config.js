@@ -30,7 +30,8 @@ export default {
   ],
   styleResources: {
     scss: [
-      '~/assets/common/common.scss'
+      '~/assets/common/common.scss',
+      '~/assets/common/_mixin.scss'
     ]
   },
 

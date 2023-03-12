@@ -22,9 +22,9 @@
       <v-row>
         <v-col cols="12" md="7" lg="8" xl="8">
           <!-- abundanceの表 -->
-          <p class="my-2">
+          <h3>
             基本情報
-          </p>
+          </h3>
           <v-container
             v-if="isLoadedAbundance"
             class="abundance-basic-info-table"
@@ -93,9 +93,9 @@
               </v-col>
             </v-row>
           </v-container>
-          <p class="my-2">
+          <h3>
             CP
-          </p>
+          </h3>
           <v-container
             v-if="isLoadedAbundance"
             class="abundance-cp-table"
@@ -137,9 +137,9 @@
             </v-row>
           </v-container>
           <!-- 種族値 -->
-          <p class="my-2">
+          <h3>
             種族値
-          </p>
+          </h3>
           <v-container v-if="isLoadedRace" class="race">
             <v-row>
               <v-col
@@ -178,9 +178,9 @@
           </v-container>
         </v-col>
         <v-col cols="12" md="5" lg="4" xl="4">
-          <p class="my-2">
+          <h3>
             進化
-          </p>
+          </h3>
           <EvoInfo
             v-if="isLoadedEvolution"
             :pokedex-id="id"
@@ -303,4 +303,5 @@ export default {
   display: table-caption;
   border: medium solid green;
 }
+
 </style>

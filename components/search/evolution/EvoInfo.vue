@@ -4,7 +4,7 @@
       <v-col cols="12" class="col-title">
         進化ツリー
       </v-col>
-      <v-col>
+      <v-col style="justify-content: center; display: flex;">
         <div style="overflow-x: auto; display: flex;">
           <div v-for="(yArr, i) in evoTree" :key="i" class="evo-tree">
             <div v-for="(xArr, y) in yArr" :key="`hierarchy-${y + 1}`" class="hierarchy">
@@ -32,7 +32,7 @@
           別のすがた
         </div>
       </v-col>
-      <v-col>
+      <v-col style="justify-content: center; display: flex;">
         <v-container v-if="aotFormArr.length">
           <v-row class="another-form">
             <v-col v-for="pid in aotFormArr" :key="`aot-form-${pid}`" class="pa-0">
@@ -56,7 +56,7 @@
       <v-col cols="12" class="col-title">
         同系統のポケモン
       </v-col>
-      <v-col>
+      <v-col style="justify-content: center; display: flex;">
         <v-container v-if="bfAfAotFormArr.length">
           <v-row class="bfaf-another-form">
             <v-col v-for="pid in bfAfAotFormArr" :key="`aot-form-${pid}`" class="pa-0">

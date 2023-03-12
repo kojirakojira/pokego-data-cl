@@ -1,0 +1,25 @@
+h3 {
+    position: relative;
+    border: 2px solid #ccc;
+    border-radius: 30px;
+    padding: 4px 12px;
+    margin: 24px 0px 16px;
+    overflow: hidden;
+    text-align: center;
+  
+    &::after {
+      position: absolute;
+      background-image: url(https://static.brainjuice.jp/pokego/peri.gif);
+      background-size: 36px;
+      content: "";
+      padding: 18px;
+      top: 0px;
+      right: -10%;
+    }
+  
+    &:hover::after {
+      transform: translateX(-100%);
+      transition-duration: 5s;
+      right: 100%
+    }
+  }
