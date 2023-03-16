@@ -180,12 +180,7 @@ export default {
             this.makeUnique(this.psrArr)
           }
         })
-        .catch((err) => {
-          if (err.response.status !== 401) {
-            alert('何らかのエラーが発生しました。')
-            this.$router.back()
-          }
-        })
+        .catch(this.$processUtils.onErrorNot401)
     },
     /**
      * 検索結果が複数件あるポケモンをダイアログにて開き、ユーザに検索したいポケモンを選択してもらう。

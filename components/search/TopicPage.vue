@@ -61,13 +61,7 @@ export default {
           this.topicPages = res.data
           this.isHit = !!this.topicPages.length
         })
-        .catch((err) => {
-          if (!err.response) { return }
-          if (err.response.status !== 401) {
-            alert('何らかのエラーが発生しました。')
-            this.$router.back()
-          }
-        })
+        .catch(this.$processUtils.onErrorNot401)
     },
     getTrophyColor (index) {
       let color = ''

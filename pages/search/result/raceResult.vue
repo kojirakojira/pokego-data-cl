@@ -366,12 +366,7 @@ export default {
     async get () {
       const res = await this.$axios
         .get('/api/race' + this.spreadArray(this.searchParam))
-        .catch((err) => {
-          if (err.response.status !== 401) {
-            alert('何らかのエラーが発生しました。')
-            this.$router.back()
-          }
-        })
+        .catch(this.$processUtils.onErrorNot401)
       const resData = res.data
       if (this.dispDialog(resData)) {
         return

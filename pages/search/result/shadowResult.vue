@@ -87,12 +87,6 @@ export default {
       isLoading: true
     }
   },
-  watch: {
-    resData () {
-      // resDataに値がセットされたらLoadingを解除する。
-      this.isLoading = false
-    }
-  },
   async beforeMount () {
     this.id = this.$route.query.pid
     const resData = this.$route.params.rd
@@ -102,30 +96,25 @@ export default {
       this.resData = resData
     } else {
       // paramsでresDataが渡されていない場合は、APIから取得してから表示する
-      await this.get()
+      this.resData = await this.get()
     }
+
+    this.isLoading = !this.resData
   },
   methods: {
     async get () {
-      await this.$axios
+      const res = await this.$axios
         .get('/api/shadow', {
           params: {
             id: this.id
           }
         })
-        .then((res) => {
-          const resData = res.data
-          if (this.dispDialog(resData)) {
-            return
-          }
-          this.resData = resData
-        })
-        .catch((err) => {
-          if (err.response.status !== 401) {
-            alert('何らかのエラーが発生しました。')
-            this.$router.back()
-          }
-        })
+        .catch(this.$processUtils.onErrorNot401)
+      const resData = res.data
+      if (this.dispDialog(resData)) {
+        return
+      }
+      return resData
     }
   }
 }

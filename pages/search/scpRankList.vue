@@ -144,12 +144,7 @@ export default {
             }
           }
         })
-        .catch((err) => {
-          if (err.response.status !== 401) {
-            alert('何らかのエラーが発生しました。')
-            this.$router.back()
-          }
-        })
+        .catch(this.$processUtils.onErrorNot401)
     }
   }
 }

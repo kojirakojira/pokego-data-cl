@@ -318,12 +318,7 @@ export default {
 
           this.drawing(resData)
         })
-        .catch((err) => {
-          if (err.response.status !== 401) {
-            alert('何らかのエラーが発生しました。')
-            this.$router.back()
-          }
-        })
+        .catch(this.$processUtils.onErrorNot401)
     },
     drawing (resData) {
       this.goDataTableElems = this.getGoDataTableElems(resData)

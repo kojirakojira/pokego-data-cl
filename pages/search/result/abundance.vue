@@ -255,18 +255,12 @@ export default {
     async get (endpoint, params, resDataNm) {
       const res = await this.$axios
         .get(endpoint, params)
-        .catch(this.onError)
+        .catch(this.$processUtils.onErrorNot401)
       const resData = res.data
       if (this.dispDialog(resData)) {
         return
       }
       this.$set(this, resDataNm, resData)
-    },
-    onError: (err) => {
-      if (err.response.status !== 401) {
-        alert('何らかのエラーが発生しました。')
-        this.$router.back()
-      }
     },
     /**
      * 世代の日本語名を取得する。
