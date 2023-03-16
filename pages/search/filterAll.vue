@@ -49,33 +49,39 @@ export default {
     }
   },
   methods: {
-    clickSearchBtn () {
+    async clickSearchBtn () {
       this.isSearchBtnClick = true
-      this.get()
+      const res = await this.get()
+      this.handleApiResult(res)
       this.isSearchBtnClick = false
     },
     async get () {
-      await this.$axios
+      return await this.$axios
         .get('/api/filterAll' + this.spreadArray(this.searchParam))
-        .then((res) => {
-          const resData = res.data
-          this.getToast(resData.pfr)
-          if (this.dispDialog(resData)) {
-            return
-          }
-          if (resData.success && resData.pfr.hit) {
-            // 取得成功かつ1件以上ヒットした場合
-            this.replaceState(this.searchParam)
-            this.$router.push({
-              name: 'search-list-filterAllList',
-              query: this.makeQuery(),
-              params: {
-                rd: resData
-              }
-            })
+        .catch(this.$processUtils.onErrorNot401)
+    },
+    /**
+     * APIのレスポンスを処理する。
+     *
+     * @param {Object} res
+     */
+    handleApiResult (res) {
+      const resData = res.data
+      this.getToast(resData.pfr)
+      if (this.dispDialog(resData)) {
+        return
+      }
+      if (resData.success && resData.pfr.hit) {
+        // 取得成功かつ1件以上ヒットした場合
+        this.replaceState(this.searchParam)
+        this.$router.push({
+          name: 'search-list-filterAllList',
+          query: this.makeQuery(),
+          params: {
+            rd: resData
           }
         })
-        .catch(this.$processUtils.onErrorNot401)
+      }
     }
   }
 }

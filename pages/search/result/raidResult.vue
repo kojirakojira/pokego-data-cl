@@ -89,16 +89,19 @@ export default {
   },
   async beforeMount () {
     this.id = this.$route.query.pid
-    const resData = this.$route.params.rd
+    let resData = this.$route.params.rd
 
-    if (resData) {
-      // paramsでresDataが渡されている場合は、そのまま表示する
-      this.resData = resData
-    } else {
+    if (!resData) {
       // paramsでresDataが渡されていない場合は、APIから取得してから表示する
-      this.resData = await this.get()
+      resData = await this.get()
     }
 
+    if (!resData) {
+      // resDataを取得できなかった場合
+      return
+    }
+
+    this.resData = resData
     this.isLoading = !this.resData
   },
   methods: {

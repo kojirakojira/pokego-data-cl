@@ -339,28 +339,27 @@ export default {
       isLoading: true
     }
   },
-  watch: {
-    resData () {
-      // resDataに値がセットされたらLoadingを解除する。
-      this.isLoading = false
-    }
-  },
   async beforeMount () {
     Object.entries(this.$route.query).forEach(([k, v]) => {
       const key = k === 'pid' ? 'id' : k
       this.searchParam[key] = v
     })
 
-    const resData = this.$route.params.rd
+    let resData = this.$route.params.rd
 
-    if (resData) {
-      // paramsでresDataが渡されている場合は、そのまま表示する
-      this.resData = resData
-    } else {
+    if (!resData) {
       // paramsでresDataが渡されていない場合は、APIから取得してから表示する
-      this.resData = await this.get()
+      resData = await this.get()
     }
+
+    if (!resData) {
+      // resDataを取得できなかった場合
+      return
+    }
+
+    this.resData = resData
     this.filteredItems.push(...this.resData.filteredItems)
+    this.isLoading = false
   },
   methods: {
     async get () {

@@ -74,7 +74,7 @@ import H2Common from '~/components/utils/H2Common'
 import SearchCommon from '~/components/search/SearchCommon'
 import Loading from '~/components/Loading'
 export default {
-  name: 'RaidResult',
+  name: 'ShadowResult',
   components: {
     H2Common,
     Loading

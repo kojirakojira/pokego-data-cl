@@ -163,42 +163,39 @@ export default {
       isLoading: true
     }
   },
-  watch: {
-    resData () {
-      // resDataに値がセットされたらLoadingを解除する。
-      this.isLoading = false
-    }
-  },
-  beforeMount () {
+  async beforeMount () {
     this.id = this.$route.query.pid
-    const resData = this.$route.params.rd
+    let resData = this.$route.params.rd
 
-    if (resData) {
-      // paramsでresDataが渡されている場合は、そのまま表示する
-      this.resData = resData
-      this.addTableData(this.resData)
-    } else {
+    if (!resData) {
       // paramsでresDataが渡されていない場合は、APIから取得してから表示する
-      this.get()
+      resData = await this.get()
     }
+
+    if (!resData) {
+      // resDataを取得できなかった場合
+      return
+    }
+
+    this.resData = resData
+    this.addTableData(this.resData)
+    this.isLoading = false
   },
   methods: {
     async get () {
-      await this.$axios
+      const res = await this.$axios
         .get('/api/scpRankMaxMin', {
           params: {
             id: this.id
           }
         })
-        .then((res) => {
-          const resData = res.data
-          if (this.dispDialog(resData)) {
-            return
-          }
-          this.resData = resData
-          this.addTableData(this.resData)
-        })
         .catch(this.$processUtils.onErrorNot401)
+
+      const resData = res.data
+      if (this.dispDialog(resData)) {
+        return
+      }
+      return resData
     },
     addTableData (resData) {
       const slArr = [

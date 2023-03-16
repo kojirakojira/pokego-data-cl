@@ -142,45 +142,51 @@ export default {
     Object.keys(this.searchParam).forEach(() => { this.errMsgs.push('') })
   },
   methods: {
-    clickSearchBtn () {
+    async clickSearchBtn () {
       this.isSearchBtnClick = true
       this.clearErr()
-      this.post()
+      const res = await this.get()
+      this.handleApiResult(res)
     },
-    async post () {
+    async get () {
       const nameArr = []
       for (const sp in this.searchParam) {
         nameArr.push(this.searchParam[sp])
       }
-      await this.$axios
+      return await this.$axios
         .get('/api/raceDiff' + this.spreadArray({ nameArr }))
-        .then((res) => {
-          const resData = res.data
-          this.getToast(resData.msr)
-          if (this.dispDialog(resData)) {
-            return
-          }
-          this.setVuexState(resData)
-
-          this.$set(this, 'psrArr', resData.msr.psrArr)
-
-          // ヒットしなかった場合エラーメッセージを設定する。
-          const hitFlg = this.setErrMsgs(this.psrArr)
-          // ヒットしていないnameが存在する場合は処理を中断。
-          if (!hitFlg) {
-            this.isSearchBtnClick = false
-            return
-          }
-
-          if (resData.msr.allUnique) {
-            // 検索結果がすべてユニークだった場合、種族値比較結果画面へ遷移する。
-            this.transResultPage(resData)
-          } else {
-            // 検索結果が複数の場合は、ダイアログで指定してもらい、一意にする。
-            this.makeUnique(this.psrArr)
-          }
-        })
         .catch(this.$processUtils.onErrorNot401)
+    },
+    /**
+     * APIのレスポンスを処理する。
+     *
+     * @param {Object} res
+     */
+    handleApiResult (res) {
+      const resData = res.data
+      this.getToast(resData.msr)
+      if (this.dispDialog(resData)) {
+        return
+      }
+      this.setVuexState(resData)
+
+      this.$set(this, 'psrArr', resData.msr.psrArr)
+
+      // ヒットしなかった場合エラーメッセージを設定する。
+      const hitFlg = this.setErrMsgs(this.psrArr)
+      // ヒットしていないnameが存在する場合は処理を中断。
+      if (!hitFlg) {
+        this.isSearchBtnClick = false
+        return
+      }
+
+      if (resData.msr.allUnique) {
+        // 検索結果がすべてユニークだった場合、種族値比較結果画面へ遷移する。
+        this.transResultPage(resData)
+      } else {
+        // 検索結果が複数の場合は、ダイアログで指定してもらい、一意にする。
+        this.makeUnique(this.psrArr)
+      }
     },
     /**
      * 検索結果が複数件あるポケモンをダイアログにて開き、ユーザに検索したいポケモンを選択してもらう。

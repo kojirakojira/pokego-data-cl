@@ -105,32 +105,31 @@ export default {
 
     }
   },
-  watch: {
-    resData () {
-      // resDataに値がセットされたらLoadingを解除する。
-      this.isLoading = false
-    }
-  },
   async beforeMount () {
     this.searchParam.id = this.$route.query.pid
     this.searchParam.iv = this.$route.query.iv
-    const resData = this.$route.params.rd
+    let resData = this.$route.params.rd
 
-    if (resData) {
-      // paramsでresDataが渡されている場合は、そのまま表示する
-      this.resData = resData
-    } else {
+    if (!resData) {
       // paramsでresDataが渡されていない場合は、APIから取得してから表示する
       if (!this.checkIv(this.searchParam.iv)) {
         alert('正しくない個体値が設定されました。')
         this.$router.back()
       }
-      await this.get()
+      resData = await this.get()
     }
+
+    if (!resData) {
+      // resDataを取得できなかった場合
+      return
+    }
+
+    this.resData = resData
+    this.isLoading = false
   },
   methods: {
     async get () {
-      await this.$axios
+      const res = await this.$axios
         .get('/api/plList', {
           params: {
             id: this.searchParam.id,
@@ -139,14 +138,12 @@ export default {
             ivh: this.searchParam.iv.substring(4, 6)
           }
         })
-        .then((res) => {
-          const resData = res.data
-          if (this.dispDialog(resData)) {
-            return
-          }
-          this.resData = resData
-        })
         .catch(this.$processUtils.onErrorNot401)
+      const resData = res.data
+      if (this.dispDialog(resData)) {
+        return
+      }
+      return resData
     },
     /**
      * ivをチェックする。正しい場合はtrue

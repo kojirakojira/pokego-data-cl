@@ -252,6 +252,13 @@ export default {
     this.get('/api/evolution', { params: { id: this.id } }, 'evoResData')
   },
   methods: {
+    /**
+     * APIにGET送信し、レスポンスを処理する。
+     *
+     * @param {String} endpoint
+     * @param {Object} params
+     * @param {String} resDataNm レスポンスをセットする変数名
+     */
     async get (endpoint, params, resDataNm) {
       const res = await this.$axios
         .get(endpoint, params)
@@ -264,6 +271,8 @@ export default {
     },
     /**
      * 世代の日本語名を取得する。
+     *
+     * @param {String} value
      */
     dispGenJpn (value) {
       return this.$CONST.GEN.filter(v => v.k === value).map(v => v.v)[0]

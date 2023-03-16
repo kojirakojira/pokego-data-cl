@@ -124,37 +124,35 @@ export default {
 
     }
   },
-  watch: {
-    resData () {
-      // resDataに値がセットされたらLoadingを解除する。
-      this.isLoading = false
-    }
-  },
   async beforeMount () {
     this.searchParam.id = this.$route.query.pid
     this.searchParam.league = this.$route.query.league
     const resData = this.$route.params.rd
 
-    if (resData) {
-      // paramsでresDataが渡されている場合は、そのまま表示する
-      this.resData = resData
-    } else {
+    if (!resData) {
       // paramsでresDataが渡されていない場合は、APIから取得してから表示する
       await this.get()
     }
+
+    if (!resData) {
+      // resDataを取得できなかった場合
+      return
+    }
+
+    this.resData = resData
+    this.isLoading = !this.resData
   },
   methods: {
     async get () {
-      await this.$axios
+      const res = await this.$axios
         .get('/api/scpRankList', { params: this.searchParam })
-        .then((res) => {
-          const resData = res.data
-          if (this.dispDialog(resData)) {
-            return
-          }
-          this.resData = resData
-        })
         .catch(this.$processUtils.onErrorNot401)
+
+      const resData = res.data
+      if (this.dispDialog(resData)) {
+        return
+      }
+      return resData
     }
   }
 }

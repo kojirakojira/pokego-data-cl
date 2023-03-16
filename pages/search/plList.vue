@@ -104,7 +104,7 @@ export default {
     }
   },
   methods: {
-    clickSearchBtn () {
+    async clickSearchBtn () {
       this.isSearchBtnClick = true
       const msg = this.check()
       if (msg) {
@@ -112,7 +112,8 @@ export default {
         this.isSearchBtnClick = false
         return
       }
-      this.get()
+      const res = await this.get()
+      this.handleApiResult(res)
     },
     check () {
       let msg = ''
@@ -122,7 +123,7 @@ export default {
       return msg
     },
     async get () {
-      await this.$axios
+      return await this.$axios
         .get('/api/plList', {
           params: {
             name: this.searchParam.name,
@@ -131,35 +132,40 @@ export default {
             ivh: this.searchParam.iv.substring(4, 6)
           }
         })
-        .then((res) => {
-          const resData = res.data
-          this.getToast(resData.pokemonSearchResult)
-          if (this.dispDialog(resData)) {
-            return
-          }
-          if (resData.success) {
-            this.setVuexState(resData)
-            this.replaceState(this.searchParam)
-            if (resData.pokemonSearchResult.unique) {
-              // 1件のみヒットした場合
-              this.$router.push({
-                name: 'search-result-plListResult',
-                query: {
-                  pid: resData.pokedexId,
-                  iv: this.getIvString(resData)
-                },
-                params: {
-                  rd: resData
-                }
-              })
-            } else {
-              // 複数件 or 0件ヒットした場合
-              this.psr = resData.pokemonSearchResult
-              this.isSearchBtnClick = false
-            }
-          }
-        })
         .catch(this.$processUtils.onErrorNot401)
+    },
+    /**
+     * APIのレスポンスを処理する。
+     *
+     * @param {Object} res
+     */
+    handleApiResult (res) {
+      const resData = res.data
+      this.getToast(resData.pokemonSearchResult)
+      if (this.dispDialog(resData)) {
+        return
+      }
+      if (resData.success) {
+        this.setVuexState(resData)
+        this.replaceState(this.searchParam)
+        if (resData.pokemonSearchResult.unique) {
+          // 1件のみヒットした場合
+          this.$router.push({
+            name: 'search-result-plListResult',
+            query: {
+              pid: resData.pokedexId,
+              iv: this.getIvString(resData)
+            },
+            params: {
+              rd: resData
+            }
+          })
+        } else {
+          // 複数件 or 0件ヒットした場合
+          this.psr = resData.pokemonSearchResult
+          this.isSearchBtnClick = false
+        }
+      }
     },
     checkIv (iv) {
       let msg = ''

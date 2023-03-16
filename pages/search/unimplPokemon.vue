@@ -54,16 +54,13 @@ export default {
     }
   },
   async beforeMount () {
-    await this.get()
+    this.unimplList = (await this.get()).data.unimplList
     this.isLoading = false
   },
   methods: {
     async get () {
-      await this.$axios
+      return await this.$axios
         .get('/api/unimplPokemon')
-        .then((res) => {
-          this.unimplList = res.data.unimplList
-        })
         .catch(this.$processUtils.onErrorNot401)
     }
   }

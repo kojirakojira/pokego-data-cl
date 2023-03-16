@@ -62,8 +62,13 @@ export default {
         // paramsでresDataが渡されていない場合は、APIから取得してから表示する
         resData = await this.get()
       }
-      this.resData = resData
 
+      if (!resData) {
+        // resDataを取得できなかった場合
+        return
+      }
+
+      this.resData = resData
       this.isLoading = false
     },
     async get () {

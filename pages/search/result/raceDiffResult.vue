@@ -280,15 +280,9 @@ export default {
       isLoading: true
     }
   },
-  watch: {
-    resData () {
-      // resDataに値がセットされたらLoadingを解除する。
-      this.isLoading = false
-    }
-  },
   async beforeMount () {
     this.idArr = this.makeIdArr(this.$route.query)
-    const resData = this.$route.params.rd
+    let resData = this.$route.params.rd
 
     if (this.idArr.length < 2) {
       alert('pidは重複なしで2~6個指定する必要があります。')
@@ -296,29 +290,31 @@ export default {
       return
     }
 
-    if (resData) {
-      // paramsでresDataが渡されている場合は、そのまま表示する
-      this.resData = resData
-      this.drawing(resData)
-    } else {
+    if (!resData) {
       // paramsでresDataが渡されていない場合は、APIから取得してから表示する
-      await this.post()
+      resData = await this.get()
     }
+
+    if (!resData) {
+      // resDataを取得できなかった場合
+      return
+    }
+
+    this.drawing(resData)
+    this.resData = resData
+    this.isLoading = false
   },
   methods: {
-    async post () {
-      await this.$axios
+    async get () {
+      const res = await this.$axios
         .get('/api/raceDiff' + this.spreadArray({ idArr: this.idArr }))
-        .then((res) => {
-          const resData = res.data
-          if (this.dispDialog(resData)) {
-            return
-          }
-          this.resData = resData
-
-          this.drawing(resData)
-        })
         .catch(this.$processUtils.onErrorNot401)
+
+      const resData = res.data
+      if (this.dispDialog(resData)) {
+        return
+      }
+      return resData
     },
     drawing (resData) {
       this.goDataTableElems = this.getGoDataTableElems(resData)
