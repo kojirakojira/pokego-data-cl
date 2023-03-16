@@ -5,6 +5,7 @@ export default {
         filterAll: '全ポケ絞り込み',
         raid: 'レイドボスCP',
         fRTask: 'フィールドリサーチCP',
+        shadow: 'シャドウCP',
         scpRank: 'PvP順位',
         scpRankList: 'PvP順位一覧',
         scpRankMaxMin: 'PvP最高(最低)順位',
