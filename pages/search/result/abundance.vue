@@ -129,6 +129,17 @@
             </v-row>
             <v-row>
               <v-col cols="5" class="col-title">
+                シャドウCP
+              </v-col>
+              <v-col cols="7">
+                {{ `${abundResData.minShadowCp} ～ ${abundResData.maxShadowCp}` }}
+                <p class="caption my-0">
+                  {{ `天候ブースト時:${abundResData.minWbShadowCp} ～ ${abundResData.maxWbShadowCp}` }}
+                </p>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="5" class="col-title">
                 フィールドリサーチCP
               </v-col>
               <v-col cols="7">
@@ -213,7 +224,7 @@ export default {
   mixins: [SearchCommon],
   data () {
     return {
-      id: this.$route.query.pid,
+      id: '',
       abundResData: {},
       evoResData: {},
       raceResData: {},
@@ -246,12 +257,29 @@ export default {
       return Object.keys(this.evoResData).length
     }
   },
+  watch: {
+    $route (to) {
+      if (to.query.pid !== this.id) {
+        this.initial()
+      }
+    }
+  },
   beforeMount () {
-    this.get('/api/abundance', { params: { id: this.id } }, 'abundResData')
-    this.get('/api/race', { params: { id: this.id } }, 'raceResData')
-    this.get('/api/evolution', { params: { id: this.id } }, 'evoResData')
+    this.initial()
   },
   methods: {
+    /**
+     * 画面表示初期処理
+     */
+    initial () {
+      this.id = this.$route.query.pid
+      this.abundResData = {}
+      this.raceResData = {}
+      this.evoResData = {}
+      this.get('/api/abundance', { params: { id: this.id } }, 'abundResData')
+      this.get('/api/race', { params: { id: this.id } }, 'raceResData')
+      this.get('/api/evolution', { params: { id: this.id } }, 'evoResData')
+    },
     /**
      * APIにGET送信し、レスポンスを処理する。
      *
