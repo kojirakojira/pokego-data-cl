@@ -16,11 +16,16 @@ export default {
             shadow: 'シャドウCP'
           }
         },
-        iv: {
+        race: {
           name: '種族値',
           patternNames: {
             race: '種族値検索',
-            raceDiff: '種族値比較',
+            raceDiff: '種族値比較'
+          }
+        },
+        iv: {
+          name: '個体値',
+          patternNames: {
             scpRank: 'PvP順位',
             scpRankList: 'PvP順位一覧',
             scpRankMaxMin: 'PvP最高(最低)順位',

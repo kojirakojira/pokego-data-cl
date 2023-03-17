@@ -1,7 +1,7 @@
 <template>
   <div>
     <H2Common>
-      {{ `${abundResData.name || 'name'}の情報` }}
+      {{ `${appendRemarks(abundResData.name, abundResData.remarks) || 'name'}の情報` }}
     </H2Common>
     <!-- ポケモンの画像 -->
     <v-container>
