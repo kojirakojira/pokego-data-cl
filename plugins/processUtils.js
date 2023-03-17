@@ -1,4 +1,4 @@
-export default (context, inject) => {
+export default ({ app }, inject) => {
   /**
    * AxiosにおけるHTTP statusが401以外のエラーだった場合の挙動
    * @param {*} err
@@ -6,7 +6,7 @@ export default (context, inject) => {
   const onErrorNot401 = (err) => {
     if (err.response.status !== 401) {
       alert('何らかのエラーが発生しました。')
-      this.$router.back()
+      app.$router.back()
     }
   }
   const processUtils = {

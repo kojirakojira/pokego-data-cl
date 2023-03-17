@@ -5,6 +5,7 @@ export default {
         main: {
           name: '一般',
           patternNames: {
+            searchAll: 'ポケモン検索',
             filterAll: '全ポケ絞り込み'
           }
         },
