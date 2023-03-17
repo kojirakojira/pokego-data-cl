@@ -28,10 +28,9 @@
           <v-container
             v-if="isLoadedAbundance"
             class="abundance-basic-info-table"
-            :style="`border: medium solid rgb(${abundResData.color.r}, ${abundResData.color.g}, ${abundResData.color.b});`"
           >
             <v-row>
-              <v-col cols="5" class="col-title">
+              <v-col cols="5">
                 図鑑No
               </v-col>
               <v-col cols="7">
@@ -39,7 +38,7 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col cols="5" class="col-title">
+              <v-col cols="5">
                 ポケモン
               </v-col>
               <v-col cols="7">
@@ -47,7 +46,7 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col cols="5" class="col-title">
+              <v-col cols="5">
                 タイプ
               </v-col>
               <v-col cols="7">
@@ -67,7 +66,7 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col cols="5" class="col-title">
+              <v-col cols="5">
                 世代
               </v-col>
               <v-col cols="7">
@@ -75,7 +74,7 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col cols="5" class="col-title">
+              <v-col cols="5">
                 PokémonGO実装
               </v-col>
               <v-col cols="7">
@@ -84,7 +83,7 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col cols="5" class="col-title">
+              <v-col cols="5">
                 強ポケ補正
               </v-col>
               <v-col cols="7">
@@ -101,7 +100,7 @@
             class="abundance-cp-table"
           >
             <v-row>
-              <v-col cols="5" class="col-title">
+              <v-col cols="5">
                 種族値CP(PL40)
               </v-col>
               <v-col cols="7">
@@ -109,7 +108,7 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col cols="5" class="col-title">
+              <v-col cols="5">
                 最大CP
               </v-col>
               <v-col cols="7">
@@ -117,7 +116,7 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col cols="5" class="col-title">
+              <v-col cols="5">
                 レイドCP
               </v-col>
               <v-col cols="7">
@@ -128,7 +127,7 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col cols="5" class="col-title">
+              <v-col cols="5">
                 シャドウCP
               </v-col>
               <v-col cols="7">
@@ -139,7 +138,7 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col cols="5" class="col-title">
+              <v-col cols="5">
                 フィールドリサーチCP
               </v-col>
               <v-col cols="7">
@@ -228,6 +227,7 @@ export default {
       abundResData: {},
       evoResData: {},
       raceResData: {},
+      styleIdArr: [],
 
       // レーダーチャートの横に配置する種族値
       goStatsItems: [
@@ -264,6 +264,10 @@ export default {
       }
     }
   },
+  beforeDestroy () {
+    // 作成したstyleをすべて削除する
+    this.$editUtils.deleteStyleElem(this.styleIdArr)
+  },
   beforeMount () {
     this.initial()
   },
@@ -272,13 +276,55 @@ export default {
      * 画面表示初期処理
      */
     initial () {
+      // styleをリセットする。
+      this.styleIdArr = this.$editUtils.deleteStyleElem(this.styleIdArr)
+      // queryからidを取得。
       this.id = this.$route.query.pid
       this.abundResData = {}
       this.raceResData = {}
       this.evoResData = {}
-      this.get('/api/abundance', { params: { id: this.id } }, 'abundResData')
-      this.get('/api/race', { params: { id: this.id } }, 'raceResData')
-      this.get('/api/evolution', { params: { id: this.id } }, 'evoResData')
+      Promise.all([
+        this.get('/api/abundance', { params: { id: this.id } }, 'abundResData'),
+        this.get('/api/race', { params: { id: this.id } }, 'raceResData'),
+        this.get('/api/evolution', { params: { id: this.id } }, 'evoResData')
+      ]).then(() => {
+        this.createStyleElem()
+      })
+    },
+    /**
+     * ポケモンのタイプの色を使用し、テーブルのstyleを動的に設定します。
+     */
+    createStyleElem () {
+      let idPrefix, id, color, style
+      /** 基本情報のstyle */
+      idPrefix = 'abundance-basic-info-table'
+      // 項目名
+      id = `${idPrefix}-header`
+      color = this.abundResData.type1Color
+      style = `.abundance-basic-info-table .row .col:first-child {\
+        background: rgb(${color.r}, ${color.g}, ${color.b})}`
+      this.$editUtils.createStyleElem(id, style, this.styleIdArr)
+
+      // 項目値の背景色を交互に
+      id = `${idPrefix}-odd`
+      style = `.abundance-basic-info-table .row:nth-child(odd) .col:not(:first-child) {\
+        background: rgba(${color.r}, ${color.g}, ${color.b}, 0.1)}`
+      this.$editUtils.createStyleElem(id, style, this.styleIdArr)
+
+      /** CPのstyle */
+      idPrefix = 'abundance-cp-table'
+      // 項目名
+      id = `${idPrefix}-header`
+      color = this.abundResData.type2Color ? this.abundResData.type2Color : color
+      style = `.abundance-cp-table .row .col:first-child {\
+        background: rgb(${color.r}, ${color.g}, ${color.b})}`
+      this.$editUtils.createStyleElem(id, style, this.styleIdArr)
+
+      // 項目値の背景色を交互に
+      id = `${idPrefix}-odd`
+      style = `.abundance-cp-table .row:nth-child(odd) .col:not(:first-child) {\
+        background: rgba(${color.r}, ${color.g}, ${color.b}, 0.1)}`
+      this.$editUtils.createStyleElem(id, style, this.styleIdArr)
     },
     /**
      * APIにGET送信し、レスポンスを処理する。
@@ -318,13 +364,18 @@ export default {
 
 <style lang="scss" scoped>
 .abundance-basic-info-table,.abundance-cp-table {
-  .row:not(:last-child) {
-    border-bottom: dotted black;
-  }
-}
-// .abundance-basic-info-tableのボーダーの色は可変
-.abundance-cp-table {
   border: medium solid grey;
+  border-radius: 10px;
+  overflow:hidden;
+  .row {
+    .col:first-child {
+      color: white;
+      font-weight: bold;
+    }
+    .col:not(:last-child) {
+      border-bottom: thin solid black;
+    }
+  }
 }
 .race {
   border: medium solid maroon;

@@ -130,7 +130,7 @@ export default {
 
         // styleの作成をcomputedの追跡対象外にするため、this.$nextTickを使用。
         this.$nextTick(() => {
-          this.deleteStyleElem('evotree-index')
+          this.styleIdArr = this.$editUtils.deleteStyleElem(this.styleIdArr, 'evotree-index')
           // エッジを描画する。
           this.drawEdge(bfTree, i)
           // ノードを描画する。（色を設定するだけ。）
@@ -151,7 +151,7 @@ export default {
       const aotFormArr = this.anotherForms
       this.$nextTick(() => {
         // style追加前に、不要なスタイルが残っている場合は削除する。
-        this.deleteStyleElem('aot-form-')
+        this.styleIdArr = this.$editUtils.deleteStyleElem(this.styleIdArr, 'aot-form-')
         // 描画(styleの追加)
         this.drawAnotherForms(aotFormArr, this.raceMap)
       })
@@ -164,7 +164,7 @@ export default {
       const bfAfAotFormArr = this.bfAfAotForms
       this.$nextTick(() => {
         // style追加前に、不要なスタイルが残っている場合は削除する。
-        this.deleteStyleElem('bfaf-aot-form-')
+        this.styleIdArr = this.$editUtils.deleteStyleElem(this.styleIdArr, 'bfaf-aot-form-')
         // 描画(styleの追加)
         this.drawBfAfAotForms(bfAfAotFormArr, this.raceMap)
       })
@@ -173,7 +173,7 @@ export default {
   },
   beforeDestroy () {
     // 作成したstyleをすべて削除する
-    this.deleteStyleElem()
+    this.$editUtils.deleteStyleElem(this.styleIdArr)
   },
   methods: {
     /**
@@ -215,7 +215,7 @@ export default {
           const color = raceMap[v.id].color
           const style = `.block.index${i}-${v.y}-${v.x} .pokemon .node {\
             background-color: rgb(${color.r}, ${color.g}, ${color.b}); },`
-          this.createStyleElem(idName, style)
+          this.$editUtils.createStyleElem(idName, style, this.styleIdArr)
         })
       })
     },
@@ -248,7 +248,7 @@ export default {
         width: ${80 * dist + 1}px;\
         left: ${-80 * dist}px; }\
         this.createStyleElem(className, style)`
-      this.createStyleElem(idName, style)
+      this.$editUtils.createStyleElem(idName, style, this.styleIdArr)
     },
     /**
      * 別のすがたのノードを描画する。
@@ -259,7 +259,7 @@ export default {
         const color = raceMap[pid].color
         const style = `.block.aot-form-${pid} .node {\
             background-color: rgb(${color.r}, ${color.g}, ${color.b}); },`
-        this.createStyleElem(idName, style)
+        this.$editUtils.createStyleElem(idName, style, this.styleIdArr)
       })
     },
     /**
@@ -271,37 +271,8 @@ export default {
         const color = raceMap[pid].color
         const style = `.block.bfaf-aot-form-${pid} .node {\
           background-color: rgb(${color.r}, ${color.g}, ${color.b}); },`
-        this.createStyleElem(idName, style)
+        this.$editUtils.createStyleElem(idName, style, this.styleIdArr)
       })
-    },
-    /**
-     * styleを追加します。
-     */
-    createStyleElem (id, style) {
-      // styleを追加
-      const newStyle = document.createElement('style')
-      newStyle.id = id
-      newStyle.innerHTML = style
-      document.getElementsByTagName('head').item(0).appendChild(newStyle)
-
-      // styleのid名を配列に追加
-      this.styleIdArr.push(id)
-    },
-    /**
-     * prefixに該当するstyleを削除する。
-     * styleIdArrから削除したidを削除する。
-     */
-    deleteStyleElem (prefix) {
-      // styleの削除
-      this.styleIdArr.forEach((id) => {
-        if (!prefix || !id.indexOf(prefix)) {
-          const elem = document.getElementById(id)
-          elem.remove()
-        }
-      })
-
-      // styleIdArrからの該当のidの削除
-      this.styleIdArr = this.styleIdArr.filter((id) => { return prefix && id.indexOf(prefix) })
     }
   }
 }
