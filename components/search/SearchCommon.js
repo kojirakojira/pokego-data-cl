@@ -2,18 +2,38 @@ export default {
   data () {
     return {
       searchPatternNames: {
-        filterAll: '全ポケ絞り込み',
-        raid: 'レイドボスCP',
-        fRTask: 'フィールドリサーチCP',
-        shadow: 'シャドウCP',
-        scpRank: 'PvP順位',
-        scpRankList: 'PvP順位一覧',
-        scpRankMaxMin: 'PvP最高(最低)順位',
-        race: '種族値検索',
-        raceDiff: '種族値比較',
-        plList: 'PLごとのCP一覧',
-        unimplPokemon: '未実装ポケモン一覧',
-        evolution: '進化ツリーと別のすがた'
+        main: {
+          name: '一般',
+          patternNames: {
+            filterAll: '全ポケ絞り込み'
+          }
+        },
+        captureCp: {
+          name: '捕獲時CP',
+          patternNames: {
+            raid: 'レイドボスCP',
+            fRTask: 'フィールドリサーチCP',
+            shadow: 'シャドウCP'
+          }
+        },
+        iv: {
+          name: '種族値',
+          patternNames: {
+            race: '種族値検索',
+            raceDiff: '種族値比較',
+            scpRank: 'PvP順位',
+            scpRankList: 'PvP順位一覧',
+            scpRankMaxMin: 'PvP最高(最低)順位',
+            plList: 'PLごとのCP一覧'
+          }
+        },
+        others: {
+          name: 'その他',
+          patternNames: {
+            unimplPokemon: '未実装ポケモン一覧',
+            evolution: '進化ツリーと別のすがた'
+          }
+        }
       },
       rules: {
         name: [
@@ -64,7 +84,13 @@ export default {
   },
   methods: {
     getSearchPatternName (searchPattern) {
-      return this.searchPatternNames[searchPattern]
+      let ret = null
+      Object.entries(this.searchPatternNames).forEach(([k, v]) => {
+        Object.entries(v).forEach(([k2, v2]) => {
+          ret = v2[searchPattern] || ret
+        })
+      })
+      return ret
     },
     appendRemarks (name, remarks) {
       let val = name

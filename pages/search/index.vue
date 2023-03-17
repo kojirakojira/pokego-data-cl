@@ -24,25 +24,30 @@
         <v-col cols="12" sm="6" md="7" lg="8" xl="8">
           <v-row>
             <v-col>
-              <v-list-item-group>
-                <v-list-item
-                  v-for="(searchPatternName, index) in searchPatternNames"
-                  :key="index"
-                  class="px-0"
-                  :to="{name: `search-${index}`}"
-                >
-                  <v-list-item-avatar>
-                    <v-icon large>
-                      mdi-pokemon-go
-                    </v-icon>
-                  </v-list-item-avatar>
-                  <v-list-item-content>
-                    <v-list-item-title>
-                      {{ searchPatternName }}
-                    </v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list-item-group>
+              <div v-for="(largeScale, index) in searchPatternNames" :key="index">
+                <h3 style="background: #1E1E1E; color: white;">
+                  {{ largeScale.name }}
+                </h3>
+                <v-list-item-group>
+                  <v-list-item
+                    v-for="(value, key) in largeScale.patternNames"
+                    :key="key"
+                    class="px-0"
+                    :to="{name: `search-${key}`}"
+                  >
+                    <v-list-item-avatar>
+                      <v-icon large>
+                        mdi-pokemon-go
+                      </v-icon>
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                      <v-list-item-title>
+                        {{ value }}
+                      </v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list-item-group>
+              </div>
             </v-col>
           </v-row>
         </v-col>
