@@ -1,17 +1,44 @@
 export default (context, inject) => {
   /**
-     * 引数にはタイプの日本語名を渡します。
-     * 英語名でもどっちでも良かったので、API側のデータの持ち方の都合上日本語名にしました。
+     * タイプのrgb(999, 999, 999)を取得します。
+     * 英語名、日本語名の両方から取得できます。
+     *
+     * @param {String} type1 タイプ１
+     * @param {String} type2 タイプ２
      */
-  const getRGB = (type) => {
-    let rgb = null
+  const getRGB = (type1, type2) => {
+    let rgb1 = null
+    let rgb2 = null
     for (const t of context.$CONST.TYPE) {
-      if (type === t.v) {
-        rgb = `rgb(${t.r}, ${t.g}, ${t.b})`
-        break
-      }
+      if (type1 === t.v || type1 === t.k) { rgb1 = t }
+      if (type2 === t.v || type2 === t.k) { rgb2 = t }
     }
-    return rgb
+    const createColor = (c1, c2) => { return (c1 * 1 + c2 * 1) / 2 }
+    const r = type2 ? createColor(rgb1.r, rgb2.r) : rgb1.r
+    const g = type2 ? createColor(rgb1.g, rgb2.g) : rgb1.g
+    const b = type2 ? createColor(rgb1.b, rgb2.b) : rgb1.b
+    return `rgb(${r}, ${g}, ${b})`
+  }
+  /**
+     * タイプのrgba(999, 999, 999, alpha)を取得します。
+     * 英語名、日本語名の両方から取得できます。
+     *
+     * @param {Number} alpha 透明度
+     * @param {String} type1 タイプ１
+     * @param {String} type2 タイプ２
+     */
+  const getRGBA = (alpha, type1, type2) => {
+    let rgb1 = null
+    let rgb2 = null
+    for (const t of context.$CONST.TYPE) {
+      if (type1 === t.v || type1 === t.k) { rgb1 = t }
+      if (type2 === t.v || type2 === t.k) { rgb2 = t }
+    }
+    const createColor = (c1, c2) => { return (c1 * 1 + c2 * 1) / 2 }
+    const r = type2 ? createColor(rgb1.r, rgb2.r) : rgb1.r
+    const g = type2 ? createColor(rgb1.g, rgb2.g) : rgb1.g
+    const b = type2 ? createColor(rgb1.b, rgb2.b) : rgb1.b
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`
   }
   /**
    * styleを追加します。
@@ -54,6 +81,7 @@ export default (context, inject) => {
 
   const editUtils = {
     getRGB,
+    getRGBA,
     createStyleElem,
     deleteStyleElem
   }

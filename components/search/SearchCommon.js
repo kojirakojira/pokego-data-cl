@@ -33,6 +33,12 @@ export default {
             plList: 'PLごとのCP一覧'
           }
         },
+        type: {
+          name: 'タイプ',
+          patternNames: {
+            typeScore: 'タイプ評価'
+          }
+        },
         others: {
           name: 'その他',
           patternNames: {

@@ -50,8 +50,6 @@ export default {
   },
   data () {
     return {
-      homeList: null,
-
       isLoading: true
     }
   },
