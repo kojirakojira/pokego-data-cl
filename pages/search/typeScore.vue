@@ -167,7 +167,6 @@ export default {
      * @param {Object} res
      */
     handleApiResult (res) {
-      console.log(this.searchParam)
       const resData = res.data
       if (resData.executedType) {
         const query = {}
