@@ -11,6 +11,13 @@
           </v-col>
         </v-row>
       </v-container>
+      <v-container v-if="resData.typeComments">
+        <v-row>
+          <v-col>
+            <TypeComments :comments="resData.typeComments" />
+          </v-col>
+        </v-row>
+      </v-container>
       <h3>
         評価
         <v-tooltip bottom>
@@ -152,7 +159,7 @@
             </span>
           </div>
         </div>
-        <v-container class="def-dmg-mult-table">
+        <v-container class="def-dmg-mult-table" style="margin-bottom: 36px;">
           <v-row v-for="dp in defDmgMultArr" :key="`def-dmg-mult-${dp.name}`">
             <v-col cols="4">
               {{ dp.dmgMult }}
@@ -181,11 +188,13 @@
 import H2Common from '~/components/utils/H2Common'
 import SearchCommon from '~/components/search/SearchCommon'
 import Loading from '~/components/Loading'
+import TypeComments from '~/components/search/TypeComments'
 export default {
   name: 'TypeScoreResult',
   components: {
     H2Common,
-    Loading
+    Loading,
+    TypeComments
   },
   mixins: [SearchCommon],
   data () {
@@ -233,6 +242,7 @@ export default {
       // resDataを取得できなかった場合
       return
     }
+    console.log(resData)
     // API側の仕様として、タイプ1に値がなく、タイプ2に値がある場合は、タイプ2にタイプ1の値が設定される。
     // そのため、再セットする。
     this.type1 = resData.type1
