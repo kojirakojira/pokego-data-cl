@@ -242,7 +242,6 @@ export default {
       // resDataを取得できなかった場合
       return
     }
-    console.log(resData)
     // API側の仕様として、タイプ1に値がなく、タイプ2に値がある場合は、タイプ2にタイプ1の値が設定される。
     // そのため、再セットする。
     this.type1 = resData.type1
