@@ -90,7 +90,22 @@
           </v-col>
         </v-row>
       </v-container>
-      <h3>こうげき倍率</h3>
+      <h3>
+        こうげき倍率
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs}">
+            <v-icon
+              small
+              v-bind="attrs"
+              v-on="on"
+            >
+              mdi-help-circle
+            </v-icon>
+          </template>
+          <span>ポケモンGOにおけるダメージ倍率は、ポケモンの原作のシリーズとは少し違った考え方です。
+            しかし、こうげき時のダメージ倍率の考え方はほぼ同じであり、×1.6は抜群、×0.625は軽減、×0.390625は無効に対応します。</span>
+        </v-tooltip>
+      </h3>
       <v-container class="pa-0">
         <v-row>
           <v-col cols="12" md="6" lg="6" xl="6">
