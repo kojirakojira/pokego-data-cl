@@ -98,7 +98,6 @@ export default {
         plList: {}
       },
       headers: [
-        { text: 'No', value: 'no' },
         { text: 'PL', value: 'pl' },
         { text: 'CP', value: 'cp' }],
       isLoading: true
