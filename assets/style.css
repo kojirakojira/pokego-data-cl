@@ -58,6 +58,8 @@
   border-radius: 20px;
 }
 .type {
+  display: inline-block;
+  vertical-align: top;
   color: white;
   font-weight: bold;
   padding: 1px 3px;

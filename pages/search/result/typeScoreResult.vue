@@ -14,7 +14,9 @@
       <v-container v-if="resData.typeComments">
         <v-row>
           <v-col>
-            <TypeComments :comments="resData.typeComments" />
+            <TypeComments :comments="resData.typeComments">
+              あ、どうも。このタイプの特徴について簡単に説明します。
+            </TypeComments>
           </v-col>
         </v-row>
       </v-container>
@@ -90,108 +92,32 @@
           </v-col>
         </v-row>
       </v-container>
-      <h3>
-        こうげき倍率
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on, attrs}">
-            <v-icon
-              small
-              v-bind="attrs"
-              v-on="on"
-            >
+      <!-- こうげき倍率 -->
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <h3 v-on="on">
+            こうげき倍率
+            <v-icon small>
               mdi-help-circle
             </v-icon>
-          </template>
-          <span>ポケモンGOにおけるダメージ倍率は、ポケモンの原作のシリーズとは少し違った考え方です。
-            しかし、こうげき時のダメージ倍率の考え方はほぼ同じであり、×1.6は抜群、×0.625は軽減、×0.390625は無効に対応します。</span>
-        </v-tooltip>
-      </h3>
-      <v-container class="pa-0">
-        <v-row>
-          <v-col cols="12" md="6" lg="6" xl="6">
-            <div class="pa-3">
-              タイプ1:
-              <span :style="`background-color: ${$editUtils.getRGB(type1)};'}`" class="type">
-                {{ $CONST.getValue(type1, $CONST.TYPE) }}
-              </span>
-            </div>
-            <v-container class="atk-dmg-mult-type1-table">
-              <v-row v-for="dp in atkDmgMultArr" :key="`atk-dmg-mult-type1-${dp.name}`">
-                <v-col cols="4">
-                  {{ dp.dmgMult }}
-                </v-col>
-                <v-col cols="8">
-                  <span
-                    v-for="(type, idx) in resData.attackerType1Map[dp.name]"
-                    :key="`atk-dmg-mult-type1-${type}`"
-                    :style="`background-color: ${$editUtils.getRGB(type)}; ${idx === 0 ? '': 'margin-left:5px;'}`"
-                    class="type"
-                  >
-                    {{ $CONST.getValue(type, $CONST.TYPE) }}
-                  </span>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-col>
-          <v-col v-if="type2" cols="12" md="6" lg="6" xl="6">
-            <div class="pa-3">
-              タイプ2:
-              <span :style="`background-color: ${$editUtils.getRGB(type2)};'}`" class="type">
-                {{ $CONST.getValue(type2, $CONST.TYPE) }}
-              </span>
-            </div>
-            <v-container class="atk-dmg-mult-type2-table">
-              <v-row v-for="dp in atkDmgMultArr" :key="`atk-dmg-mult-type2-${dp.name}`">
-                <v-col cols="4">
-                  {{ dp.dmgMult }}
-                </v-col>
-                <v-col cols="8">
-                  <span
-                    v-for="(type, idx) in resData.attackerType2Map[dp.name]"
-                    :key="`atk-dmg-mult-type2-${type}`"
-                    :style="`background-color: ${$editUtils.getRGB(type)}; ${idx === 0 ? '': 'margin-left:5px;'}`"
-                    class="type"
-                  >
-                    {{ $CONST.getValue(type, $CONST.TYPE) }}
-                  </span>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-col>
-        </v-row>
-      </v-container>
+          </h3>
+        </template>
+        <span>ポケモンGOにおけるダメージ倍率は、ポケモンの原作のシリーズとは少し違った考え方です。
+          しかし、こうげき時のダメージ倍率の考え方はほぼ同じであり、×1.6は抜群、×0.625は軽減、×0.390625は無効に対応します。また、タイプ一致のダメージ倍率は×1.2です。</span>
+      </v-tooltip>
+      <TypeAtkDmgMult
+        :type1="type1"
+        :type2="type2"
+        :def-type-dic1="resData.attackerType1Map"
+        :def-type-dic2="resData.attackerType2Map"
+      />
+      <!-- ぼうぎょ倍率 -->
       <h3>ぼうぎょ倍率</h3>
-      <div>
-        <div class="pa-3">
-          タイプ1:
-          <span :style="`background-color: ${$editUtils.getRGB(type1)};'}`" class="type">
-            {{ $CONST.getValue(type1, $CONST.TYPE) }}
-          </span>
-          <div v-if="type2">
-            タイプ2:
-            <span :style="`background-color: ${$editUtils.getRGB(type2)};'}`" class="type">
-              {{ $CONST.getValue(type2, $CONST.TYPE) }}
-            </span>
-          </div>
-        </div>
-        <v-container class="def-dmg-mult-table" style="margin-bottom: 36px;">
-          <v-row v-for="dp in defDmgMultArr" :key="`def-dmg-mult-${dp.name}`">
-            <v-col cols="4">
-              {{ dp.dmgMult }}
-            </v-col>
-            <v-col cols="8">
-              <span
-                v-for="(type, idx) in resData.defenderTypeMap[dp.name]"
-                :key="`def-dmg-mult-${type}`"
-                :style="`background-color: ${$editUtils.getRGB(type)}; ${idx === 0 ? '': 'margin-left:5px;'}`"
-                class="type"
-              >
-                {{ $CONST.getValue(type, $CONST.TYPE) }}
-              </span>
-            </v-col>
-          </v-row>
-        </v-container>
-      </div>
+      <TypeDefDmgMult
+        :type1="type1"
+        :type2="type2"
+        :atk-type-dic="resData.defenderTypeMap"
+      />
     </div>
     <div v-else>
       <Loading split-scr />
@@ -203,13 +129,17 @@
 import H2Common from '~/components/utils/H2Common'
 import SearchCommon from '~/components/search/SearchCommon'
 import Loading from '~/components/Loading'
-import TypeComments from '~/components/search/TypeComments'
+import TypeComments from '~/components/search/type/TypeComments'
+import TypeAtkDmgMult from '~/components/search/type/TypeAtkDmgMult'
+import TypeDefDmgMult from '~/components/search/type/TypeDefDmgMult'
 export default {
   name: 'TypeScoreResult',
   components: {
     H2Common,
     Loading,
-    TypeComments
+    TypeComments,
+    TypeAtkDmgMult,
+    TypeDefDmgMult
   },
   mixins: [SearchCommon],
   data () {
@@ -224,23 +154,8 @@ export default {
         defender: null
       },
 
-      atkDmgMultArr: [
-        { name: 'HIGH', dmgMult: '×1.6' },
-        { name: 'LOW', dmgMult: '×0.625' },
-        { name: 'VERY_LOW', dmgMult: '×0.390625' }],
-      defDmgMultArr: [
-        { name: 'MAX', dmgMult: '×2.56' },
-        { name: 'HIGH', dmgMult: '×1.6' },
-        { name: 'LOW', dmgMult: '×0.625' },
-        { name: 'VERY_LOW', dmgMult: '×0.390625' },
-        { name: 'MIN', dmgMult: '×0.244140625' }],
-      styleIdArr: [],
       isLoading: true
     }
-  },
-  beforeDestroy () {
-    // 作成したstyleをすべて削除する
-    this.$editUtils.deleteStyleElem(this.styleIdArr)
   },
   async beforeMount () {
     this.id = this.$route.query.pid
@@ -263,7 +178,6 @@ export default {
     this.type2 = resData.type2
 
     this.score = this.setScore(resData)
-    this.createStyleElem()
     this.resData = resData
     this.isLoading = !this.resData
   },
@@ -293,49 +207,6 @@ export default {
         defender: round2to3(resData.defenderScore)
       }
       return score
-    },
-    /**
-     * ポケモンのタイプの色を使用し、テーブルのstyleを動的に設定します。
-     */
-    createStyleElem () {
-      // こうげきのタイプ１のstyle
-      this.createTableStyle(
-        'atk-dmg-mult-type1-table',
-        this.$editUtils.getRGB(this.type1),
-        this.$editUtils.getRGBA(0.1, this.type1))
-
-      // こうげきのタイプ２のstyle
-      if (this.type2) {
-        this.createTableStyle(
-          'atk-dmg-mult-type2-table',
-          this.$editUtils.getRGB(this.type2),
-          this.$editUtils.getRGBA(0.1, this.type2))
-      }
-
-      // ぼうぎょのタイプ１のstyle
-      this.createTableStyle(
-        'def-dmg-mult-table',
-        this.$editUtils.getRGB(this.type1, this.type2),
-        this.$editUtils.getRGBA(0.1, this.type1, this.type2))
-    },
-    /**
-     * テーブルのスタイルを生成します。
-     *
-     * @param {String} idPrefix HTMLにスタイルを追加する際のidのprefix
-     * @param {String} rgb 色
-     * @param {String} rgba 色（透明度つき）
-     */
-    createTableStyle (idPrefix, rgb, rgba) {
-      let id = `${idPrefix}-header`
-      let style
-      // 項目名
-      style = `.${idPrefix} .row .col:first-child { background: ${rgb}}`
-      this.$editUtils.createStyleElem(id, style, this.styleIdArr)
-
-      // 項目値の背景色を交互に
-      id = `${idPrefix}-odd`
-      style = `.${idPrefix} .row:nth-child(odd) .col:not(:first-child) { background: ${rgba}}`
-      this.$editUtils.createStyleElem(id, style, this.styleIdArr)
     }
   }
 }
@@ -346,21 +217,4 @@ export default {
   display: flex;
   align-items: center;
 }
-.atk-dmg-mult-type1-table, .atk-dmg-mult-type2-table, .def-dmg-mult-table {
-  border: medium solid grey;
-  border-radius: 10px;
-  overflow: hidden;
-  max-width: 500px;
-  .row {
-    .col:first-child {
-      color: white;
-      font-weight: bold;
-      word-wrap: break-word;
-    }
-    .col:not(:last-child) {
-      border-bottom: thin solid black;
-    }
-  }
-}
-
 </style>

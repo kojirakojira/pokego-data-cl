@@ -4,7 +4,7 @@
     <div :class="'triangle ' + ($vuetify.theme.dark ? 'dark': 'light')" />
     <div :class="'type-comments-fukidashi ' + ($vuetify.theme.dark ? 'dark': 'light')">
       <p class="mx-0 my-0">
-        あ、どうも。このタイプについて簡単に説明します。
+        <slot />
       </p>
       <ul class="px-0 py-0 mx-5 my-0">
         <li

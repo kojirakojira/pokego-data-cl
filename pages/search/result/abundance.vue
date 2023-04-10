@@ -22,9 +22,7 @@
       <v-row>
         <v-col cols="12" md="7" lg="8" xl="8">
           <!-- abundanceの表 -->
-          <h3>
-            基本情報
-          </h3>
+          <h3>基本情報</h3>
           <v-container
             v-if="isLoadedAbundance"
             class="abundance-basic-info-table"
@@ -92,9 +90,7 @@
               </v-col>
             </v-row>
           </v-container>
-          <h3>
-            CP
-          </h3>
+          <h3>CP</h3>
           <v-container
             v-if="isLoadedAbundance"
             class="abundance-cp-table"
@@ -147,9 +143,7 @@
             </v-row>
           </v-container>
           <!-- 種族値 -->
-          <h3>
-            種族値
-          </h3>
+          <h3>種族値</h3>
           <v-container v-if="isLoadedRace" class="race">
             <v-row>
               <v-col
@@ -186,6 +180,49 @@
               </v-col>
             </v-row>
           </v-container>
+          <!-- タイプ倍率 -->
+          <h3>タイプ倍率</h3>
+          <div v-if="typeScoreResData.typeComments">
+            <v-container>
+              <v-row>
+                <v-col>
+                  <TypeComments :comments="typeScoreResData.typeComments">
+                    <span>あ、どうも。</span>
+                    <span :style="`background-color: ${$editUtils.getRGB(typeScoreResData.type1)};`" class="type">
+                      {{ $CONST.getValue(typeScoreResData.type1, $CONST.TYPE) }}
+                    </span>
+                    <span v-if="typeScoreResData.type2" :style="`background-color: ${$editUtils.getRGB(typeScoreResData.type2)};`" class="type">
+                      {{ $CONST.getValue(typeScoreResData.type2, $CONST.TYPE) }}
+                    </span>
+                    <span>の特徴について簡単に説明します。</span>
+                  </TypeComments>
+                </v-col>
+              </v-row>
+            </v-container>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <h4 v-on="on">
+                  こうげき時
+                  <v-icon small>
+                    mdi-help-circle
+                  </v-icon>
+                </h4>
+              </template>
+              <span>タイプ一致時のダメージ倍率を示しています。ここから×1.2倍されます。</span>
+            </v-tooltip>
+            <TypeAtkDmgMult
+              :type1="typeScoreResData.type1"
+              :type2="typeScoreResData.type2"
+              :def-type-dic1="typeScoreResData.attackerType1Map"
+              :def-type-dic2="typeScoreResData.attackerType2Map"
+            />
+            <h4>ぼうぎょ時</h4>
+            <TypeDefDmgMult
+              :type1="typeScoreResData.type1"
+              :type2="typeScoreResData.type2"
+              :atk-type-dic="typeScoreResData.defenderTypeMap"
+            />
+          </div>
         </v-col>
         <v-col cols="12" md="5" lg="4" xl="4">
           <h3>
@@ -212,21 +249,28 @@ import H2Common from '~/components/utils/H2Common'
 import SearchCommon from '~/components/search/SearchCommon'
 import EvoInfo from '~/components/search/evolution/EvoInfo'
 import GoRadarGraph from '~/components/search/graph/GoRadarGraph'
+import TypeComments from '~/components/search/type/TypeComments'
+import TypeAtkDmgMult from '~/components/search/type/TypeAtkDmgMult'
+import TypeDefDmgMult from '~/components/search/type/TypeDefDmgMult'
 
 export default {
   name: 'Abundance',
   components: {
     H2Common,
     EvoInfo,
-    GoRadarGraph
+    GoRadarGraph,
+    TypeComments,
+    TypeAtkDmgMult,
+    TypeDefDmgMult
   },
   mixins: [SearchCommon],
   data () {
     return {
       id: '',
       abundResData: {},
-      evoResData: {},
       raceResData: {},
+      evoResData: {},
+      typeScoreResData: {},
       styleIdArr: [],
 
       // レーダーチャートの横に配置する種族値
@@ -283,16 +327,37 @@ export default {
       this.abundResData = {}
       this.raceResData = {}
       this.evoResData = {}
+      this.typeScoreResData = {}
       Promise.all([
         this.get('/api/abundance', { params: { id: this.id } }, 'abundResData'),
         this.get('/api/race', { params: { id: this.id } }, 'raceResData'),
-        this.get('/api/evolution', { params: { id: this.id } }, 'evoResData')
+        this.get('/api/evolution', { params: { id: this.id } }, 'evoResData'),
+        this.get('/api/typeScore', { params: { id: this.id } }, 'typeScoreResData')
       ]).then(() => {
         this.createStyleElem()
+        console.log(this.typeScoreResData)
       })
     },
     /**
+     * APIにGET送信し、レスポンスを処理する。
+     *
+     * @param {String} endpoint
+     * @param {Object} params
+     * @param {String} resDataNm レスポンスをセットする変数名
+     */
+    async get (endpoint, params, resDataNm) {
+      const res = await this.$axios
+        .get(endpoint, params)
+        .catch(this.$processUtils.onErrorNot401)
+      const resData = res.data
+      if (this.dispDialog(resData)) {
+        return
+      }
+      this.$set(this, resDataNm, resData)
+    },
+    /**
      * ポケモンのタイプの色を使用し、テーブルのstyleを動的に設定します。
+     * ※表のrow,colをループさせていないので、この方式をとっています。
      */
     createStyleElem () {
       let idPrefix, id, color, style
@@ -325,23 +390,6 @@ export default {
       style = `.abundance-cp-table .row:nth-child(odd) .col:not(:first-child) {\
         background: rgba(${color.r}, ${color.g}, ${color.b}, 0.1)}`
       this.$editUtils.createStyleElem(id, style, this.styleIdArr)
-    },
-    /**
-     * APIにGET送信し、レスポンスを処理する。
-     *
-     * @param {String} endpoint
-     * @param {Object} params
-     * @param {String} resDataNm レスポンスをセットする変数名
-     */
-    async get (endpoint, params, resDataNm) {
-      const res = await this.$axios
-        .get(endpoint, params)
-        .catch(this.$processUtils.onErrorNot401)
-      const resData = res.data
-      if (this.dispDialog(resData)) {
-        return
-      }
-      this.$set(this, resDataNm, resData)
     },
     /**
      * 世代の日本語名を取得する。
