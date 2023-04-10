@@ -250,6 +250,7 @@ export default {
       border: 1px solid black;
       padding: 0px 20px 0px 55px;
       border-radius: 30px;
+      overflow: unset;
 
       &::before {
         position: absolute;
