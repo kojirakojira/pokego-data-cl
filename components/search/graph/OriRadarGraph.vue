@@ -2,7 +2,7 @@
 <template>
   <RadarGraph
     title="原作種族値"
-    :labels="['HP', 'こうげき', 'とくこう', 'すばやさ', 'とくぼう', 'ぼうぎょ']"
+    :labels="['HP', 'こうげき', 'ぼうぎょ', 'すばやさ', 'とくぼう', 'とくこう']"
     :elems="oriRadarElems"
     :min="1"
     :max="pokedexStats.hpStats.list.length"
@@ -40,10 +40,10 @@ export default {
       oriStatsItems: [
         { key: 'hp', statsKey: 'hpStats' },
         { key: 'attack', statsKey: 'atStats' },
-        { key: 'specialAttack', statsKey: 'spAtStats' },
+        { key: 'defense', statsKey: 'dfStats' },
         { key: 'speed', statsKey: 'spStats' },
         { key: 'specialDefense', statsKey: 'spDfStats' },
-        { key: 'defense', statsKey: 'dfStats' }]
+        { key: 'specialAttack', statsKey: 'spAtStats' }]
     }
   },
   computed: {

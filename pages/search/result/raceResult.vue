@@ -332,10 +332,10 @@ export default {
       oriStatsItems: [
         { key: 'hp', name: 'HP' },
         { key: 'attack', name: 'こうげき' },
+        { key: 'defense', name: 'ぼうぎょ' },
         { key: 'specialAttack', name: 'とくこう' },
-        { key: 'speed', name: 'すばやさ' },
         { key: 'specialDefense', name: 'とくぼう' },
-        { key: 'defense', name: 'ぼうぎょ' }],
+        { key: 'speed', name: 'すばやさ' }],
       isLoading: true
     }
   },
