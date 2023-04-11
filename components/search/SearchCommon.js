@@ -14,6 +14,7 @@ export default {
           patternNames: {
             raid: 'レイドボスCP',
             fRTask: 'フィールドリサーチCP',
+            eggs: 'タマゴCP',
             shadow: 'シャドウCP'
           }
         },
