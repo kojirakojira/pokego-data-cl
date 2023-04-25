@@ -13,7 +13,7 @@
           class="type-comments-text"
         >
           <!-- eslint-disable-next-line vue/no-v-html -->
-          <div v-html="typeDecoration(comment)" />
+          <div v-html="$editUtils.typeDecoration(comment)" />
         </li>
       </ul>
     </div>
@@ -27,27 +27,6 @@ export default {
     comments: {
       type: Array,
       required: true
-    }
-  },
-  data () {
-    return {
-      typeJpn: [] // 日本語名のタイプ
-    }
-  },
-  beforeMount () {
-    this.typeJpn.push(...this.$CONST.TYPE.map(elem => elem.v))
-  },
-  methods: {
-    /**
-     *
-     * @param {String} value タイプコメントの1つ
-     */
-    typeDecoration (value) {
-      const regex = new RegExp(this.typeJpn.join('|'), 'g')
-      return value.replace(regex, (match) => {
-        return '<span class="type" style="background-color: ' +
-        `${this.$editUtils.getRGB(match)}">${match}</span>`
-      }).replaceAll('>,', '>')
     }
   }
 }

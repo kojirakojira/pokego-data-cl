@@ -37,7 +37,8 @@ export default {
         type: {
           name: 'タイプ',
           patternNames: {
-            typeScore: 'タイプ評価'
+            typeScore: 'タイプ評価',
+            xType: 'Xタイプ検索'
           }
         },
         others: {
@@ -206,8 +207,10 @@ export default {
         }
       }
 
-      query.pid = pid
-      delete query.name
+      if (pid) {
+        query.pid = pid
+        delete query.name
+      }
 
       return query
     },

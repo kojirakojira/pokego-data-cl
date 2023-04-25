@@ -7,8 +7,8 @@ export default (context, inject) => {
      * @param {String} type2 タイプ２
      */
   const getRGB = (type1, type2) => {
-    let rgb1 = null
-    let rgb2 = null
+    let rgb1 = { r: 0, g: 0, b: 0 }
+    let rgb2 = { r: 0, g: 0, b: 0 }
     for (const t of context.$CONST.TYPE) {
       if (type1 === t.v || type1 === t.k) { rgb1 = t }
       if (type2 === t.v || type2 === t.k) { rgb2 = t }
@@ -79,11 +79,25 @@ export default (context, inject) => {
     return styleIdArr.filter((id) => { return prefix && id.indexOf(prefix) })
   }
 
+  /**
+     * 引数に渡した文字列にタイプ名が含まれていた場合にデコレーションします。
+     *
+     * @param {String} value タイプコメントの1つ
+     */
+  const typeDecoration = (value) => {
+    const regex = new RegExp(context.$CONST.TYPE.map(elem => elem.v).join('|'), 'g')
+    return value.replace(regex, (match) => {
+      return '<span class="type" style="background-color: ' +
+        `${getRGB(match)}">${match}</span>`
+    }).replaceAll('>,', '>')
+  }
+
   const editUtils = {
     getRGB,
     getRGBA,
     createStyleElem,
-    deleteStyleElem
+    deleteStyleElem,
+    typeDecoration
   }
   inject('editUtils', editUtils)
 }

@@ -5,23 +5,10 @@
       <v-app-bar-nav-icon @click="drawer = true" />
       <v-toolbar-title class="v-toolbar-title">
         <router-link :to="{ name: 'search' }" class="title-line">
-          <img
-            src="~/static/img/brain-juice.png"
-            width="30"
-            height="30"
-            alt
-          >
           <h1 class="title" style="margin-bottom:0px;">
             ペリずかん
           </h1>
         </router-link>
-        <!-- <v-img
-          src="https://static.brainjuice.jp/pokego/peripper-eyes.png"
-          contain
-          aspect-ratio
-          height="100%"
-          position="center left"
-        /> -->
         <div class="peripper" />
       </v-toolbar-title>
       <v-tabs right>
