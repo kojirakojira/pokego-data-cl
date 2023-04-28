@@ -166,10 +166,6 @@ export default {
         opp2: '',
         emphasis: 'none'
       },
-      psr: {
-        goPokedexList: [],
-        maybe: false
-      },
       typeArr: [{ k: 'x', v: 'Xで仮定' }, ...this.$CONST.TYPE],
       isSearchBtnClick: false
     }

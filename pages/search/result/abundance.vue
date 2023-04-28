@@ -335,7 +335,6 @@ export default {
         this.get('/api/typeScore', { params: { id: this.id } }, 'typeScoreResData')
       ]).then(() => {
         this.createStyleElem()
-        console.log(this.typeScoreResData)
       })
     },
     /**

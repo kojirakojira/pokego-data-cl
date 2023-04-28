@@ -38,7 +38,8 @@ export default {
           name: 'タイプ',
           patternNames: {
             typeScore: 'タイプ評価',
-            xType: 'Xタイプ検索'
+            xType: 'Xタイプ検索',
+            iroiroTypeRank: '色々タイプランキング'
           }
         },
         others: {
