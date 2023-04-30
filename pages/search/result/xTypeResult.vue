@@ -216,6 +216,19 @@ export default {
       })
       return ret
     }
+  },
+  head () {
+    return {
+      title: `${this.getSearchPatternName('xType')}の結果`,
+      meta: [
+        { property: 'og:type', content: 'article' },
+        { property: 'og:title', content: `${this.getSearchPatternName('xType')}の結果 - ペリずかん` },
+        { property: 'og:url', content: process.env.VUE_APP_URL + this.$route.path },
+        { property: 'og:site_name', content: 'ペリずかん' },
+        { property: 'og:description', content: 'じぶんのポケモン、あいてのポケモンのタイプのうち1つをXと仮定し、何のタイプであれば有利になるかを求めることができます。' },
+        { property: 'og:image', content: process.env.VUE_APP_STATIC_URL + '/pokego/peripper-eyes.png' }
+      ]
+    }
   }
 }
 </script>

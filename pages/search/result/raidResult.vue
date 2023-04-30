@@ -123,10 +123,10 @@ export default {
   },
   head () {
     return {
-      title: `${this.ogp_name}の情報`,
+      title: `${this.ogp_name}のレイドCP`,
       meta: [
         { property: 'og:type', content: 'article' },
-        { property: 'og:title', content: `${this.ogp_name}の情報 - ペリずかん` },
+        { property: 'og:title', content: `${this.ogp_name}のレイドCP - ペリずかん` },
         { property: 'og:url', content: process.env.VUE_APP_URL + this.$route.path },
         { property: 'og:site_name', content: 'ペリずかん' },
         { property: 'og:description', content: `${this.ogp_name}のレイドCPを確認できます。` },

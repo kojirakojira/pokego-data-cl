@@ -120,10 +120,10 @@ export default {
   },
   head () {
     return {
-      title: `${this.ogp_name}の情報`,
+      title: `${this.ogp_name}のシャドウCP`,
       meta: [
         { property: 'og:type', content: 'article' },
-        { property: 'og:title', content: `${this.ogp_name}の情報 - ペリずかん` },
+        { property: 'og:title', content: `${this.ogp_name}のシャドウCP - ペリずかん` },
         { property: 'og:url', content: process.env.VUE_APP_URL + this.$route.path },
         { property: 'og:site_name', content: 'ペリずかん' },
         { property: 'og:description', content: `ロケット団を倒した後、シャドウの${this.ogp_name}をゲットしたときのCPの振れ幅を確認できます。` },

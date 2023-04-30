@@ -138,6 +138,19 @@ export default {
     typeDecoration (msg, isDecor) {
       return isDecor ? this.$editUtils.typeDecoration(msg) : msg
     }
+  },
+  head () {
+    return {
+      title: `${this.getSearchPatternName('iroiroTypeRank')}`,
+      meta: [
+        { property: 'og:type', content: 'article' },
+        { property: 'og:title', content: `${this.getSearchPatternName('iroiroTypeRank')} - ペリずかん` },
+        { property: 'og:url', content: process.env.VUE_APP_URL + this.$route.path },
+        { property: 'og:site_name', content: 'ペリずかん' },
+        { property: 'og:description', content: 'タイプについての色々なランキングを確認することができます。' },
+        { property: 'og:image', content: process.env.VUE_APP_STATIC_URL + '/pokego/peripper-eyes.png' }
+      ]
+    }
   }
 }
 </script>

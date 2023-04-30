@@ -445,6 +445,19 @@ export default {
       }
       return idArr
     }
+  },
+  head () {
+    return {
+      title: `${this.getSearchPatternName('raceDiff')}の結果`,
+      meta: [
+        { property: 'og:type', content: 'article' },
+        { property: 'og:title', content: `${this.getSearchPatternName('raceDiff')}の結果 - ペリずかん` },
+        { property: 'og:url', content: process.env.VUE_APP_URL + this.$route.path },
+        { property: 'og:site_name', content: 'ペリずかん' },
+        { property: 'og:description', content: 'ポケモンの種族値を比較し、どっちのポケモンが強いか調べることができます。' },
+        { property: 'og:image', content: process.env.VUE_APP_STATIC_URL + '/pokego/peripper-eyes.png' }
+      ]
+    }
   }
 }
 </script>

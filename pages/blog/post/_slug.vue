@@ -114,6 +114,19 @@ export default {
     //       })
     //   }
 
+  },
+  head () {
+    return {
+      title: 'ペリぶろぐ',
+      meta: [
+        { property: 'og:type', content: 'article' },
+        { property: 'og:title', content: 'ペリぶろぐ - ペリずかん' },
+        { property: 'og:url', content: process.env.VUE_APP_URL + this.$route.path },
+        { property: 'og:site_name', content: 'ペリずかん' },
+        { property: 'og:description', content: '' },
+        { property: 'og:image', content: '' }
+      ]
+    }
   }
 }
 </script>

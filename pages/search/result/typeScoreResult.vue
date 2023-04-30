@@ -128,6 +128,7 @@
 <script>
 import H2Common from '~/components/utils/H2Common'
 import SearchCommon from '~/components/search/SearchCommon'
+import OgpType from '~/components/search/OgpType'
 import Loading from '~/components/Loading'
 import TypeComments from '~/components/search/type/TypeComments'
 import TypeAtkDmgMult from '~/components/search/type/TypeAtkDmgMult'
@@ -141,7 +142,7 @@ export default {
     TypeAtkDmgMult,
     TypeDefDmgMult
   },
-  mixins: [SearchCommon],
+  mixins: [SearchCommon, OgpType],
   data () {
     return {
       type1: null,
@@ -207,6 +208,19 @@ export default {
         defender: round2to3(resData.defenderScore)
       }
       return score
+    }
+  },
+  head () {
+    return {
+      title: `${this.ogp_type}の評価`,
+      meta: [
+        { property: 'og:type', content: 'article' },
+        { property: 'og:title', content: `${this.ogp_type}の評価 - ペリずかん` },
+        { property: 'og:url', content: process.env.VUE_APP_URL + this.$route.path },
+        { property: 'og:site_name', content: 'ペリずかん' },
+        { property: 'og:description', content: 'タイプの評価を確認することができます。※評価ロジックは当サイト独自です。' },
+        { property: 'og:image', content: process.env.VUE_APP_STATIC_URL + '/pokego/peripper-eyes.png' }
+      ]
     }
   }
 }
