@@ -27,16 +27,6 @@
 .col-title {
   font-weight: bold;
 }
-.date-text * {
-  padding-right: 6px;
-  text-align: right;
-}
-.user-thumbnail {
-  border-radius: 50% !important;
-  width: 30px;
-  height: 30px;
-  float: left;
-}
 .v-dialog.dialog-height-100 {
   height: 100%;
 }
@@ -79,4 +69,11 @@
     color: white;
     font-weight: bold;
     font-size: 14px;
+}
+.searched-items .searched-params-title {
+  font-weight: bold;
+  background-color: lightskyblue;
+}
+.searched-items .searched-param {
+  border-top: dashed 1.5px grey;
 }

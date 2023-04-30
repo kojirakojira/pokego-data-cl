@@ -31,6 +31,7 @@ export default {
             scpRank: 'PvP順位',
             scpRankList: 'PvP順位一覧',
             scpRankMaxMin: 'PvP最高(最低)順位',
+            afterEvoCp: '進化後CP',
             plList: 'PLごとのCP一覧'
           }
         },

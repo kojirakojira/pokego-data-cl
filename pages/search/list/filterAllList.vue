@@ -51,14 +51,14 @@
     <v-container>
       <v-row>
         <v-col class="py-0 body-2" align="right">
-          {{ `絞り込み結果：${goPokedexList.length}件` }}
+          {{ `絞り込み結果：${gpAndCpList.length}件` }}
         </v-col>
       </v-row>
       <v-row>
         <v-col>
           <v-data-table
             :headers="headerItems"
-            :items="goPokedexList"
+            :items="gpAndCpList"
             :footer-props="{ 'items-per-page-options': [100, 1000] }"
             mobile-breakpoint="200"
             no-data-text="loading now..."
@@ -125,7 +125,7 @@ export default {
       searchPattern: 'filterAll',
       searchParam: {},
       filteredItems: [],
-      goPokedexList: [],
+      gpAndCpList: [],
       resData: {},
       headerItems: [
         { text: '№', value: 'goPokedex.pokedexId' },
@@ -199,7 +199,7 @@ export default {
     }
 
     // indexを追加してからセットする。
-    this.$set(this, 'goPokedexList', this.resData.pfr.goPokedexList)
+    this.$set(this, 'gpAndCpList', this.resData.pfr.gpAndCpList)
     this.$set(this, 'filteredItems', this.resData.pfr.filteredItems)
     // カラム絞り込み機能のため、ヘッダの項目を退避させる。
     this.tmpHeaderItems = this.headerItems.map((v, i) => {
