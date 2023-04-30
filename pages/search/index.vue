@@ -76,6 +76,19 @@ export default {
   mixins: [SearchCommon],
   mounted () {
     this.$store.dispatch('setSearchState', null)
+  },
+  head () {
+    return {
+      title: 'ホーム',
+      meta: [
+        { property: 'og:type', content: 'website' },
+        { property: 'og:title', content: 'ホーム' },
+        { property: 'og:url', content: process.env.VUE_APP_URL + this.$route.path },
+        { property: 'og:site_name', content: 'ペリずかん' },
+        { property: 'og:description', content: 'ペリずかんは、ポケモンGOの個体値を検索したり、種族値を比較したりするためのサイトです。研究目的の使用、豆知識の蓄積に便利です。（多分）' },
+        { property: 'og:image', content: process.env.VUE_APP_STATIC_URL + '/pokego/peripper-eyes.png' }
+      ]
+    }
   }
 }
 </script>

@@ -189,6 +189,19 @@ export default {
       const sr = resData.scpSlRank
       return zeroPud(sr.iva) + zeroPud(sr.ivd) + zeroPud(sr.ivh)
     }
+  },
+  head () {
+    return {
+      title: this.getSearchPatternName(this.searchPattern),
+      meta: [
+        { property: 'og:type', content: 'article' },
+        { property: 'og:title', content: this.getSearchPatternName(this.searchPattern) },
+        { property: 'og:url', content: process.env.VUE_APP_URL + this.$route.path },
+        { property: 'og:site_name', content: 'ペリずかん' },
+        { property: 'og:description', content: '個体値を入力することにより、PvP順位を求めることができます。' },
+        { property: 'og:image', content: process.env.VUE_APP_STATIC_URL + '/pokego/peripper-eyes.png' }
+      ]
+    }
   }
 }
 </script>

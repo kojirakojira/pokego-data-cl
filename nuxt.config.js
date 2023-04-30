@@ -7,8 +7,8 @@ export default {
   ssr: true,
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - pokedexBJ',
-    title: 'pokedexBJ',
+    titleTemplate: '%s - ペリずかん',
+    title: 'title',
     htmlAttrs: {
       lang: 'ja'
     },

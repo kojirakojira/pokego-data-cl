@@ -188,6 +188,19 @@ export default {
       const zeroPud = (val) => { return ('00' + val).slice(-2) }
       return zeroPud(resData.iva) + zeroPud(resData.ivd) + zeroPud(resData.ivh)
     }
+  },
+  head () {
+    return {
+      title: this.getSearchPatternName(this.searchPattern),
+      meta: [
+        { property: 'og:type', content: 'article' },
+        { property: 'og:title', content: this.getSearchPatternName(this.searchPattern) },
+        { property: 'og:url', content: process.env.VUE_APP_URL + this.$route.path },
+        { property: 'og:site_name', content: 'ペリずかん' },
+        { property: 'og:description', content: '個体値を入力し、PLごとのCPの一覧を確認することができます。' },
+        { property: 'og:image', content: process.env.VUE_APP_STATIC_URL + '/pokego/peripper-eyes.png' }
+      ]
+    }
   }
 }
 </script>
