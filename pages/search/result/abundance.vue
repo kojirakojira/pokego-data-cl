@@ -141,6 +141,14 @@
                 {{ `${abundResData.minFrTaskCp} ～ ${abundResData.maxFrTaskCp}` }}
               </v-col>
             </v-row>
+            <v-row>
+              <v-col cols="5">
+                タマゴCP
+              </v-col>
+              <v-col cols="7">
+                {{ `${abundResData.minEggCp} ～ ${abundResData.maxEggCp}` }}
+              </v-col>
+            </v-row>
           </v-container>
           <!-- 種族値 -->
           <h3>種族値</h3>
@@ -182,8 +190,8 @@
           </v-container>
           <!-- タイプ倍率 -->
           <h3>タイプ倍率</h3>
-          <div v-if="typeScoreResData.typeComments">
-            <v-container>
+          <div v-if="isTypeScoreEvolution">
+            <v-container v-if="typeScoreResData.typeComments">
               <v-row>
                 <v-col>
                   <TypeComments :comments="typeScoreResData.typeComments">
@@ -299,6 +307,12 @@ export default {
      */
     isLoadedEvolution () {
       return Object.keys(this.evoResData).length
+    },
+    /**
+     * typeScoreの読み込みが終わったらtrueになる。
+     */
+    isTypeScoreEvolution () {
+      return Object.keys(this.typeScoreResData).length
     }
   },
   watch: {

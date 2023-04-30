@@ -35,7 +35,8 @@ export default {
     },
     type2: {
       type: String,
-      required: true
+      required: false,
+      default: null
     },
     atkTypeDic: {
       type: Object,

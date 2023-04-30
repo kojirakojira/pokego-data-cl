@@ -1,7 +1,12 @@
 <template>
   <v-container class="pa-0">
     <v-row>
-      <v-col cols="12" md="6" lg="6" xl="6">
+      <v-col
+        cols="12"
+        :md="type2 ? 6 : 12"
+        :lg="type2 ? 6 : 12"
+        :xl="type2 ? 6 : 12"
+      >
         <div class="pa-3">
           タイプ1:
           <span :style="`background-color: ${$editUtils.getRGB(type1)};'}`" class="type">
@@ -37,7 +42,8 @@ export default {
     },
     type2: {
       type: String,
-      required: true
+      required: false,
+      default: null
     },
     defTypeDic1: {
       type: Object,
@@ -45,7 +51,8 @@ export default {
     },
     defTypeDic2: {
       type: Object,
-      required: true
+      required: false,
+      default: () => {}
     }
   }
 
