@@ -129,7 +129,7 @@ export default {
       title: this.getSearchPatternName(this.searchPattern),
       meta: [
         { property: 'og:type', content: 'article' },
-        { property: 'og:title', content: this.getSearchPatternName(this.searchPattern) },
+        { property: 'og:title', content: `${this.getSearchPatternName(this.searchPattern)} - ペリずかん` },
         { property: 'og:url', content: process.env.VUE_APP_URL + this.$route.path },
         { property: 'og:site_name', content: 'ペリずかん' },
         { property: 'og:description', content: 'フィールドリサーチでゲットできるポケモンにおけるCPの振れ幅を確認できます。' },

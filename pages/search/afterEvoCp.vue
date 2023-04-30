@@ -216,7 +216,7 @@ export default {
       title: this.getSearchPatternName(this.searchPattern),
       meta: [
         { property: 'og:type', content: 'article' },
-        { property: 'og:title', content: this.getSearchPatternName(this.searchPattern) },
+        { property: 'og:title', content: `${this.getSearchPatternName(this.searchPattern)} - ペリずかん` },
         { property: 'og:url', content: process.env.VUE_APP_URL + this.$route.path },
         { property: 'og:site_name', content: 'ペリずかん' },
         { property: 'og:description', content: '進化後のCPを確認することができます。3段階進化のポケモンの場合、1段階目のポケモンのCPから最終進化のCPを求めることもできます。' },
