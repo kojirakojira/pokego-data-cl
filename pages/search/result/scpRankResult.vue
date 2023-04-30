@@ -98,6 +98,7 @@
 <script>
 import H2Common from '~/components/utils/H2Common'
 import SearchCommon from '~/components/search/SearchCommon'
+import OgpPokemon from '~/components/search/OgpPokemon'
 import Loading from '~/components/Loading'
 export default {
   name: 'ScpRankResult',
@@ -105,7 +106,7 @@ export default {
     H2Common,
     Loading
   },
-  mixins: [SearchCommon],
+  mixins: [SearchCommon, OgpPokemon],
   data () {
     return {
       searchParam: {
@@ -205,6 +206,19 @@ export default {
           sp: scpRankArr[i].sp
         })
       }
+    }
+  },
+  head () {
+    return {
+      title: `${this.ogp_name}の情報`,
+      meta: [
+        { property: 'og:type', content: 'article' },
+        { property: 'og:title', content: `${this.ogp_name}の情報 - ペリずかん` },
+        { property: 'og:url', content: process.env.VUE_APP_URL + this.$route.path },
+        { property: 'og:site_name', content: 'ペリずかん' },
+        { property: 'og:description', content: `${this.ogp_name}の1個体のPvP順位を確認できます。` },
+        { property: 'og:image', content: this.ogp_image }
+      ]
     }
   }
 }

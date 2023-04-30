@@ -222,6 +222,19 @@ export default {
       this.chkboxSelected.splice(0)
       this.$set(this, 'headerItems', this.tmpHeaderItems)
     }
+  },
+  head () {
+    return {
+      title: this.getSearchPatternName(this.searchPattern),
+      meta: [
+        { property: 'og:type', content: 'article' },
+        { property: 'og:title', content: `${this.getSearchPatternName(this.searchPattern)} - ペリずかん` },
+        { property: 'og:url', content: process.env.VUE_APP_URL + this.$route.path },
+        { property: 'og:site_name', content: 'ペリずかん' },
+        { property: 'og:description', content: '様々な絞り込み条件を複合的に設定し、対象のポケモンの一覧を確認することができます。' },
+        { property: 'og:image', content: process.env.VUE_APP_STATIC_URL + '/pokego/peripper-eyes.png' }
+      ]
+    }
   }
 }
 </script>
