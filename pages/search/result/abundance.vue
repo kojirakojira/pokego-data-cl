@@ -412,6 +412,19 @@ export default {
     dispGenJpn (value) {
       return this.$CONST.GEN.filter(v => v.k === value).map(v => v.v)[0]
     }
+  },
+  head () {
+    return {
+      title: this.appendRemarks(this.abundResData.name, this.abundResData.remarks) + 'の情報',
+      meta: [
+        { property: 'og:type', content: 'article' },
+        { property: 'og:title', content: this.appendRemarks(this.abundResData.name, this.abundResData.remarks) + 'の情報' },
+        { property: 'og:url', content: process.env.VUE_APP_URL + this.$route.path },
+        { property: 'og:site_name', content: 'ペリずかん' },
+        { property: 'og:description', content: '' },
+        { property: 'og:image', content: process.env.VUE_APP_STATIC_URL + '/pokego/peripper-eyes.png' }
+      ]
+    }
   }
 }
 </script>
