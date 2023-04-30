@@ -127,11 +127,11 @@ export default {
   async beforeMount () {
     this.searchParam.id = this.$route.query.pid
     this.searchParam.league = this.$route.query.league
-    const resData = this.$route.params.rd
+    let resData = this.$route.params.rd
 
     if (!resData) {
       // paramsでresDataが渡されていない場合は、APIから取得してから表示する
-      await this.get()
+      resData = await this.get()
     }
 
     if (!resData) {
@@ -140,7 +140,7 @@ export default {
     }
 
     this.resData = resData
-    this.isLoading = !this.resData
+    this.isLoading = !this.isLoading
   },
   methods: {
     async get () {
