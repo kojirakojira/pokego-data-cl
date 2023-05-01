@@ -68,7 +68,7 @@ export default {
     const content = postInfo.content.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
     const ogpInfo = {
       title: postInfo.title,
-      content: content.length > 100 ? content.substring(0, 100) : content,
+      content: content.length > 100 ? content.substring(0, 200) : content,
       image: postInfo.mediaLink
     }
 

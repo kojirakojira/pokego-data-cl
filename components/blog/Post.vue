@@ -12,7 +12,7 @@
       </div>
       <!-- eslint-disable-next-line vue/no-v-html -->
       <div v-html="postContent" />
-      <v-container>
+      <v-container style="margin-top: 100px;">
         <v-row>
           <v-col cols="11" md="8" lg="8" xl="8">
             <v-card v-if="prev" :to="{ name: 'blog-post-slug', params: { slug: prev.slug }}">
@@ -295,6 +295,7 @@ export default {
       border-top: 1px solid #ccc;
       border-bottom: 1px solid #ccc;
       font-weight: normal;
+      text-align: left;
 
       &::before {
         position: absolute;
@@ -319,13 +320,13 @@ export default {
     }
     h2, h3 {
       margin: 2.4em 0em 1em 5px;
+      text-align: left;
     }
     h4, h5, h6 {
       margin: 2.4em 0 1em;
-    }
-    h4, h5, h6 {
+      text-align: left;
       font-size: 20px;
-      padding: 2px 10px;
+      padding: 2px 24px;
     }
     p, ul, ol, figure {
       margin: 24px 12px 0px 12px;
@@ -371,6 +372,10 @@ export default {
       }
     }
 
+    img {
+      max-width: 100%;
+    }
+
     .prev-next-thumbnail {
       width: 120px;
       height: 78px;
@@ -394,6 +399,7 @@ export default {
   border-radius: 4px;
   line-height: 1.3;
   position: relative;
+  overflow: auto;
 
   .blogcard-figure {
     float: left;
