@@ -110,7 +110,7 @@ export default {
         if (resData.pokemonSearchResult.unique) {
           // 1件のみヒットした場合
           this.$router.push({
-            name: 'search-result-EggsResult',
+            name: 'search-result-eggsResult',
             query: this.makeQuery(resData.pokedexId),
             params: {
               rd: resData

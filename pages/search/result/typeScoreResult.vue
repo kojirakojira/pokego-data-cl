@@ -128,7 +128,7 @@
 <script>
 import H2Common from '~/components/utils/H2Common'
 import SearchCommon from '~/components/search/SearchCommon'
-import OgpType from '~/components/search/OgpType'
+import OgpType from '~/components/utils/OgpType'
 import Loading from '~/components/Loading'
 import TypeComments from '~/components/search/type/TypeComments'
 import TypeAtkDmgMult from '~/components/search/type/TypeAtkDmgMult'

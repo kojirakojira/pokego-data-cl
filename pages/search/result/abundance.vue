@@ -255,7 +255,7 @@
 <script>
 import H2Common from '~/components/utils/H2Common'
 import SearchCommon from '~/components/search/SearchCommon'
-import OgpPokemon from '~/components/search/OgpPokemon'
+import OgpPokemon from '~/components/utils/OgpPokemon'
 import EvoInfo from '~/components/search/evolution/EvoInfo'
 import GoRadarGraph from '~/components/search/graph/GoRadarGraph'
 import TypeComments from '~/components/search/type/TypeComments'

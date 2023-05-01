@@ -4,29 +4,30 @@
       <p id="blog-name">
         ペリぶろぐ
       </p>
-      <v-container>
-        <v-row>
-          <v-col class="px-0">
-            <template v-if="!isLoading">
-              <Post
-                :title="postInfo.title"
-                :content="postInfo.content"
-                :media-link="postInfo.mediaLink"
-                :prev="postInfo.prev"
-                :next="postInfo.next"
-              />
+      <client-only>
+        <v-container>
+          <v-row>
+            <v-col class="px-0">
+              <template v-if="!isLoading">
+                <Post
+                  :title="postInfo.title"
+                  :content="postInfo.content"
+                  :media-link="postInfo.mediaLink"
+                  :prev="postInfo.prev"
+                  :next="postInfo.next"
+                />
               <!-- <CommentForm :form="commentForm" class="my-3 py-3" @click="submitCommentForm" /> -->
-            </template>
-            <Loading v-else split-scr />
-          </v-col>
-        </v-row>
-      </v-container>
+              </template>
+              <Loading v-else split-scr />
+            </v-col>
+          </v-row>
+        </v-container>
+      </client-only>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
 import Post from '~/components/blog/Post'
 // import CommentForm from '~/components/blog/CommentForm'
 
@@ -36,48 +37,62 @@ export default {
     Post
     // CommentForm
   },
+  async asyncData ({ $axios, params }) {
+    const postInfo = {}
+
+    // スラッグ（WordPressにおける記事を特定するためのエンドポイント的なやつ。）
+    const slug = params.slug
+    // WordPressのURL
+    const url = `${process.env.VUE_APP_BLOG_URL}/wp-json/wp/v2/posts?_embed&slug=${slug}`
+    const res = await $axios.get(url)
+      .catch(() => {})
+
+    if (!res || !res.data[0]) {
+      postInfo.content = '<p></p><span class="headline">記事の取得に失敗しました。</span><p></p>'
+    }
+
+    const rd = res.data[0]
+    postInfo.id = rd ? rd.id : 0 // 記事ID
+    postInfo.title = rd ? rd.title.rendered : '' // 記事タイトル
+    postInfo.content = rd ? rd.content.rendered : postInfo.content // 記事本文
+    postInfo.prev = rd ? rd.prev : null // 前の記事
+    postInfo.next = rd ? rd.next : null // 次の記事
+
+    // アイキャッチ画像
+    // res.data._embedded.wp:featuredmedia[0].linkが存在してたらアイキャッチ画像が存在する。
+    const wpfm = 'wp:featuredmedia'
+    postInfo.mediaLink = (rd && rd._embedded[wpfm] && rd._embedded[wpfm][0].link)
+      ? rd._embedded[wpfm][0].link : ''
+
+    // OGP情報の生成
+    const content = postInfo.content.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
+    const ogpInfo = {
+      title: postInfo.title,
+      content: content.length > 100 ? content.substring(0, 100) : content,
+      image: postInfo.mediaLink
+    }
+
+    return {
+      slug,
+      postInfo,
+      ogpInfo
+    }
+  },
   data () {
     return {
-      slug: this.$route.params.slug,
-      postInfo: {
-        id: 0,
-        title: '',
-        content: '',
-        mediaLink: '',
-        prev: {},
-        next: {}
-      },
-      commentForm: {
-        name: '',
-        email: '',
-        content: ''
-      },
+      // commentForm: {
+      //   name: '',
+      //   email: '',
+      //   content: ''
+      // },
       isLoading: true
     }
   },
-  async mounted () {
-    await this.get()
+  beforeMount () {
     this.isLoading = false
   },
   methods: {
     async get () {
-      await axios.get(process.env.VUE_APP_BLOG_URL + '/wp-json/wp/v2/posts?_embed&slug=' + this.slug)
-        .then((res) => {
-          const rd = res.data[0]
-          this.postInfo.id = rd.id
-          this.postInfo.title = rd.title.rendered
-          this.postInfo.content = rd.content.rendered
-          this.postInfo.prev = rd.prev
-          this.postInfo.next = rd.next
-
-          if (rd._embedded['wp:featuredmedia'] && rd._embedded['wp:featuredmedia'][0].link) {
-            this.postInfo.mediaLink = rd._embedded['wp:featuredmedia'][0].link
-          }
-        })
-        .catch(() => {
-          this.postInfo.content = '<p></p><span class="headline">記事の取得に失敗しました。</span><p></p>'
-        })
-    }
     //   submitCommentForm ({ name, email, content, msg }) {
     //     if (msg) {
     //       alert(msg)
@@ -112,19 +127,19 @@ export default {
     //           this.$router.back()
     //         }
     //       })
-    //   }
+    }
 
   },
   head () {
     return {
-      title: 'ペリぶろぐ',
+      title: `${this.ogpInfo.title} - ペリぶろぐ`,
       meta: [
         { property: 'og:type', content: 'article' },
-        { property: 'og:title', content: 'ペリぶろぐ - ペリずかん' },
+        { property: 'og:title', content: `${this.ogpInfo.title} - ペリぶろぐ` },
         { property: 'og:url', content: process.env.VUE_APP_URL + this.$route.path },
         { property: 'og:site_name', content: 'ペリずかん' },
-        { property: 'og:description', content: '' },
-        { property: 'og:image', content: '' }
+        { property: 'og:description', content: this.ogpInfo.content },
+        { property: 'og:image', content: this.ogpInfo.image }
       ]
     }
   }

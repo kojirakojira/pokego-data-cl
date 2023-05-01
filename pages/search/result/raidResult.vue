@@ -72,7 +72,7 @@
 <script>
 import H2Common from '~/components/utils/H2Common'
 import SearchCommon from '~/components/search/SearchCommon'
-import OgpPokemon from '~/components/search/OgpPokemon'
+import OgpPokemon from '~/components/utils/OgpPokemon'
 import Loading from '~/components/Loading'
 export default {
   name: 'RaidResult',
