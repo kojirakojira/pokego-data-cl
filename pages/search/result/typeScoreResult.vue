@@ -192,7 +192,6 @@ export default {
         .get('/api/typeScore', {
           params: reqParam
         })
-        .catch(this.$processUtils.onErrorNot401)
       const resData = res.data
       if (this.dispDialog(resData)) {
         return

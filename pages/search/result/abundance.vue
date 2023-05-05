@@ -362,7 +362,6 @@ export default {
     async get (endpoint, params, resDataNm) {
       const res = await this.$axios
         .get(endpoint, params)
-        .catch(this.$processUtils.onErrorNot401)
       const resData = res.data
       if (this.dispDialog(resData)) {
         return

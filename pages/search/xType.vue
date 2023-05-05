@@ -203,7 +203,6 @@ export default {
       // 送信
       return await this.$axios
         .get('/api/xType', { params: this.searchParam })
-        .catch(this.$processUtils.onErrorNot401)
     },
     /**
      * APIのレスポンスを処理する。

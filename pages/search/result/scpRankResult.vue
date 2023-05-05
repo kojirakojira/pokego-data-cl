@@ -166,7 +166,6 @@ export default {
             ivh: this.searchParam.iv.substring(4, 6)
           }
         })
-        .catch(this.$processUtils.onErrorNot401)
       const resData = res.data
       if (this.dispDialog(resData)) {
         return

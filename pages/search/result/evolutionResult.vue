@@ -75,7 +75,6 @@ export default {
     async get () {
       const res = await this.$axios
         .get('/api/evolution', { params: { id: this.id } })
-        .catch(this.$processUtils.onErrorNot401)
       const resData = res.data
       if (this.dispDialog(resData)) {
         return

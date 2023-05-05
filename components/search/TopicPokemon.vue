@@ -62,7 +62,6 @@ export default {
           this.topicPokemons = res.data
           this.isHit = !!this.topicPokemons.length
         })
-        .catch(this.$processUtils.onErrorNot401)
     },
     getTrophyColor (index) {
       let color = ''

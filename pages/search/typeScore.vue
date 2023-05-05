@@ -159,7 +159,6 @@ export default {
       // 送信
       return await this.$axios
         .get('/api/typeScore', { params: requestParam })
-        .catch(this.$processUtils.onErrorNot401)
     },
     /**
      * APIのレスポンスを処理する。

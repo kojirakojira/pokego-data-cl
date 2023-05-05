@@ -132,7 +132,6 @@ export default {
             ivh: this.searchParam.iv.substring(4, 6)
           }
         })
-        .catch(this.$processUtils.onErrorNot401)
     },
     /**
      * APIのレスポンスを処理する。

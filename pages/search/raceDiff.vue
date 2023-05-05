@@ -155,7 +155,6 @@ export default {
       }
       return await this.$axios
         .get('/api/raceDiff' + this.spreadArray({ nameArr }))
-        .catch(this.$processUtils.onErrorNot401)
     },
     /**
      * APIのレスポンスを処理する。

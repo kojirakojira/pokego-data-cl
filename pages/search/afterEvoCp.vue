@@ -154,7 +154,6 @@ export default {
             cp: this.searchParam.cp
           }
         })
-        .catch(this.$processUtils.onErrorNot401)
     },
     /**
      * APIのレスポンスを処理する。

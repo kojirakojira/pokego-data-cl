@@ -366,7 +366,6 @@ export default {
     async get () {
       const res = await this.$axios
         .get('/api/race' + this.spreadArray(this.searchParam))
-        .catch(this.$processUtils.onErrorNot401)
       const resData = res.data
       if (this.dispDialog(resData)) {
         return

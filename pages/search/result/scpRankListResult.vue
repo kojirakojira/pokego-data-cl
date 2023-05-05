@@ -147,7 +147,6 @@ export default {
     async get () {
       const res = await this.$axios
         .get('/api/scpRankList', { params: this.searchParam })
-        .catch(this.$processUtils.onErrorNot401)
 
       const resData = res.data
       if (this.dispDialog(resData)) {

@@ -61,7 +61,6 @@ export default {
           this.topicPages = res.data
           this.isHit = !!this.topicPages.length
         })
-        .catch(this.$processUtils.onErrorNot401)
     },
     getTrophyColor (index) {
       let color = ''

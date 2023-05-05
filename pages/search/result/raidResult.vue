@@ -113,7 +113,6 @@ export default {
             id: this.id
           }
         })
-        .catch(this.$processUtils.onErrorNot401)
       const resData = res.data
       if (this.dispDialog(resData)) {
         return

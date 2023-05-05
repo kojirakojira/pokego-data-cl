@@ -4,10 +4,12 @@ export default ({ app }, inject) => {
    * @param {*} err
    */
   const onErrorNot401 = (err) => {
-    if (err.response.status !== 401) {
-      alert('何らかのエラーが発生しました。')
-      app.$router.back()
+    if (err.response && err.response.status === 401) {
+      return
     }
+
+    alert('エラーが発生しました。')
+    app.$router.back()
   }
   const processUtils = {
     onErrorNot401

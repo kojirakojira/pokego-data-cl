@@ -74,13 +74,11 @@ export default {
       // 送信
       return await this.$axios
         .get('/api/iroiroTypeRank', { params: this.searchParam })
-        .catch(this.$processUtils.onErrorNot401)
     },
     async getSearchPatternArr () {
       // 送信
       const res = await this.$axios
         .get('/api/iroiroTypeSearchPattern')
-        .catch(this.$processUtils.onErrorNot401)
       return Object.entries(res.data).map(([k, v]) => ({ id: k, jpn: v }))
     },
     /**

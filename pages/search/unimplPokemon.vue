@@ -61,7 +61,6 @@ export default {
     async get () {
       return await this.$axios
         .get('/api/unimplPokemon')
-        .catch(this.$processUtils.onErrorNot401)
     }
   },
   head () {

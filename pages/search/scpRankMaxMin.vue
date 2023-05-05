@@ -91,7 +91,6 @@ export default {
     async get () {
       return await this.$axios
         .get('/api/scpRankMaxMin', { params: this.searchParam })
-        .catch(this.$processUtils.onErrorNot401)
     },
     /**
      * APIのレスポンスを処理する。

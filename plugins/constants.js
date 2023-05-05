@@ -12,7 +12,7 @@ const CONST = {
   }
 }
 
-export default async ({ $axios }, inject) => {
+export default async ({ $axios, store }, inject) => {
   inject('CONST', CONST)
 
   // クライアント側でのみ取得する。
@@ -36,6 +36,11 @@ export default async ({ $axios }, inject) => {
         Object.entries(res[1].data).forEach(([k, v]) => { CONST.REGION.push({ k, v }) })
         Object.entries(res[2].data).forEach(([k, v]) => { CONST.GEN.push({ k, v }) })
         Object.entries(res[3].data).forEach(([k, v]) => { CONST.FILTER_ITEMS.push({ k, v }) })
+      })
+      .catch((err) => {
+        if (err.message === 'Network Error') {
+          store.dispatch('getToast', { msg: 'サーバとの通信に失敗しました。' })
+        }
       })
   }
 }
