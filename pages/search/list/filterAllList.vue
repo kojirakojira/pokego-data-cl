@@ -59,7 +59,7 @@
           <v-data-table
             :headers="headerItems"
             :items="gpAndCpList"
-            :footer-props="{ 'items-per-page-options': [100, 1000] }"
+            :footer-props="{ 'items-per-page-options': [-1] }"
             mobile-breakpoint="200"
             no-data-text="loading now..."
             no-results-text="該当するデータがありません。"
