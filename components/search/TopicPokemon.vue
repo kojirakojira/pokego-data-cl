@@ -12,6 +12,7 @@
             v-for="(p, index) in topicPokemons"
             :key="index"
             class="px-0"
+            :to="{name: 'search-result-abundance', query: { pid: p.pokedexId }}"
           >
             <v-list-item-avatar style="positon:relative;">
               <v-img :src="p.image ? p.image : require('~/static/img/no-image.png')" />
