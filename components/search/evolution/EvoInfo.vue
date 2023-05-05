@@ -121,16 +121,24 @@ export default {
   computed: {
     /**
      * 進化ツリー
+     * ※処理中で、style(css)を生成したり、styleIdArrを更新したりしている。
+     * 本来、computedで別の値を更新するのは良くないが、今回のケースではそれが最適解であると考える。
      */
     evoTree () {
       const evoTree = []
+      // 親コンポーネントの進化ツリーを取得
       const evoTreeInfo = this.evoTreeInfo
+
+      // styleIdArrを更新するため、古いstyleIdをstyleIdArrを削除する。
+      this.$nextTick(() => {
+        this.styleIdArr = this.$editUtils.deleteStyleElem(this.styleIdArr, 'evotree-index')
+      })
+
       evoTreeInfo.forEach((bfTree, i) => {
         const treeArr = []
 
         // styleの作成をcomputedの追跡対象外にするため、this.$nextTickを使用。
         this.$nextTick(() => {
-          this.styleIdArr = this.$editUtils.deleteStyleElem(this.styleIdArr, 'evotree-index')
           // エッジを描画する。
           this.drawEdge(bfTree, i)
           // ノードを描画する。（色を設定するだけ。）
@@ -187,7 +195,7 @@ export default {
         xArr.forEach((v) => { if (xMax < v.x) { xMax = v.x } })
       })
 
-      // 要素が存在しない箇所に空であることを示す要素を追加する。
+      // 要素が存在しない箇所に空であることを示す要素(blank: true)を追加する。
       yArr.forEach((xArr, y) => {
         const tmpArr = []
         for (let i = 0; i < xMax; i++) {
