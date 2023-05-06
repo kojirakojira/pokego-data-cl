@@ -343,11 +343,12 @@ export default {
       this.raceResData = {}
       this.evoResData = {}
       this.typeScoreResData = {}
+      const params = { id: this.id, enableCount: true }
       Promise.all([
         this.get('/api/abundance', { params: { id: this.id } }, 'abundResData'),
-        this.get('/api/race', { params: { id: this.id, enableCount: true } }, 'raceResData'),
-        this.get('/api/evolution', { params: { id: this.id, enableCount: true } }, 'evoResData'),
-        this.get('/api/typeScore', { params: { id: this.id, enableCount: true } }, 'typeScoreResData')
+        this.get('/api/race', { params }, 'raceResData'),
+        this.get('/api/evolution', { params }, 'evoResData'),
+        this.get('/api/typeScore', { params }, 'typeScoreResData')
       ]).then(() => {
         this.createStyleElem()
       })
