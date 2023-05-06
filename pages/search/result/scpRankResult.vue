@@ -120,7 +120,7 @@ export default {
       },
       headers: [
         { text: 'リーグ', value: 'league' },
-        { text: 'ランク', value: 'rank' },
+        { text: '順位', value: 'rank' },
         { text: 'PL', value: 'pl' },
         { text: 'CP', value: 'cp' },
         { text: '%', value: 'percent' },

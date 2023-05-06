@@ -63,12 +63,24 @@
   border-radius: 20px 20px 10px 10px;
 }
 .required-mark {
+  display: inline-flex;
   background-color: #ff4500;
-    padding: 2px 4px;
-    border-radius: 6px;
-    color: white;
-    font-weight: bold;
-    font-size: 14px;
+  padding: 0px 4px;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  align-items: center;
+}
+.optional-mark {
+  display: inline-flex;
+  background-color: grey;
+  padding: 0px 4px;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  align-items: center;
 }
 .searched-items .searched-params-title {
   font-weight: bold;

@@ -1,0 +1,256 @@
+<template>
+  <div>
+    <H2Common>
+      {{ getSearchPatternName(searchPattern) }}
+    </H2Common>
+    <v-container>
+      <v-row>
+        <v-col cols="12" md="4" lg="4" xl="4" class="col-title">
+          <v-icon>
+            mdi-pen
+          </v-icon>
+          ポケモン
+          <span class="required-mark">必須</span>
+        </v-col>
+        <v-col cols="12" md="8" lg="8" xl="8">
+          <v-text-field
+            v-model="searchParam.name"
+            label="例：ミュウツー"
+            outlined
+            dense
+            rows="1"
+            :rules="rules.name"
+            :counter="10"
+            maxlength="10"
+            autocomplete="off"
+            @keyup.enter.exact="clickSearchBtn"
+          />
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" md="4" lg="4" xl="4" class="col-title">
+          <v-icon>
+            mdi-pen
+          </v-icon>
+          個体値
+          <span class="required-mark">必須</span>
+        </v-col>
+        <v-col cols="12" md="8" lg="8" xl="8">
+          <v-text-field
+            v-model="searchParam.iv"
+            label="例：101508(攻撃,防御,HPを6桁で入力)"
+            outlined
+            dense
+            :rules="rules.iv"
+            :counter="6"
+            maxlength="6"
+            autocomplete="off"
+            type="number"
+            @keyup.enter.exact="clickSearchBtn"
+          />
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" md="4" lg="4" xl="4" class="col-title">
+          <v-icon>
+            mdi-pen
+          </v-icon>
+          CP
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <div
+                v-bind="attrs"
+                class="optional-mark"
+                v-on="on"
+              >
+                任意
+                <v-icon small color="white">
+                  mdi-help-circle
+                </v-icon>
+              </div>
+            </template>
+            <span>入力すると、進化後のCPもいっしょに調べることができます。</span>
+          </v-tooltip>
+        </v-col>
+        <v-col cols="12" md="8" lg="8" xl="8">
+          <v-text-field
+            v-model="searchParam.cp"
+            label="例：4049"
+            outlined
+            dense
+            autocomplete="off"
+            type="number"
+            @keyup.enter.exact="clickSearchBtn"
+          />
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" align="center">
+          <v-btn
+            rounded
+            min-width="50%"
+            color="success"
+            :disabled="isSearchBtnClick"
+            @click="clickSearchBtn()"
+          >
+            検索
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-container>
+    <ResultList
+      v-if="psr.goPokedexList.length !== 0"
+      :psr="psr"
+      :search-pattern="searchPattern"
+      @clickRow="clickRowResultList"
+    />
+  </div>
+</template>
+
+<script>
+import H2Common from '~/components/utils/H2Common'
+import SearchCommon from '~/components/search/SearchCommon'
+import ResultList from '~/components/search/ResultList'
+export default {
+  name: 'AfterEvoScpRank',
+  components: {
+    H2Common,
+    ResultList
+  },
+  mixins: [SearchCommon],
+  data () {
+    return {
+      searchPattern: 'afterEvoScpRank',
+      searchParam: {
+        name: '',
+        iv: '',
+        cp: ''
+      },
+      psr: {
+        goPokedexList: [],
+        maybe: false
+      },
+      rules: {
+        iv: [
+          v =>
+            ((v || '').length === 6 || (v || '').length === 0) || '個体値は6桁で入力してください。'
+        ]
+      },
+      ivNames: ['攻撃', '防御', 'HP'],
+      isSearchBtnClick: false
+    }
+  },
+  methods: {
+    async clickSearchBtn () {
+      this.isSearchBtnClick = true
+      const msg = this.check()
+      if (msg) {
+        alert(msg)
+        this.isSearchBtnClick = false
+        return
+      }
+      const res = await this.get()
+      this.handleApiResult(res)
+    },
+    check () {
+      let msg = ''
+      msg += this.$checkRequired({ item: this.searchParam.name, itemName: 'ポケモン' })
+      msg += this.$checkRequired({ item: this.searchParam.iv, itemName: '個体値' })
+      // msg += this.$checkRequired({ item: this.searchParam.cp, itemName: 'CP' })
+      msg += this.checkIv(this.searchParam.iv)
+      return msg
+    },
+    async get () {
+      return await this.$axios
+        .get('/api/afterEvoScpRank', {
+          params: {
+            name: this.searchParam.name,
+            iva: this.searchParam.iv.substring(0, 2),
+            ivd: this.searchParam.iv.substring(2, 4),
+            ivh: this.searchParam.iv.substring(4, 6),
+            cp: this.searchParam.cp
+          }
+        })
+    },
+    /**
+     * APIのレスポンスを処理する。
+     *
+     * @param {Object} res
+     */
+    handleApiResult (res) {
+      const resData = res.data
+      this.getToast(resData.pokemonSearchResult)
+      if (this.dispDialog(resData)) {
+        return
+      }
+      if (resData.success) {
+        this.setVuexState(resData)
+        this.replaceState(this.searchParam)
+        if (resData.pokemonSearchResult.unique) {
+          // 1件のみヒットした場合
+          this.$router.push({
+            name: 'search-result-afterEvoScpRankResult',
+            query: {
+              pid: resData.pokedexId,
+              iv: this.getIvString(resData),
+              cp: resData.cp
+            },
+            params: {
+              rd: resData
+            }
+          })
+        } else {
+          // 複数件 or 0件ヒットした場合
+          this.psr = resData.pokemonSearchResult
+          this.isSearchBtnClick = false
+        }
+      }
+    },
+    checkIv (iv) {
+      let msg = ''
+
+      if (iv.length !== 6 || isNaN(iv)) {
+        msg = '「個体値」は数値6桁で入力してください。'
+        return msg
+      }
+
+      const ivArr = [iv.substring(0, 2), iv.substring(2, 4), iv.substring(4, 6)]
+      for (const i in ivArr) {
+        if (!(ivArr[i] >= 0 && ivArr[i] <= 15)) {
+          msg += `${this.ivNames[i]}は0~15の間で入力してください。\n`
+        }
+      }
+      return msg
+    },
+    getIvString (resData) {
+      const zeroPud = (val) => { return ('00' + val).slice(-2) }
+      return zeroPud(resData.iva) + zeroPud(resData.ivd) + zeroPud(resData.ivh)
+    }
+  },
+  head () {
+    return {
+      title: this.getSearchPatternName(this.searchPattern),
+      meta: [
+        { property: 'og:type', content: 'article' },
+        { property: 'og:title', content: `${this.getSearchPatternName(this.searchPattern)} - ペリずかん` },
+        { property: 'og:url', content: process.env.VUE_APP_URL + this.$route.path },
+        { property: 'og:site_name', content: 'ペリずかん' },
+        { property: 'og:description', content: '進化後のCPを確認することができます。3段階進化のポケモンの場合、1段階目のポケモンのCPから最終進化のCPを求めることもできます。' },
+        { property: 'og:image', content: process.env.VUE_APP_STATIC_URL + '/pokego/peripper-eyes.png' }
+      ]
+    }
+  }
+}
+</script>
+
+<style>
+/* 入力ボックスフォーカス時に出てくる上下矢印のボタンを非表示にする。 */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+  -moz-appearance:textfield;
+}
+</style>

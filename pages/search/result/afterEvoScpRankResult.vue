@@ -1,7 +1,7 @@
 <template>
   <div>
     <H2Common>
-      {{ getSearchPatternName('afterEvoCp') }}
+      {{ getSearchPatternName('afterEvoScpRank') }}
     </H2Common>
     <div v-if="!isLoading">
       <v-container>
@@ -37,7 +37,7 @@
                       {{ `${resData.iva} - ${resData.ivd} - ${resData.ivh}` }}
                     </v-col>
                   </v-row>
-                  <v-row class="searched-param">
+                  <v-row v-if="resData.cp" class="searched-param">
                     <v-col cols="7" md="6" lg="6" xl="6" class="pa-1">
                       CP
                     </v-col>
@@ -45,7 +45,7 @@
                       {{ resData.cp }}
                     </v-col>
                   </v-row>
-                  <v-row class="searched-param">
+                  <v-row v-if="resData.pl" class="searched-param">
                     <v-col cols="7" md="6" lg="6" xl="6" class="pa-1">
                       (PL)
                     </v-col>
@@ -68,33 +68,7 @@
               :headers="headers"
               :items="resData.afEvoList"
               hide-default-footer
-              mobile-breakpoint="400"
-              no-data-text="loading now..."
-              no-results-text="該当するデータがありません。"
-              :footer-props="{ 'items-per-page-options': [-1] }"
-            >
-              <template v-slot:[`item.goPokedex.pokedexId`]="{ item }">
-                {{ item.goPokedex.pokedexId | dispPdx }}
-              </template>
-              <template v-slot:[`item.goPokedex.name`]="{ item }">
-                {{ appendRemarks(item.goPokedex.name, item.goPokedex.remarks) }}
-              </template>
-            </v-data-table>
-            <div v-else class="pl-4">
-              なし
-            </div>
-          </v-col>
-        </v-row>
-        <v-row v-if="resData.anotherFormList.length">
-          <v-col cols="12">
-            <h3>
-              別のすがた
-            </h3>
-            <v-data-table
-              :headers="headers"
-              :items="resData.anotherFormList"
-              hide-default-footer
-              mobile-breakpoint="400"
+              mobile-breakpoint="600"
               no-data-text="loading now..."
               no-results-text="該当するデータがありません。"
               :footer-props="{ 'items-per-page-options': [-1] }"
@@ -108,9 +82,14 @@
                 </v-avatar>
               </template>
               <template v-slot:[`item.goPokedex.name`]="{ item }">
-                {{ appendRemarks(item.goPokedex.name, item.goPokedex.remarks) }}
+                <div style="min-width:120px;">
+                  {{ appendRemarks(item.goPokedex.name, item.goPokedex.remarks) }}
+                </div>
               </template>
             </v-data-table>
+            <div v-else class="pl-4">
+              なし
+            </div>
           </v-col>
         </v-row>
       </v-container>
@@ -127,7 +106,7 @@ import SearchCommon from '~/components/search/SearchCommon'
 import OgpPokemon from '~/components/utils/OgpPokemon'
 import Loading from '~/components/Loading'
 export default {
-  name: 'AfterEvoCpResult',
+  name: 'AfterEvoScpRankResult',
   components: {
     H2Common,
     Loading
@@ -141,9 +120,12 @@ export default {
       },
       resData: {},
       headers: [
-        { text: '図鑑№', value: 'goPokedex.pokedexId' },
+        { text: '図鑑№', value: 'goPokedex.pokedexId', sortable: false },
         { text: '', value: 'goPokedex.image', sortable: false, width: '52px' },
-        { text: 'ポケモン', value: '.goPokedex.name', sortable: false },
+        { text: 'ポケモン', value: 'goPokedex.name', sortable: false },
+        { text: 'スーパーリーグ順位', value: 'slRank', sortable: false },
+        { text: 'ハイパーリーグ順位', value: 'hlRank', sortable: false },
+        { text: 'マスターリーグ順位', value: 'mlRank', sortable: false },
         { text: 'CP', value: 'cp', sortable: false }
       ],
       isLoading: true
@@ -174,13 +156,17 @@ export default {
       return
     }
 
+    if (!resData.cp && this.headers[this.headers.length - 1].value === 'cp') {
+      // cpが未入力の場合はcp列を削除する。
+      this.headers.pop()
+    }
     this.resData = resData
     this.isLoading = false
   },
   methods: {
     async get () {
       const res = await this.$axios
-        .get('/api/afterEvoCp', {
+        .get('/api/afterEvoScpRank', {
           params: {
             id: this.searchParam.id,
             iva: this.searchParam.iv.substring(0, 2),
@@ -217,7 +203,7 @@ export default {
      * cpをチェックする。正しい場合はtrue
      */
     checkCp (cp) {
-      if (!cp) { return false }
+      if (!cp) { return true }
 
       return !isNaN(cp)
     }
