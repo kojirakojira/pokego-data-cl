@@ -1,7 +1,7 @@
 <template>
   <div>
     <H2Common>
-      {{ getSearchPatternName('afterEvoScpRank') }}
+      {{ getSearchPatternName('cp') }}
     </H2Common>
     <div v-if="!isLoading">
       <v-container>
@@ -18,7 +18,7 @@
                       図鑑№
                     </v-col>
                     <v-col cols="5" md="6" lg="6" xl="6" class="pa-1">
-                      {{ resData.searchPokemon.pokedexId | dispPdx }}
+                      {{ resData.goPokedex.pokedexId | dispPdx }}
                     </v-col>
                   </v-row>
                   <v-row class="searched-param">
@@ -26,7 +26,7 @@
                       ポケモン
                     </v-col>
                     <v-col cols="5" md="6" lg="6" xl="6" class="pa-1">
-                      {{ appendRemarks(resData.searchPokemon.name, resData.searchPokemon.remarks) }}
+                      {{ appendRemarks(resData.goPokedex.name, resData.goPokedex.remarks) }}
                     </v-col>
                   </v-row>
                   <v-row class="searched-param" align="center">
@@ -37,20 +37,12 @@
                       {{ `${resData.iva} - ${resData.ivd} - ${resData.ivh}` }}
                     </v-col>
                   </v-row>
-                  <v-row v-if="resData.cp" class="searched-param">
-                    <v-col cols="7" md="6" lg="6" xl="6" class="pa-1">
-                      CP
-                    </v-col>
-                    <v-col cols="5" md="6" lg="6" xl="6" class="pa-1">
-                      {{ resData.cp }}
-                    </v-col>
-                  </v-row>
                   <v-row v-if="resData.pl" class="searched-param">
                     <v-col cols="7" md="6" lg="6" xl="6" class="pa-1">
-                      (PL)
+                      PL
                     </v-col>
                     <v-col cols="5" md="6" lg="6" xl="6" class="pa-1">
-                      {{ `(${resData.pl})` }}
+                      {{ resData.pl }}
                     </v-col>
                   </v-row>
                 </v-container>
@@ -58,38 +50,17 @@
             </v-card>
           </v-col>
         </v-row>
+      </v-container>
+      <h3>
+        算出結果
+      </h3>
+      <v-container>
         <v-row>
-          <v-col cols="12">
-            <h3>
-              進化後のポケモン
-            </h3>
-            <v-data-table
-              v-if="resData.afEvoList.length"
-              :headers="headers"
-              :items="resData.afEvoList"
-              hide-default-footer
-              mobile-breakpoint="600"
-              no-data-text="loading now..."
-              no-results-text="該当するデータがありません。"
-              :footer-props="{ 'items-per-page-options': [-1] }"
-            >
-              <template v-slot:[`item.goPokedex.pokedexId`]="{ item }">
-                {{ item.goPokedex.pokedexId | dispPdx }}
-              </template>
-              <template v-slot:[`item.goPokedex.image`]="{ item }">
-                <v-avatar size="36" style="float:left">
-                  <v-img :src="item.goPokedex.image ? item.goPokedex.image : require('~/static/img/no-image.png')" />
-                </v-avatar>
-              </template>
-              <template v-slot:[`item.goPokedex.name`]="{ item }">
-                <div style="min-width:120px;">
-                  {{ appendRemarks(item.goPokedex.name, item.goPokedex.remarks) }}
-                </div>
-              </template>
-            </v-data-table>
-            <div v-else class="pl-4">
-              なし
-            </div>
+          <v-col cols="12" md="6" lg="6" xl="6" class="col-title">
+            CP
+          </v-col>
+          <v-col cols="12" md="6" lg="6" xl="6">
+            {{ resData.cp }}
           </v-col>
         </v-row>
       </v-container>
@@ -106,7 +77,7 @@ import SearchCommon from '~/components/search/SearchCommon'
 import OgpPokemon from '~/components/utils/OgpPokemon'
 import Loading from '~/components/Loading'
 export default {
-  name: 'AfterEvoScpRankResult',
+  name: 'CpResult',
   components: {
     H2Common,
     Loading
@@ -116,18 +87,11 @@ export default {
     return {
       searchParam: {
         id: null, // pokedexId,
-        iv: null // IndividualValue
+        iv: null, // 個体値
+        pl: null
       },
-      resData: {},
-      headers: [
-        { text: '図鑑№', value: 'goPokedex.pokedexId', sortable: false },
-        { text: '', value: 'goPokedex.image', sortable: false, width: '52px' },
-        { text: 'ポケモン', value: 'goPokedex.name', sortable: false },
-        { text: 'スーパーリーグ順位', value: 'slRank', sortable: false },
-        { text: 'ハイパーリーグ順位', value: 'hlRank', sortable: false },
-        { text: 'マスターリーグ順位', value: 'mlRank', sortable: false },
-        { text: 'CP', value: 'cp', sortable: false }
-      ],
+      resData: {
+      },
       isLoading: true
 
     }
@@ -135,7 +99,7 @@ export default {
   async beforeMount () {
     this.searchParam.id = this.$route.query.pid
     this.searchParam.iv = this.$route.query.iv
-    this.searchParam.cp = this.$route.query.cp
+    this.searchParam.pl = this.$route.query.pl
     let resData = this.$route.params.rd
 
     if (!resData) {
@@ -143,11 +107,6 @@ export default {
       const msg = this.$checkIv({ item: this.searchParam.iv, itemName: '個体値' })
       if (msg) {
         alert(msg)
-        this.$router.back()
-        return
-      }
-      if (!this.checkCp(this.searchParam.cp)) {
-        alert('正しくないCPが設定されました。')
         this.$router.back()
         return
       }
@@ -159,49 +118,38 @@ export default {
       return
     }
 
-    if (!resData.cp && this.headers[this.headers.length - 1].value === 'cp') {
-      // cpが未入力の場合はcp列を削除する。
-      this.headers.pop()
-    }
     this.resData = resData
-    this.isLoading = false
+    this.isLoading = !this.isLoading
   },
   methods: {
     async get () {
       const res = await this.$axios
-        .get('/api/afterEvoScpRank', {
+        .get('/api/cp', {
           params: {
             id: this.searchParam.id,
             iva: this.searchParam.iv.substring(0, 2),
             ivd: this.searchParam.iv.substring(2, 4),
             ivh: this.searchParam.iv.substring(4, 6),
-            cp: this.searchParam.cp
+            pl: this.searchParam.pl
           }
         })
+
       const resData = res.data
       if (this.dispDialog(resData)) {
         return
       }
       return resData
-    },
-    /**
-     * cpをチェックする。正しい場合はtrue
-     */
-    checkCp (cp) {
-      if (!cp) { return true }
-
-      return !isNaN(cp)
     }
   },
   head () {
     return {
-      title: `${this.ogp_name}の進化後CP`,
+      title: `${this.ogp_name}のPvP順位の一覧`,
       meta: [
         { property: 'og:type', content: 'article' },
-        { property: 'og:title', content: `${this.ogp_name}の進化後CP - ペリずかん` },
+        { property: 'og:title', content: `${this.ogp_name}のPvP順位の一覧 - ペリずかん` },
         { property: 'og:url', content: process.env.VUE_APP_URL + this.$route.path },
         { property: 'og:site_name', content: 'ペリずかん' },
-        { property: 'og:description', content: `${this.ogp_name}の進化後CPを確認できます。` },
+        { property: 'og:description', content: `${this.ogp_name}のPvP順位の一覧を確認できます。` },
         { property: 'og:image', content: this.ogp_image }
       ]
     }

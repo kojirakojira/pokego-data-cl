@@ -99,7 +99,6 @@ export default {
             ((v || '').length === 6 || (v || '').length === 0) || '個体値は6桁で入力してください。'
         ]
       },
-      ivNames: ['攻撃', '防御', 'HP'],
       isSearchBtnClick: false
     }
   },
@@ -119,7 +118,7 @@ export default {
       let msg = ''
       msg += this.$checkRequired({ item: this.searchParam.name, itemName: 'ポケモン' })
       msg += this.$checkRequired({ item: this.searchParam.iv, itemName: '個体値' })
-      msg += this.checkIv(this.searchParam.iv)
+      msg += this.$checkIv({ item: this.searchParam.iv, itemName: '個体値' })
       return msg
     },
     async get () {
@@ -165,23 +164,6 @@ export default {
           this.isSearchBtnClick = false
         }
       }
-    },
-    checkIv (iv) {
-      let msg = ''
-      if (!iv) { return msg }
-
-      if (iv.length !== 6 || isNaN(iv)) {
-        msg = '「個体値」は数値6桁で入力してください。'
-        return msg
-      }
-
-      const ivArr = [iv.substring(0, 2), iv.substring(2, 4), iv.substring(4, 6)]
-      for (const i in ivArr) {
-        if (!(ivArr[i] >= 0 && ivArr[i] <= 15)) {
-          msg += `${this.ivNames[i]}は0~15の間で入力してください。\n`
-        }
-      }
-      return msg
     },
     getIvString (resData) {
       const zeroPud = (val) => { return ('00' + val).slice(-2) }

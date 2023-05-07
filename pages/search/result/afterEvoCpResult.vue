@@ -158,13 +158,16 @@ export default {
 
     if (!resData) {
       // paramsでresDataが渡されていない場合は、APIから取得してから表示する
-      if (!this.checkIv(this.searchParam.iv)) {
-        alert('正しくない個体値が設定されました。')
+      const msg = this.$checkIv({ item: this.searchParam.iv, itemName: '個体値' })
+      if (msg) {
+        alert(msg)
         this.$router.back()
+        return
       }
       if (!this.checkCp(this.searchParam.cp)) {
         alert('正しくないCPが設定されました。')
         this.$router.back()
+        return
       }
       resData = await this.get()
     }
@@ -194,24 +197,6 @@ export default {
         return
       }
       return resData
-    },
-    /**
-     * ivをチェックする。正しい場合はtrue
-     */
-    checkIv (iv) {
-      if (!iv) { return false }
-
-      if (iv.length !== 6 || isNaN(iv)) {
-        return false
-      }
-
-      const ivArr = [iv.substring(0, 2), iv.substring(2, 4), iv.substring(4, 6)]
-      for (const i in ivArr) {
-        if (!(ivArr[i] >= 0 && ivArr[i] <= 15)) {
-          return false
-        }
-      }
-      return true
     },
     /**
      * cpをチェックする。正しい場合はtrue

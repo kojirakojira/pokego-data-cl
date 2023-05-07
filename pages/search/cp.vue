@@ -49,6 +49,21 @@
         </v-col>
       </v-row>
       <v-row>
+        <v-col cols="12" md="4" lg="4" xl="4" class="col-title">
+          <v-icon>
+            mdi-pen
+          </v-icon>
+          PL
+        </v-col>
+        <v-col cols="12" md="8" lg="8" xl="8">
+          <v-select
+            v-model="searchParam.pl"
+            :items="$CONST.PL"
+            hide-details
+          />
+        </v-col>
+      </v-row>
+      <v-row>
         <v-col cols="12" align="center">
           <v-btn
             rounded
@@ -76,7 +91,7 @@ import H2Common from '~/components/utils/H2Common'
 import SearchCommon from '~/components/search/SearchCommon'
 import ResultList from '~/components/search/ResultList'
 export default {
-  name: 'ScpRank',
+  name: 'Cp',
   components: {
     H2Common,
     ResultList
@@ -84,10 +99,11 @@ export default {
   mixins: [SearchCommon],
   data () {
     return {
-      searchPattern: 'scpRank',
+      searchPattern: 'cp',
       searchParam: {
         name: '',
-        iv: ''
+        iv: '',
+        pl: ''
       },
       psr: {
         goPokedexList: [],
@@ -118,17 +134,19 @@ export default {
       let msg = ''
       msg += this.$checkRequired({ item: this.searchParam.name, itemName: 'ポケモン' })
       msg += this.$checkRequired({ item: this.searchParam.iv, itemName: '個体値' })
+      msg += this.$checkRequired({ item: this.searchParam.pl, itemName: 'PL' })
       msg += this.$checkIv({ item: this.searchParam.iv, itemName: '個体値' })
       return msg
     },
     async get () {
       return await this.$axios
-        .get('/api/scpRank', {
+        .get('/api/cp', {
           params: {
             name: this.searchParam.name,
             iva: this.searchParam.iv.substring(0, 2),
             ivd: this.searchParam.iv.substring(2, 4),
-            ivh: this.searchParam.iv.substring(4, 6)
+            ivh: this.searchParam.iv.substring(4, 6),
+            pl: this.searchParam.pl
           }
         })
     },
@@ -149,11 +167,8 @@ export default {
         if (resData.pokemonSearchResult.unique) {
           // 1件のみヒットした場合
           this.$router.push({
-            name: 'search-result-scpRankResult',
-            query: {
-              pid: resData.pokedexId,
-              iv: this.getIvString(resData)
-            },
+            name: 'search-result-cpResult',
+            query: this.makeQuery(resData.pokedexId),
             params: {
               rd: resData
             }
@@ -164,11 +179,6 @@ export default {
           this.isSearchBtnClick = false
         }
       }
-    },
-    getIvString (resData) {
-      const zeroPud = (val) => { return ('00' + val).slice(-2) }
-      const sr = resData.scpSlRank
-      return zeroPud(sr.iva) + zeroPud(sr.ivd) + zeroPud(sr.ivh)
     }
   },
   head () {

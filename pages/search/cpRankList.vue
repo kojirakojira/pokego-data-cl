@@ -5,6 +5,12 @@
     </H2Common>
     <v-container>
       <v-row>
+        <v-col class="caption">
+          ポケモンGOでは、こうげき、ぼうぎょ、HPでそれぞれ16段階のステータスがあり、個体値は16×16×16で4096通り存在します。<br>
+          この機能では、個体値ランキングを確認することができます。
+        </v-col>
+      </v-row>
+      <v-row>
         <v-col cols="12" md="4" lg="4" xl="4" class="col-title">
           <v-icon>
             mdi-pen
@@ -22,28 +28,6 @@
             :counter="10"
             maxlength="10"
             autocomplete="off"
-            @keyup.enter.exact="clickSearchBtn"
-          />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" md="4" lg="4" xl="4" class="col-title">
-          <v-icon>
-            mdi-pen
-          </v-icon>
-          個体値
-        </v-col>
-        <v-col cols="12" md="8" lg="8" xl="8">
-          <v-text-field
-            v-model="searchParam.iv"
-            label="例：101508(攻撃,防御,HPを6桁で入力)"
-            outlined
-            dense
-            :rules="rules.iv"
-            :counter="6"
-            maxlength="6"
-            autocomplete="off"
-            type="number"
             @keyup.enter.exact="clickSearchBtn"
           />
         </v-col>
@@ -76,7 +60,7 @@ import H2Common from '~/components/utils/H2Common'
 import SearchCommon from '~/components/search/SearchCommon'
 import ResultList from '~/components/search/ResultList'
 export default {
-  name: 'ScpRank',
+  name: 'CpRankList',
   components: {
     H2Common,
     ResultList
@@ -84,10 +68,9 @@ export default {
   mixins: [SearchCommon],
   data () {
     return {
-      searchPattern: 'scpRank',
+      searchPattern: 'cpRankList',
       searchParam: {
-        name: '',
-        iv: ''
+        name: ''
       },
       psr: {
         goPokedexList: [],
@@ -117,19 +100,12 @@ export default {
     check () {
       let msg = ''
       msg += this.$checkRequired({ item: this.searchParam.name, itemName: 'ポケモン' })
-      msg += this.$checkRequired({ item: this.searchParam.iv, itemName: '個体値' })
-      msg += this.$checkIv({ item: this.searchParam.iv, itemName: '個体値' })
       return msg
     },
     async get () {
       return await this.$axios
-        .get('/api/scpRank', {
-          params: {
-            name: this.searchParam.name,
-            iva: this.searchParam.iv.substring(0, 2),
-            ivd: this.searchParam.iv.substring(2, 4),
-            ivh: this.searchParam.iv.substring(4, 6)
-          }
+        .get('/api/cpRankList', {
+          params: this.searchParam
         })
     },
     /**
@@ -149,11 +125,8 @@ export default {
         if (resData.pokemonSearchResult.unique) {
           // 1件のみヒットした場合
           this.$router.push({
-            name: 'search-result-scpRankResult',
-            query: {
-              pid: resData.pokedexId,
-              iv: this.getIvString(resData)
-            },
+            name: 'search-result-cpRankListResult',
+            query: this.makeQuery(resData.pokedexId),
             params: {
               rd: resData
             }
@@ -164,11 +137,6 @@ export default {
           this.isSearchBtnClick = false
         }
       }
-    },
-    getIvString (resData) {
-      const zeroPud = (val) => { return ('00' + val).slice(-2) }
-      const sr = resData.scpSlRank
-      return zeroPud(sr.iva) + zeroPud(sr.ivd) + zeroPud(sr.ivh)
     }
   },
   head () {

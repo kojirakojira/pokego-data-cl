@@ -5,6 +5,12 @@
     </H2Common>
     <v-container>
       <v-row>
+        <v-col class="caption">
+          ポケモンGOでは、こうげき、ぼうぎょ、HPでそれぞれ16段階のステータスがあり、個体値は16×16×16で4096通り存在します。<br>
+          この機能では、指定した個体値が4096位中の何位かを求めることができます。
+        </v-col>
+      </v-row>
+      <v-row>
         <v-col cols="12" md="4" lg="4" xl="4" class="col-title">
           <v-icon>
             mdi-pen
@@ -76,7 +82,7 @@ import H2Common from '~/components/utils/H2Common'
 import SearchCommon from '~/components/search/SearchCommon'
 import ResultList from '~/components/search/ResultList'
 export default {
-  name: 'ScpRank',
+  name: 'CpRank',
   components: {
     H2Common,
     ResultList
@@ -84,7 +90,7 @@ export default {
   mixins: [SearchCommon],
   data () {
     return {
-      searchPattern: 'scpRank',
+      searchPattern: 'cpRank',
       searchParam: {
         name: '',
         iv: ''
@@ -123,7 +129,7 @@ export default {
     },
     async get () {
       return await this.$axios
-        .get('/api/scpRank', {
+        .get('/api/cpRank', {
           params: {
             name: this.searchParam.name,
             iva: this.searchParam.iv.substring(0, 2),
@@ -149,11 +155,8 @@ export default {
         if (resData.pokemonSearchResult.unique) {
           // 1件のみヒットした場合
           this.$router.push({
-            name: 'search-result-scpRankResult',
-            query: {
-              pid: resData.pokedexId,
-              iv: this.getIvString(resData)
-            },
+            name: 'search-result-cpRankResult',
+            query: this.makeQuery(resData.pokedexId),
             params: {
               rd: resData
             }

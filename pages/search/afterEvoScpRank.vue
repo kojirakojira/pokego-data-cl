@@ -136,7 +136,6 @@ export default {
             ((v || '').length === 6 || (v || '').length === 0) || '個体値は6桁で入力してください。'
         ]
       },
-      ivNames: ['攻撃', '防御', 'HP'],
       isSearchBtnClick: false
     }
   },
@@ -157,7 +156,7 @@ export default {
       msg += this.$checkRequired({ item: this.searchParam.name, itemName: 'ポケモン' })
       msg += this.$checkRequired({ item: this.searchParam.iv, itemName: '個体値' })
       // msg += this.$checkRequired({ item: this.searchParam.cp, itemName: 'CP' })
-      msg += this.checkIv(this.searchParam.iv)
+      msg += this.$checkIv({ item: this.searchParam.iv, itemName: '個体値' })
       return msg
     },
     async get () {
@@ -206,22 +205,6 @@ export default {
         }
       }
     },
-    checkIv (iv) {
-      let msg = ''
-
-      if (iv.length !== 6 || isNaN(iv)) {
-        msg = '「個体値」は数値6桁で入力してください。'
-        return msg
-      }
-
-      const ivArr = [iv.substring(0, 2), iv.substring(2, 4), iv.substring(4, 6)]
-      for (const i in ivArr) {
-        if (!(ivArr[i] >= 0 && ivArr[i] <= 15)) {
-          msg += `${this.ivNames[i]}は0~15の間で入力してください。\n`
-        }
-      }
-      return msg
-    },
     getIvString (resData) {
       const zeroPud = (val) => { return ('00' + val).slice(-2) }
       return zeroPud(resData.iva) + zeroPud(resData.ivd) + zeroPud(resData.ivh)
@@ -235,7 +218,7 @@ export default {
         { property: 'og:title', content: `${this.getSearchPatternName(this.searchPattern)} - ペリずかん` },
         { property: 'og:url', content: process.env.VUE_APP_URL + this.$route.path },
         { property: 'og:site_name', content: 'ペリずかん' },
-        { property: 'og:description', content: '進化後のCPを確認することができます。3段階進化のポケモンの場合、1段階目のポケモンのCPから最終進化のCPを求めることもできます。' },
+        { property: 'og:description', content: '進化後のPvP順位を確認することができます。3段階進化のポケモンの場合、1段階目のポケモンの個体値から最終進化のPvP順位を求めることもできます。' },
         { property: 'og:image', content: process.env.VUE_APP_STATIC_URL + '/pokego/peripper-eyes.png' }
       ]
     }
