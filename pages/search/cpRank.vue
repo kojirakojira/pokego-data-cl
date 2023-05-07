@@ -182,7 +182,7 @@ export default {
         { property: 'og:title', content: `${this.getSearchPatternName(this.searchPattern)} - ペリずかん` },
         { property: 'og:url', content: process.env.VUE_APP_URL + this.$route.path },
         { property: 'og:site_name', content: 'ペリずかん' },
-        { property: 'og:description', content: '個体値を入力することにより、PvP順位を求めることができます。' },
+        { property: 'og:description', content: '個体値を入力することにより、その個体のCPが第何位であるかを求めることができます。' },
         { property: 'og:image', content: process.env.VUE_APP_STATIC_URL + '/pokego/peripper-eyes.png' }
       ]
     }
