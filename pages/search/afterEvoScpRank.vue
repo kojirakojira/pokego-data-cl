@@ -20,8 +20,8 @@
             dense
             rows="1"
             :rules="rules.name"
-            :counter="10"
-            maxlength="10"
+            :counter="20"
+            maxlength="20"
             autocomplete="off"
             @keyup.enter.exact="clickSearchBtn"
           />

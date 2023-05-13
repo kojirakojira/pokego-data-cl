@@ -152,8 +152,8 @@
           </v-container>
           <!-- 種族値 -->
           <h3>種族値</h3>
-          <v-container v-if="isLoadedRace" class="race">
-            <v-row>
+          <v-container v-if="isLoadedRace">
+            <v-row class="race">
               <v-col
                 cols="12"
                 sm="7"
@@ -185,6 +185,13 @@
                     </v-col>
                   </template>
                 </v-row>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col align="end">
+                <nuxt-link :to="{ name: 'search-raceDiff', query: { name1: appendRemarks(abundResData.name, abundResData.remarks) } }">
+                  他のポケモンと種族値を比較する >>>
+                </nuxt-link>
               </v-col>
             </v-row>
           </v-container>
@@ -246,6 +253,14 @@
             router-link="search-result-abundance"
             class="evolution"
           />
+          <!-- <h3>
+            もっと調べる
+          </h3>
+          <v-list dense>
+            <v-list-item>
+              <v-list-item-content />
+            </v-list-item>
+          </v-list> -->
         </v-col>
       </v-row>
     </v-container>
