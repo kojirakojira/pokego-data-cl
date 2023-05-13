@@ -49,3 +49,24 @@ h3 {
       left: 100%
     }
   }
+  
+.basic-info-table {    
+  border: medium solid grey;
+  border-radius: 10px;
+  overflow: hidden;
+  .row {
+    /** "見出し列"だけに指定 */
+    .col:first-child {
+      color: white;
+      font-weight: bold;
+      word-wrap: break-word;
+
+    }
+  }
+  /** 最後の行以外の"見出し列"だけに指定 */
+  .row:not(:last-child) {
+    .col:first-child {
+      border-bottom: thin solid black;
+    }
+  }
+}

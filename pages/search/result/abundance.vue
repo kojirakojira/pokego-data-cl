@@ -25,7 +25,7 @@
           <h3>基本情報</h3>
           <v-container
             v-if="isLoadedAbundance"
-            class="abundance-basic-info-table"
+            class="basic-info-table abundance-basic-info-table"
           >
             <v-row>
               <v-col cols="5">
@@ -93,7 +93,7 @@
           <h3>CP</h3>
           <v-container
             v-if="isLoadedAbundance"
-            class="abundance-cp-table"
+            class="basic-info-table abundance-cp-table"
           >
             <v-row>
               <v-col cols="5">
@@ -150,6 +150,9 @@
               </v-col>
             </v-row>
           </v-container>
+          <div v-else>
+            <Loading split-scr />
+          </div>
           <!-- 種族値 -->
           <h3>種族値</h3>
           <v-container v-if="isLoadedRace">
@@ -195,6 +198,9 @@
               </v-col>
             </v-row>
           </v-container>
+          <div v-else>
+            <Loading split-scr />
+          </div>
           <!-- タイプ倍率 -->
           <h3>タイプ倍率</h3>
           <div v-if="isTypeScoreEvolution">
@@ -238,6 +244,9 @@
               :atk-type-dic="typeScoreResData.defenderTypeMap"
             />
           </div>
+          <div v-else>
+            <Loading split-scr />
+          </div>
         </v-col>
         <v-col cols="12" md="5" lg="4" xl="4">
           <h3>
@@ -253,6 +262,9 @@
             router-link="search-result-abundance"
             class="evolution"
           />
+          <div v-else>
+            <Loading split-scr />
+          </div>
           <!-- <h3>
             もっと調べる
           </h3>
@@ -453,20 +465,6 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-.abundance-basic-info-table,.abundance-cp-table {
-  border: medium solid grey;
-  border-radius: 10px;
-  overflow:hidden;
-  .row {
-    .col:first-child {
-      color: white;
-      font-weight: bold;
-    }
-    .col:not(:last-child) {
-      border-bottom: thin solid black;
-    }
-  }
-}
 .race {
   border: medium solid maroon;
   // border-color: red blue blue red;
