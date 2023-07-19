@@ -391,7 +391,7 @@ export default {
       const res = await this.$axios
         .get(endpoint, params)
       const resData = res.data
-      if (this.dispDialog(resData)) {
+      if (!this.dispDialog(resData)) {
         return
       }
       this.$set(this, resDataNm, resData)

@@ -123,7 +123,7 @@ export default {
         .get('/api/cpRankList', { params: this.searchParam })
 
       const resData = res.data
-      if (this.dispDialog(resData)) {
+      if (!this.dispDialog(resData)) {
         return
       }
       return resData

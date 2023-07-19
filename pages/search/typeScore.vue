@@ -182,10 +182,11 @@ export default {
         })
       } else {
         // ポケモンから検索した場合
-        this.getToast(resData.pokemonSearchResult)
-        if (this.dispDialog(resData)) {
-          return
-        }
+
+        // メッセージ、メッセージレベルによるハンドリング
+        const success = this.handleApiMessage(resData)
+        if (!success) { return }
+
         if (resData.success) {
           this.setVuexState(resData)
           this.replaceState(this.searchParam)

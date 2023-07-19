@@ -310,7 +310,7 @@ export default {
         .get('/api/raceDiff' + this.spreadArray({ idArr: this.idArr }))
 
       const resData = res.data
-      if (this.dispDialog(resData)) {
+      if (!this.dispDialog(resData)) {
         return
       }
       return resData

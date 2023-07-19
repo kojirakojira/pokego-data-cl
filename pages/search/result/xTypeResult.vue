@@ -179,7 +179,7 @@ export default {
       const res = await this.$axios
         .get('/api/xType' + this.spreadArray(this.searchParam))
       const resData = res.data
-      if (this.dispDialog(resData)) {
+      if (!this.dispDialog(resData)) {
         return
       }
       return resData

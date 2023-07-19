@@ -163,10 +163,20 @@ export default {
      */
     handleApiResult (res) {
       const resData = res.data
-      this.getToast(resData.msr)
-      if (this.dispDialog(resData)) {
+
+      // 個別機能由来のメッセージ
+      const success = this.getToast(
+        resData.message,
+        resData.msgLevel)
+      if (!success) {
         return
       }
+
+      // 検索機能由来のメッセージ
+      this.getToast(
+        resData.msr.message,
+        resData.msr.msgLevel)
+
       this.setVuexState(resData)
 
       this.$set(this, 'psrArr', resData.msr.psrArr)

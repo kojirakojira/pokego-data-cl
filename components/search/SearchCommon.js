@@ -122,12 +122,13 @@ export default {
     },
     /**
      * ダイアログを表示する。
-     * resData.msgLevelが'error'の場合はtrueを返却する。
+     * resData.msgLevelが'error'の場合はfalseを返却する。
      *
      * @param {Object} resData
      * @returns
      */
     dispDialog (resData) {
+      let success = true
       if (resData.message) {
         // メッセージがある場合はalertで表示する。
         alert(resData.message)
@@ -135,9 +136,9 @@ export default {
       if (resData.msgLevel === 'error') {
         // errorの場合は画面を描画せず前画面に戻す。
         this.$router.back()
-        return true
+        success = false
       }
-      return false
+      return success
     },
     /**
      * メッセージ(msg)が存在する場合、トーストを表示する。
@@ -154,6 +155,31 @@ export default {
           this.isSearchBtnClick = false
           success = false
         }
+      }
+      return success
+    },
+    /**
+     * 汎用的なメッセージ処理をハンドリングする。
+     *
+     * @param {*} resData
+     * @returns
+     */
+    handleApiMessage (resData) {
+      // 個別機能由来のメッセージ
+      let success = this.getToast(
+        resData.message,
+        resData.msgLevel)
+      if (!success) {
+        success = false
+        return success
+      }
+
+      // 検索機能由来のメッセージ
+      const searchSuccess = this.getToast(
+        resData.pokemonSearchResult.message,
+        resData.pokemonSearchResult.msgLevel)
+      if (!searchSuccess) {
+        success = false
       }
       return success
     },

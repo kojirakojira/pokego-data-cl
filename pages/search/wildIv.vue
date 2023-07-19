@@ -141,17 +141,9 @@ export default {
     handleApiResult (res) {
       const resData = res.data
 
-      // 個別機能由来のメッセージ
-      const success = this.getToast(
-        resData.message,
-        resData.msgLevel)
+      // メッセージ、メッセージレベルによるハンドリング
+      const success = this.handleApiMessage(resData)
       if (!success) { return }
-
-      // 検索機能由来のメッセージ
-      const searchSuccess = this.getToast(
-        resData.pokemonSearchResult.message,
-        resData.pokemonSearchResult.msgLevel)
-      if (!searchSuccess) { return }
 
       if (resData.success) {
         this.setVuexState(resData)

@@ -66,10 +66,11 @@ export default {
      */
     handleApiResult (res) {
       const resData = res.data
-      this.getToast(resData.pfr)
-      if (this.dispDialog(resData)) {
-        return
-      }
+
+      // メッセージ、メッセージレベルによるハンドリング
+      const success = this.handleApiMessage(resData)
+      if (!success) { return }
+
       if (resData.success && resData.pfr.hit) {
         // 取得成功かつ1件以上ヒットした場合
         this.replaceState(this.searchParam)
