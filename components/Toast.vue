@@ -1,19 +1,19 @@
 <template>
   <v-snackbar
-    v-model="setSnackbar"
+    v-model="dispFlg"
     bottom
     rounded="pill"
-    :timeout="toast.timeout"
-    :color="toast.color"
+    :timeout="toast[0]?.timeout"
+    :color="toast[0]?.color"
   >
-    {{ toast.msg }}
+    {{ msg }}
     <template v-slot:action="{ attrs }">
       <v-btn
         color="pink"
         text
         v-bind="attrs"
         style="font-weight:bold;"
-        @click="setSnackbar = false"
+        @click="closeToast()"
       >
         Close
       </v-btn>
@@ -23,23 +23,49 @@
 
 <script>
 export default {
+  data () {
+    return {
+      dispFlg: false,
+      msg: ''
+    }
+  },
   computed: {
     toast () {
-      return this.$store.state.toast
-    },
-    setSnackbar: {
-      get () {
-        return !!this.toast.msg
+      // watch式でdeepを使用する場合、new, oldで同じオブジェクトを参照することになる。そのため値を複製させる。
+      return JSON.parse(JSON.stringify(this.$store.state.toast))
+    }
+  },
+  watch: {
+    toast: {
+      handler (newToast) {
+        if (!newToast.length || this.dispFlg) {
+          // 要素数が0件の場合、表示中の場合は中断。
+          return
+        }
+        // storeのclearToastを実行したときの考慮。
+        // メッセージを退避させないと、トースト表示中にメッセージが消えてしまう。
+        this.msg = newToast[0]?.msg
+        this.dispFlg = true
       },
-      set (val) {
-        this.resetToast()
-        return val
-      }
+      deep: true
+    },
+    dispFlg (newDispFlg) {
+      if (newDispFlg) { return }
+      // トーストが閉じられた際の処理
+      setTimeout(() => {
+        // 表示していたメッセージの要素を削除する。（queue）
+        this.$store.dispatch('shiftToast')
+        // 削除後、メッセージが存在する場合は次のメッセージを表示させる。
+        if (this.toast.length) {
+          this.msg = this.toast[0]?.msg
+          this.dispFlg = true
+        }
+      }, 100)
     }
   },
   methods: {
-    resetToast () {
-      return this.$store.dispatch('getToast', { msg: null })
+    closeToast () {
+      this.dispFlg = false
     }
   }
 }

@@ -33,6 +33,7 @@ export default {
             scpRankMaxMin: 'PvP最高(最低)順位',
             afterEvoScpRank: '進化後PvP順位',
             afterEvoCp: '進化後CP',
+            wildIv: '野生個体値',
             plList: 'PLごとのCP一覧',
             cp: 'CP算出',
             cpRank: 'CP順位',
@@ -138,12 +139,23 @@ export default {
       }
       return false
     },
-    getToast (pokemonResult) {
-      const msg = pokemonResult.message ? pokemonResult.message : ''
+    /**
+     * メッセージ(msg)が存在する場合、トーストを表示する。
+     * メッセージレベルがerrorの場合はfalseを返却する。
+     *
+     * @param {string} msg
+     * @param {string} msgLevel
+     */
+    getToast (msg, msgLevel) {
+      let success = true
       if (msg) {
         this.$store.dispatch('getToast', { msg })
-        this.isSearchBtnClick = false
+        if (msgLevel === 'error') {
+          this.isSearchBtnClick = false
+          success = false
+        }
       }
+      return success
     },
     /**
      * Vuex(ローカルストレージ)に"SearchState"をセットする。

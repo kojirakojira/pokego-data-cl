@@ -1,11 +1,7 @@
 export const state = () => ({
   userId: '',
   jwt: '',
-  toast: {
-    msg: null,
-    color: 'black',
-    timeout: 4000
-  },
+  toast: [],
 
   searchState: null // 画面復元用オブジェクト。(routeName, (psr)をセットする)
 })
@@ -29,8 +25,20 @@ export const mutations = {
   setJwt (state, jwt) {
     state.jwt = jwt
   },
-  setToast (state, payload) {
-    state.toast = payload
+  pushToast (state, payload) {
+    state.toast.push(payload)
+  },
+  shiftToast (state) {
+    state.toast.shift()
+  },
+  clearToast (state, id) {
+    if (id) {
+      // 指定されたidの要素を削除
+      state.toast = state.toast.filter(elem => elem.id !== id)
+    } else {
+      // idを指定していない場合は全要素を削除する。
+      state.toast.splice(0)
+    }
   },
   setSearchState (state, searchState) {
     state.searchState = searchState
@@ -50,7 +58,13 @@ export const actions = {
   getToast ({ commit }, toast) {
     toast.color = toast.color || 'black'
     toast.timeout = toast.timeout || 4000
-    commit('setToast', toast)
+    commit('pushToast', toast)
+  },
+  shiftToast ({ commit }) {
+    commit('shiftToast')
+  },
+  clearToast ({ commit }, id) {
+    commit('clearToast', id)
   },
   setSearchState ({ commit }, searchState) {
     commit('setSearchState', searchState)
