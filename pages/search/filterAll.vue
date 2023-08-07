@@ -65,11 +65,24 @@ export default {
      * @param {Object} res
      */
     handleApiResult (res) {
+      console.log(res)
+
       const resData = res.data
 
-      // メッセージ、メッセージレベルによるハンドリング
-      const success = this.handleApiMessage(resData)
-      if (!success) { return }
+      // 個別機能由来のメッセージ
+      const success = this.getToast(
+        resData.message,
+        resData.msgLevel)
+      if (!success) {
+        return
+      }
+
+      // 検索機能由来のメッセージ
+      this.getToast(
+        resData.pfr.message,
+        resData.pfr.msgLevel)
+
+      this.setVuexState(resData)
 
       if (resData.success && resData.pfr.hit) {
         // 取得成功かつ1件以上ヒットした場合

@@ -142,7 +142,7 @@ export default {
     },
     /**
      * メッセージ(msg)が存在する場合、トーストを表示する。
-     * メッセージレベルがerrorの場合はfalseを返却する。
+     * メッセージレベルがerrorの場合はfalseを返却する。（第2引数は省略可能）
      *
      * @param {string} msg
      * @param {string} msgLevel
