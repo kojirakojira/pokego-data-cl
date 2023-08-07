@@ -26,6 +26,8 @@ export const mutations = {
     state.jwt = jwt
   },
   pushToast (state, payload) {
+    // TODO: 調査
+    console.log(state.toast)
     state.toast.push(payload)
   },
   shiftToast (state) {

@@ -33,6 +33,7 @@ export default {
             scpRankMaxMin: 'PvP最高(最低)順位',
             afterEvoScpRank: '進化後PvP順位',
             afterEvoCp: '進化後CP',
+            threeGalarBirds: 'ガラル三鳥の野生個体値',
             wildIv: '野生個体値',
             plList: 'PLごとのCP一覧',
             cp: 'CP算出',

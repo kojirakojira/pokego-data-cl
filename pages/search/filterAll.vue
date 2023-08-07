@@ -65,8 +65,6 @@ export default {
      * @param {Object} res
      */
     handleApiResult (res) {
-      console.log(res)
-
       const resData = res.data
 
       // 個別機能由来のメッセージ

@@ -12,17 +12,12 @@
           ポケモン
         </v-col>
         <v-col cols="12" md="8" lg="8" xl="8">
-          <v-text-field
+          <v-combobox
             v-model="searchParam.name"
-            label="例：フシギダネ"
+            :items="tgbArr"
+            label="ガラル三鳥"
             outlined
             dense
-            rows="1"
-            :rules="rules.name"
-            :counter="20"
-            maxlength="20"
-            autocomplete="off"
-            @keyup.enter.exact="clickSearchBtn"
           />
         </v-col>
       </v-row>
@@ -90,7 +85,7 @@ import H2Common from '~/components/utils/H2Common'
 import SearchCommon from '~/components/search/SearchCommon'
 import ResultList from '~/components/search/ResultList'
 export default {
-  name: 'WildIv',
+  name: 'ThreeGalarBirds',
   components: {
     H2Common,
     ResultList
@@ -98,7 +93,7 @@ export default {
   mixins: [SearchCommon],
   data () {
     return {
-      searchPattern: 'wildIv',
+      searchPattern: 'threeGalarBirds',
       searchParam: {
         name: '',
         cp: '',
@@ -108,6 +103,7 @@ export default {
         goPokedexList: [],
         maybe: false
       },
+      tgbArr: ['フリーザー(ガラルのすがた)', 'サンダー(ガラルのすがた)', 'ファイヤー(ガラルのすがた)'],
       isSearchBtnClick: false
     }
   },
@@ -131,7 +127,7 @@ export default {
     },
     async get () {
       return await this.$axios
-        .get('/api/wildIv', { params: this.searchParam })
+        .get('/api/threeGalarBirds', { params: this.searchParam })
     },
     /**
      * APIのレスポンスを処理する。
@@ -151,7 +147,7 @@ export default {
         if (resData.pokemonSearchResult.unique) {
           // 1件のみヒットした場合
           this.$router.push({
-            name: 'search-result-wildIvResult',
+            name: 'search-result-threeGalarBirdsResult',
             query: this.makeQuery(resData.pokedexId),
             params: {
               rd: resData
@@ -173,7 +169,7 @@ export default {
         { property: 'og:title', content: `${this.getSearchPatternName(this.searchPattern)} - ペリずかん` },
         { property: 'og:url', content: process.env.VUE_APP_URL + this.$route.path },
         { property: 'og:site_name', content: 'ペリずかん' },
-        { property: 'og:description', content: '野生ポケモンCPから個体値の一覧を閲覧できます。' },
+        { property: 'og:description', content: '野生で出現したガラル三鳥のCPから個体値の一覧を閲覧できます。' },
         { property: 'og:image', content: process.env.VUE_APP_STATIC_URL + '/pokego/peripper-eyes.png' }
       ]
     }
