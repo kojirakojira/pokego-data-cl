@@ -7,40 +7,42 @@
         </h4>
       </v-col>
       <v-col cols="12" style="justify-content: center; display: flex;">
-        <div style="overflow-x: auto; display: flex;">
-          <div v-for="(yArr, i) in evoTree" :key="i" class="evo-tree">
-            <div v-for="(xArr, y) in yArr" :key="`hierarchy-${y + 1}`" class="hierarchy">
-              <div v-for="h in xArr" :key="`index${i}-${h.y}-${h.x}`" :class="`block index${i}-${h.y}-${h.x}`">
-                <template v-if="!h.blank">
-                  <div v-if="0 < y" class="edge" />
-                  <ul
-                    v-if="0 < y"
-                    class="costs"
-                    @mouseenter="onCostsEnter(`index${i}-${h.y}-${h.x}`)"
-                    @mouseleave="onCostsLeave(`index${i}-${h.y}-${h.x}`)"
-                  >
-                    <li v-for="(c, ci) in h.costs" :key="`costs${i}-${h.y}-${h.x}-${ci}`">
-                      <!-- text-overflow:ellipsisとliの中点は共存不可 -->
-                      {{ '・' + c }}
-                    </li>
-                  </ul>
-                  <Pokemon
-                    :pid="h.id"
-                    :name="raceMap[h.id].goPokedex.name"
-                    :remarks="raceMap[h.id].goPokedex.remarks"
-                    :link="h.id === pokedexId"
-                    :click-action="() => { $router.replace({ name: routerLink, query: { pid: h.id }})}"
-                    :marker="h.id === pokedexId"
-                  />
-                </template>
+        <div class="evo-tree" style="overflow-x: auto;">
+          <div style="display: flex;">
+            <div v-for="(yArr, i) in evoTree" :key="i">
+              <div v-for="(xArr, y) in yArr" :key="`hierarchy-${y + 1}`" class="hierarchy">
+                <div v-for="h in xArr" :key="`index${i}-${h.y}-${h.x}`" :class="`block index${i}-${h.y}-${h.x}`">
+                  <template v-if="!h.blank">
+                    <div v-if="0 < y" class="edge" />
+                    <ul
+                      v-if="0 < y"
+                      class="costs"
+                      @mouseenter="onCostsEnter(`index${i}-${h.y}-${h.x}`)"
+                      @mouseleave="onCostsLeave(`index${i}-${h.y}-${h.x}`)"
+                    >
+                      <li v-for="(c, ci) in h.costs" :key="`costs${i}-${h.y}-${h.x}-${ci}`">
+                        <!-- text-overflow:ellipsisとliの中点は共存不可 -->
+                        {{ '・' + c }}
+                      </li>
+                    </ul>
+                    <Pokemon
+                      :pid="h.id"
+                      :name="raceMap[h.id].goPokedex.name"
+                      :remarks="raceMap[h.id].goPokedex.remarks"
+                      :link="h.id === pokedexId"
+                      :click-action="() => { $router.replace({ name: routerLink, query: { pid: h.id }})}"
+                      :marker="h.id === pokedexId"
+                    />
+                  </template>
+                </div>
               </div>
             </div>
-            <ul v-if="evoTreeAnnos.length" class="evo-tree-annos">
-              <li v-for="(anno, i) in evoTreeAnnos" :key="`anno-${i}`">
-                {{ anno }}
-              </li>
-            </ul>
           </div>
+          <ul v-if="evoTreeAnnos.length" class="evo-tree-annos">
+            <li v-for="(anno, i) in evoTreeAnnos" :key="`anno-${i}`">
+              {{ anno }}
+            </li>
+          </ul>
         </div>
       </v-col>
     </v-row>
