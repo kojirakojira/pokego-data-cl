@@ -15,7 +15,7 @@
           <v-combobox
             v-model="searchParam.name"
             :items="tgbArr"
-            label="ガラル三鳥"
+            label="ポケモンを選択"
             outlined
             dense
           />

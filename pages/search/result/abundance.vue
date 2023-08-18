@@ -259,6 +259,7 @@
             :another-forms="evoResData.anotherForms"
             :bf-af-aot-forms="evoResData.bfAfAotForms"
             :race-map="evoResData.raceMap"
+            :evo-tree-annos="evoResData.evoTreeAnnotations"
             router-link="search-result-abundance"
             class="evolution"
           />

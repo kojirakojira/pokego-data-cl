@@ -2,15 +2,28 @@
   <v-container>
     <v-row>
       <v-col cols="12" class="col-title">
-        進化ツリー
+        <h4 style="margin: 0px;">
+          進化ツリー
+        </h4>
       </v-col>
-      <v-col style="justify-content: center; display: flex;">
+      <v-col cols="12" style="justify-content: center; display: flex;">
         <div style="overflow-x: auto; display: flex;">
           <div v-for="(yArr, i) in evoTree" :key="i" class="evo-tree">
             <div v-for="(xArr, y) in yArr" :key="`hierarchy-${y + 1}`" class="hierarchy">
               <div v-for="h in xArr" :key="`index${i}-${h.y}-${h.x}`" :class="`block index${i}-${h.y}-${h.x}`">
                 <template v-if="!h.blank">
-                  <div v-if="1 < y + 1" class="edge" />
+                  <div v-if="0 < y" class="edge" />
+                  <ul
+                    v-if="0 < y"
+                    class="costs"
+                    @mouseenter="onCostsEnter(`index${i}-${h.y}-${h.x}`)"
+                    @mouseleave="onCostsLeave(`index${i}-${h.y}-${h.x}`)"
+                  >
+                    <li v-for="(c, ci) in h.costs" :key="`costs${i}-${h.y}-${h.x}-${ci}`">
+                      <!-- text-overflow:ellipsisとliの中点は共存不可 -->
+                      {{ '・' + c }}
+                    </li>
+                  </ul>
                   <Pokemon
                     :pid="h.id"
                     :name="raceMap[h.id].goPokedex.name"
@@ -22,6 +35,11 @@
                 </template>
               </div>
             </div>
+            <ul v-if="evoTreeAnnos.length" class="evo-tree-annos">
+              <li v-for="(anno, i) in evoTreeAnnos" :key="`anno-${i}`">
+                {{ anno }}
+              </li>
+            </ul>
           </div>
         </div>
       </v-col>
@@ -29,7 +47,9 @@
     <v-row>
       <v-col cols="12">
         <div class="col-title">
-          別のすがた
+          <h4 style="margin: 0px;">
+            別のすがた
+          </h4>
         </div>
       </v-col>
       <v-col>
@@ -54,7 +74,9 @@
     </v-row>
     <v-row>
       <v-col cols="12" class="col-title">
-        同系統のポケモン
+        <h4 style="margin: 0px;">
+          同系統のポケモン
+        </h4>
       </v-col>
       <v-col>
         <v-container v-if="bfAfAotFormArr.length" style="justify-content: center; display: grid;">
@@ -87,25 +109,36 @@ export default {
     Pokemon
   },
   props: {
+    /** 図鑑ID */
     pokedexId: {
       type: String,
       required: true
     },
+    /** 進化ツリー */
     evoTreeInfo: {
       type: Array,
       required: true
     },
+    /** 別のすがた */
     anotherForms: {
       type: Array,
       required: true
     },
+    /** 別のすがたの進化前、進化後 */
     bfAfAotForms: {
       type: Array,
       required: true
     },
+    /** 種族値マップ */
     raceMap: {
       type: Object,
       required: true
+    },
+    /** 進化ツリーの注釈 */
+    evoTreeAnnos: {
+      type: Array,
+      required: false,
+      default: () => []
     },
     routerLink: {
       type: String,
@@ -185,6 +218,20 @@ export default {
   },
   methods: {
     /**
+     * costsにマウスカーソルを乗せた際のイベント
+     */
+    onCostsEnter (index) {
+      const costs = document.getElementsByClassName(index)[0].getElementsByClassName('costs')[0]
+      costs.className += ' costs-enter'
+    },
+    /**
+     * costsからマウスカーソルを外した際のイベント
+     */
+    onCostsLeave (index) {
+      const costs = document.getElementsByClassName(index)[0].getElementsByClassName('costs')[0]
+      costs.className = 'costs'
+    },
+    /**
      * 進化ツリーを描画する。
      */
     drawTree (yArr) {
@@ -254,8 +301,7 @@ export default {
         left: ${-80 * dist + 35}px; }\
        .block.index${i}-${y}-${x} .edge:before {\
         width: ${80 * dist + 1}px;\
-        left: ${-80 * dist}px; }\
-        this.createStyleElem(className, style)`
+        left: ${-80 * dist}px; }`
       this.$editUtils.createStyleElem(idName, style, this.styleIdArr)
     },
     /**
@@ -292,8 +338,18 @@ export default {
   width: fit-content;
 
   .hierarchy {
-    height: 120px;
+    height: 140px;
     display: flex;
+  }
+
+  .evo-tree-annos {
+    color: white;
+    padding-bottom: 5px;
+    font-size: 12px;
+
+    li::marker {
+      content: '※';
+    }
   }
 }
 .another-form,.bfaf-another-form {
@@ -313,8 +369,8 @@ export default {
   .edge {
     content: '';
     position: absolute;
-    height: 60px;
-    top: 0px;
+    height: 90px;
+    top: -20px;
     border-top: 2px solid yellow;
     border-right: 2px solid yellow;
     border-radius: 0 30px 0 0;
@@ -323,8 +379,8 @@ export default {
   .edge:before {
     content: '';
     position: absolute;
-    height: 60px;
-    top: -60px;
+    height: 50px;
+    top: -50px;
     border-bottom: 2px solid yellow;
     border-left: 2px solid yellow;
     border-radius: 0 0 0 30px;
@@ -333,6 +389,36 @@ export default {
 
   .pokemon {
     margin-left: 15px;
+  }
+
+  .costs {
+    position: absolute;
+    left: 45px;
+    top: -10px;
+    color: white;
+    font-size: 11px;
+    z-index: 52;
+    width: calc(100% - 45px);
+    padding-left: 0px;
+
+    li {
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &-enter {
+      background-color: #F5F5F5;
+      color: black;
+      border-radius: 2px;
+      font-weight: bold;
+      height: auto;
+
+      li {
+        white-space: normal;
+      }
+    }
   }
 }
 </style>

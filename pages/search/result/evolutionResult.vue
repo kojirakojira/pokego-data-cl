@@ -10,6 +10,7 @@
         :another-forms="resData.anotherForms"
         :bf-af-aot-forms="resData.bfAfAotForms"
         :race-map="resData.raceMap"
+        :evo-tree-annos="resData.evoTreeAnnotations"
         router-link="search-result-evolutionResult"
       />
     </div>
@@ -68,6 +69,7 @@ export default {
         // resDataを取得できなかった場合
         return
       }
+      console.log(resData)
 
       this.resData = resData
       this.isLoading = false
