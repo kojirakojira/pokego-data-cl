@@ -13,6 +13,12 @@
         :evo-tree-annos="resData.evoTreeAnnotations"
         router-link="search-result-evolutionResult"
       />
+      <PrevNext
+        :id="id"
+        :prev-text-func="(gp) => `&lt; ${$editUtils.appendRemarks(gp.name, gp.remarks)}の進化ツリー(図鑑№${$editUtils.getPdxNo(gp.pokedexId)})`"
+        :next-text-func="(gp) => `${$editUtils.appendRemarks(gp.name, gp.remarks)}の進化ツリー(図鑑№${$editUtils.getPdxNo(gp.pokedexId)}) &gt;`"
+        router-link="search-result-evolutionResult"
+      />
     </div>
     <div v-else>
       <Loading split-scr />
@@ -25,12 +31,14 @@ import H2Common from '~/components/utils/H2Common'
 import SearchCommon from '~/components/search/SearchCommon'
 import OgpPokemon from '~/components/utils/OgpPokemon'
 import EvoInfo from '~/components/search/evolution/EvoInfo'
+import PrevNext from '~/components/search/PrevNextPokemon'
 import Loading from '~/components/Loading'
 export default {
   name: 'EvolutionResult',
   components: {
     H2Common,
     EvoInfo,
+    PrevNext,
     Loading
   },
   mixins: [SearchCommon, OgpPokemon],
@@ -69,7 +77,6 @@ export default {
         // resDataを取得できなかった場合
         return
       }
-      console.log(resData)
 
       this.resData = resData
       this.isLoading = false

@@ -1,11 +1,34 @@
 export default (context, inject) => {
   /**
-     * タイプのrgb(999, 999, 999)を取得します。
-     * 英語名、日本語名の両方から取得できます。
-     *
-     * @param {String} type1 タイプ１
-     * @param {String} type2 タイプ２
-     */
+   * 図鑑IDから図鑑Noを取得する。
+   *
+   * @param {String} pdxId 図鑑No
+   * @returns
+   */
+  const getPdxNo = (pdxId) => {
+    return pdxId ? pdxId.substring(0, 4) * 1 : ''
+  }
+  /**
+   * ポケモン名に備考を連結させる。
+   *
+   * @param {String} name
+   * @param {String} remarks
+   * @returns
+   */
+  const appendRemarks = (name, remarks) => {
+    let val = name
+    if (remarks) {
+      val = val + `(${remarks})`
+    }
+    return val
+  }
+  /**
+   * タイプのrgb(999, 999, 999)を取得します。
+   * 英語名、日本語名の両方から取得できます。
+   *
+   * @param {String} type1 タイプ１
+   * @param {String} type2 タイプ２
+   */
   const getRGB = (type1, type2) => {
     let rgb1 = { r: 0, g: 0, b: 0 }
     let rgb2 = { r: 0, g: 0, b: 0 }
@@ -93,6 +116,8 @@ export default (context, inject) => {
   }
 
   const editUtils = {
+    getPdxNo,
+    appendRemarks,
     getRGB,
     getRGBA,
     createStyleElem,
