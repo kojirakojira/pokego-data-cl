@@ -281,18 +281,24 @@ export default {
      */
     drawEdge (yArr, i) {
       yArr.forEach((xArr) => {
-        xArr.forEach(v => this.createEdge(i, v.x, v.y, v.dist))
+        xArr.forEach(v => this.createEdge(
+          i,
+          v.x,
+          v.y,
+          v.dist,
+          v.goEvo || 'border-color: grey; z-index: 49;'))
       })
     },
     /**
      * 進化ツリーのノードを結ぶ線（エッジ）のスタイルを作成します。
      *
-     * @param {i} i番目のツリー
-     * @param {x} x軸
-     * @param {y} y軸(上から数える)
-     * @param {dist} 上位階層からのx軸の距離
+     * @param {Number} i番目のツリー
+     * @param {Number} x軸
+     * @param {Number} y軸(上から数える)
+     * @param {Number} 上位階層からのx軸の距離
+     * @param {String} 追加のstyle
      */
-    createEdge (i, x, y, dist) {
+    createEdge (i, x, y, dist, addStyle) {
       // y=1の場合はedgeは生成しない。
       if (y <= 1) { return }
 
@@ -300,10 +306,12 @@ export default {
       const style =
       `.block.index${i}-${y}-${x} .edge {\
         width: ${80 * dist + 1}px;\
-        left: ${-80 * dist + 35}px; }\
+        left: ${-80 * dist + 35}px;\
+        ${addStyle || ''}}\
        .block.index${i}-${y}-${x} .edge:before {\
         width: ${80 * dist + 1}px;\
-        left: ${-80 * dist}px; }`
+        left: ${-80 * dist}px;\
+        ${addStyle || ''}}`
       this.$editUtils.createStyleElem(idName, style, this.styleIdArr)
     },
     /**
