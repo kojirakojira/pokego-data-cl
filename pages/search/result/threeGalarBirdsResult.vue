@@ -77,6 +77,7 @@
             <v-data-table
               :headers="headers"
               :items="resData.ivList"
+              mobile-breakpoint="300"
               :footer-props="{ 'items-per-page-options': [-1] }"
               hide-default-footer
               no-data-text="loading now..."

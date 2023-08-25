@@ -34,9 +34,9 @@ export default {
             afterEvoScpRank: '進化後PvP順位',
             afterEvoCp: '進化後CP',
             threeGalarBirds: 'ガラル三鳥の野生個体値',
-            wildIv: '野生個体値',
+            cpIv: 'CP→個体値検索',
+            cp: '個体値→CP算出',
             plList: 'PLごとのCP一覧',
-            cp: 'CP算出',
             cpRank: 'CP順位',
             cpRankList: 'CPランキング'
           }

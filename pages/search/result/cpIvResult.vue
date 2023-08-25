@@ -2,7 +2,7 @@
   <div>
     <div>
       <H2Common>
-        {{ getSearchPatternName('wildIv') }}
+        {{ getSearchPatternName('cpIv') }}
       </H2Common>
     </div>
     <div v-if="!isLoading">
@@ -47,16 +47,24 @@
                       {{ resData.wbFlg ? 'あり' : 'なし' }}
                     </v-col>
                   </v-row>
+                  <v-row class="searched-param">
+                    <v-col cols="7" md="6" lg="6" xl="6" class="pa-1">
+                      シチュエーション
+                    </v-col>
+                    <v-col cols="5" md="6" lg="6" xl="6" class="pa-1">
+                      {{ $CONST.getValue(searchParam.situation, $CONST.SITUATION) }}
+                    </v-col>
+                  </v-row>
                 </v-container>
               </v-card-text>
             </v-card>
           </v-col>
         </v-row>
-        <v-row>
+        <!-- <v-row>
           <v-col class="subtitle-2">
             野生ポケモンにおけるPLは1～30、個体値はHP、こうげき、ぼうぎょそれぞれ最低値保証はなく0～15の振れ幅があります。天候ブーストの場合、PLは6～35、個体値は4～15になります。
           </v-col>
-        </v-row>
+        </v-row> -->
         <v-row>
           <v-col cols="12" md="12" lg="12" xl="12">
             <h3>
@@ -77,6 +85,7 @@
             <v-data-table
               :headers="headers"
               :items="resData.ivList"
+              mobile-breakpoint="300"
               :footer-props="{ 'items-per-page-options': [-1] }"
               hide-default-footer
               no-data-text="loading now..."
@@ -102,7 +111,7 @@ import SearchCommon from '~/components/search/SearchCommon'
 import OgpPokemon from '~/components/utils/OgpPokemon'
 import Loading from '~/components/Loading'
 export default {
-  name: 'WildIvResult',
+  name: 'CpIvResult',
   components: {
     H2Common,
     Loading
@@ -127,6 +136,7 @@ export default {
     this.searchParam.id = this.$route.query.pid
     this.searchParam.cp = this.$route.query.cp
     this.searchParam.wbFlg = this.$route.query.wbFlg
+    this.searchParam.situation = this.$route.query.situation
     const resData = this.$route.params.rd
 
     if (resData) {
@@ -145,7 +155,7 @@ export default {
   methods: {
     async get () {
       const res = await this.$axios
-        .get('/api/wildIv', { params: this.searchParam })
+        .get('/api/cpIv', { params: this.searchParam })
       const resData = res.data
       if (!this.dispDialog(resData)) {
         return
