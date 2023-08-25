@@ -207,69 +207,74 @@
             </v-tooltip>
           </v-col>
         </v-row>
-        <v-row>
-          <v-col
-            cols="12"
-            sm="6"
-            md="6"
-            lg="6"
-            xl="6"
-            align="right"
-          >
-            <OriRadarGraph
-              :race="resData.race"
-              :ori-stats-items="oriStatsItems"
-              :pokedex-stats="resData.statistics.pokedexStats"
-            />
-          </v-col>
-          <v-col
-            cols="12"
-            sm="6"
-            md="6"
-            lg="6"
-            xl="6"
-            class="stats"
-          >
-            <v-row>
-              <template
-                v-for="item in oriStatsItems"
-              >
-                <v-col
-                  :key="`ori-col-${item.key}`"
-                  cols="6"
-                  md="4"
-                  lg="4"
-                  xl="2"
-                  style="text-align: right"
+        <template v-if="resData.race.pokedex">
+          <v-row>
+            <v-col
+              cols="12"
+              sm="6"
+              md="6"
+              lg="6"
+              xl="6"
+              align="right"
+            >
+              <OriRadarGraph
+                :race="resData.race"
+                :ori-stats-items="oriStatsItems"
+                :pokedex-stats="resData.statistics.pokedexStats"
+              />
+            </v-col>
+            <v-col
+              cols="12"
+              sm="6"
+              md="6"
+              lg="6"
+              xl="6"
+              class="stats"
+            >
+              <v-row>
+                <template
+                  v-for="item in oriStatsItems"
                 >
-                  {{ `${item.name}:` }}
-                </v-col>
-                <v-col
-                  :key="`ori-val-${item.key}`"
-                  cols="6"
-                  md="8"
-                  lg="8"
-                  xl="10"
-                >
-                  {{ resData.race.pokedex[item.key] }}
-                </v-col>
-              </template>
-            </v-row>
-          </v-col>
-        </v-row>
-        <v-row v-for="elem in oriLineElems" :key="`ori-${elem.key}-line`">
-          <v-col>
-            <LineGraph
-              :chart-id="`ori-${elem.key}-line`"
-              :title="elem.title"
-              :rank="rank(resData.race.pokedex[elem.key], resData.statistics.pokedexStats[elem.statsKey].list)"
-              :elems="resData.statistics.pokedexStats[elem.statsKey].list"
-              :point="resData.race.pokedex[elem.key]"
-              :rgb="elem.rgb"
-              :height="100"
-            />
-          </v-col>
-        </v-row>
+                  <v-col
+                    :key="`ori-col-${item.key}`"
+                    cols="6"
+                    md="4"
+                    lg="4"
+                    xl="2"
+                    style="text-align: right"
+                  >
+                    {{ `${item.name}:` }}
+                  </v-col>
+                  <v-col
+                    :key="`ori-val-${item.key}`"
+                    cols="6"
+                    md="8"
+                    lg="8"
+                    xl="10"
+                  >
+                    {{ resData.race.pokedex[item.key] }}
+                  </v-col>
+                </template>
+              </v-row>
+            </v-col>
+          </v-row>
+          <v-row v-for="elem in oriLineElems" :key="`ori-${elem.key}-line`">
+            <v-col>
+              <LineGraph
+                :chart-id="`ori-${elem.key}-line`"
+                :title="elem.title"
+                :rank="rank(resData.race.pokedex[elem.key], resData.statistics.pokedexStats[elem.statsKey].list)"
+                :elems="resData.statistics.pokedexStats[elem.statsKey].list"
+                :point="resData.race.pokedex[elem.key]"
+                :rgb="elem.rgb"
+                :height="100"
+              />
+            </v-col>
+          </v-row>
+        </template>
+        <div v-else class="subtitle-2">
+          {{ `※${appendRemarks(resData.name, resData.remarks)}は、原作種族値が存在しません。` }}
+        </div>
       </v-container>
     </div>
     <div v-else>

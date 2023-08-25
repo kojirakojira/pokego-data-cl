@@ -148,7 +148,7 @@
             </v-tooltip>
           </v-col>
         </v-row>
-        <v-row>
+        <v-row v-if="!resData.raceArr.filter(v => !v.pokedex)">
           <v-col
             cols="12"
             sm="12"
@@ -212,6 +212,14 @@
             <p align="right" class="subtitle-2">
               {{ `※全ポケモン${oriDataTableElems.count}体中(メガ、ゲンシ等含む)` }}
             </p>
+          </v-col>
+        </v-row>
+        <v-row v-else>
+          <v-col>
+            {{ resData.raceArr
+              .filter(v => !v.pokedex)
+              .map(v => $editUtils.appendRemarks(v.name, v.remarks))
+              .join(",") + 'は、原作種族値が存在しないため比較できませんでした。' }}
           </v-col>
         </v-row>
       </v-container>
@@ -300,6 +308,8 @@ export default {
       return
     }
 
+    console.log(resData)
+
     this.drawing(resData)
     this.resData = resData
     this.isLoading = false
@@ -313,13 +323,20 @@ export default {
       if (!this.dispDialog(resData)) {
         return
       }
+
       return resData
     },
     drawing (resData) {
       this.goDataTableElems = this.getGoDataTableElems(resData)
       this.drawGoRadar(this.goDataTableElems)
-      this.oriDataTableElems = this.getOriDataTableElems(resData)
-      this.drawOriRadar(this.oriDataTableElems)
+
+      // 原作種族値が存在しないポケモンを抜き出す
+      const notExistsOriginArr = resData.raceArr.filter(v => !v.pokedex)
+      if (!notExistsOriginArr.length) {
+        // 検索したすべてのポケモンにおいて原作種族値が存在する場合のみ
+        this.oriDataTableElems = this.getOriDataTableElems(resData)
+        this.drawOriRadar(this.oriDataTableElems)
+      }
     },
     /**
      * GO種族値のv-data-tableに表示させる用の連想配列を取得する。
