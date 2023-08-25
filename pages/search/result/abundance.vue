@@ -1,7 +1,7 @@
 <template>
   <div>
     <H2Common>
-      {{ `${appendRemarks(abundResData.name, abundResData.remarks) || 'name'}の情報` }}
+      {{ `${$editUtils.appendRemarks(abundResData.name, abundResData.remarks) || 'name'}の情報` }}
     </H2Common>
     <!-- ポケモンの画像 -->
     <v-container>
@@ -40,7 +40,7 @@
                 ポケモン
               </v-col>
               <v-col cols="7">
-                {{ appendRemarks(abundResData.name, abundResData.remarks) }}
+                {{ $editUtils.appendRemarks(abundResData.name, abundResData.remarks) }}
               </v-col>
             </v-row>
             <v-row>
@@ -192,7 +192,11 @@
             </v-row>
             <v-row>
               <v-col align="end">
-                <nuxt-link :to="{ name: 'search-raceDiff', query: { name1: appendRemarks(abundResData.name, abundResData.remarks) } }">
+                <nuxt-link
+                  :to="{
+                    name: 'search-raceDiff',
+                    query: { name1: $editUtils.appendRemarks(abundResData.name, abundResData.remarks) } }"
+                >
                   他のポケモンと種族値を比較する >>>
                 </nuxt-link>
               </v-col>

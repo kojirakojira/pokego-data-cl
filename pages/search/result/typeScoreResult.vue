@@ -7,7 +7,7 @@
       <v-container v-if="resData.name">
         <v-row>
           <v-col>
-            {{ `ポケモン：${appendRemarks(resData.name, resData.remarks)}` }}
+            {{ `ポケモン：${$editUtils.appendRemarks(resData.name, resData.remarks)}` }}
           </v-col>
         </v-row>
       </v-container>

@@ -26,7 +26,7 @@
                       ポケモン
                     </v-col>
                     <v-col cols="5" md="6" lg="6" xl="6" class="pa-1">
-                      {{ appendRemarks(resData.searchPokemon.name, resData.searchPokemon.remarks) }}
+                      {{ $editUtils.appendRemarks(resData.searchPokemon.name, resData.searchPokemon.remarks) }}
                     </v-col>
                   </v-row>
                   <v-row class="searched-param" align="center">
@@ -83,7 +83,7 @@
               </template>
               <template v-slot:[`item.goPokedex.name`]="{ item }">
                 <div style="min-width:120px;">
-                  {{ appendRemarks(item.goPokedex.name, item.goPokedex.remarks) }}
+                  {{ $editUtils.appendRemarks(item.goPokedex.name, item.goPokedex.remarks) }}
                 </div>
               </template>
             </v-data-table>

@@ -28,7 +28,7 @@
                 </v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-title>
-                    {{ appendRemarks(p.name, p.remarks) + ' : ' + p.gen }}
+                    {{ $editUtils.appendRemarks(p.name, p.remarks) + ' : ' + p.gen }}
                   </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>

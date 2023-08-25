@@ -26,7 +26,7 @@
                       ポケモン
                     </v-col>
                     <v-col cols="5" md="6" lg="6" xl="6" class="pa-1">
-                      {{ appendRemarks(resData.goPokedex.name, resData.goPokedex.remarks) }}
+                      {{ $editUtils.appendRemarks(resData.goPokedex.name, resData.goPokedex.remarks) }}
                     </v-col>
                   </v-row>
                 </v-container>
@@ -58,7 +58,7 @@
                 {{ item.goPokedex.pokedexId | dispPdx }}
               </template>
               <template v-slot:[`item.goPokedex.name`]="{ item }">
-                {{ appendRemarks(item.goPokedex.name, item.goPokedex.remarks) }}
+                {{ $editUtils.appendRemarks(item.goPokedex.name, item.goPokedex.remarks) }}
               </template>
             </v-data-table>
           </v-col>

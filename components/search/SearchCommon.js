@@ -114,13 +114,6 @@ export default {
       })
       return ret
     },
-    appendRemarks (name, remarks) {
-      let val = name
-      if (remarks) {
-        val = val + `(${remarks})`
-      }
-      return val
-    },
     /**
      * ダイアログを表示する。
      * resData.msgLevelが'error'の場合はfalseを返却する。

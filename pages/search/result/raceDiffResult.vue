@@ -22,7 +22,7 @@
                   <v-icon large :color="`rgba(${colorArr[idx].r}, ${colorArr[idx].g}, ${colorArr[idx].b}, 0.5)`">
                     mdi-circle-half-full
                   </v-icon>
-                  {{ appendRemarks(race.goPokedex.name, race.goPokedex.remarks) }}
+                  {{ $editUtils.appendRemarks(race.goPokedex.name, race.goPokedex.remarks) }}
                 </v-col>
                 <v-col class="py-0">
                   <span
@@ -308,8 +308,6 @@ export default {
       return
     }
 
-    console.log(resData)
-
     this.drawing(resData)
     this.resData = resData
     this.isLoading = false
@@ -378,7 +376,7 @@ export default {
         const dataset = {}
         const elems = [data.hpRank, data.atRank, data.dfRank]
         dataset.elems = elems.map(r => goDataTableElems.count - r * 1 + 1)
-        dataset.label = this.appendRemarks(data.name, data.remarks)
+        dataset.label = this.$editUtils.appendRemarks(data.name, data.remarks)
         dataset.color = this.colorArr[idx]
         datasets.push(dataset)
       })
@@ -431,7 +429,7 @@ export default {
         // elemsはレーダチャート描画のため値をリバースする。
         const elems = [data.hpRank, data.atRank, data.spAtRank, data.spRank, data.spDfRank, data.dfRank]
         dataset.elems = elems.map(r => oriDataTableElems.count - r * 1 + 1)
-        dataset.label = this.appendRemarks(data.name, data.remarks)
+        dataset.label = this.$editUtils.appendRemarks(data.name, data.remarks)
         dataset.color = this.colorArr[idx]
         datasets.push(dataset)
       })

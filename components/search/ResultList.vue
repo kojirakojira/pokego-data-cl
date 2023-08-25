@@ -31,7 +31,7 @@
                 </v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-title>
-                    {{ appendRemarks(p.name, p.remarks) }}
+                    {{ $editUtils.appendRemarks(p.name, p.remarks) }}
                   </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>

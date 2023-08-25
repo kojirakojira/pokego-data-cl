@@ -30,7 +30,7 @@
             ポケモン
           </v-col>
           <v-col cols="12" md="6" lg="6" xl="6">
-            {{ appendRemarks(resData.name, resData.remarks) }}
+            {{ $editUtils.appendRemarks(resData.name, resData.remarks) }}
           </v-col>
         </v-row>
         <v-row>

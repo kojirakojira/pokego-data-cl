@@ -26,7 +26,7 @@
                       ポケモン
                     </v-col>
                     <v-col cols="5" md="6" lg="6" xl="6" class="pa-1">
-                      {{ appendRemarks(resData.searchPokemon.name, resData.searchPokemon.remarks) }}
+                      {{ $editUtils.appendRemarks(resData.searchPokemon.name, resData.searchPokemon.remarks) }}
                     </v-col>
                   </v-row>
                   <v-row class="searched-param" align="center">
@@ -77,7 +77,7 @@
                 {{ item.goPokedex.pokedexId | dispPdx }}
               </template>
               <template v-slot:[`item.goPokedex.name`]="{ item }">
-                {{ appendRemarks(item.goPokedex.name, item.goPokedex.remarks) }}
+                {{ $editUtils.appendRemarks(item.goPokedex.name, item.goPokedex.remarks) }}
               </template>
             </v-data-table>
             <div v-else class="pl-4">
@@ -108,7 +108,7 @@
                 </v-avatar>
               </template>
               <template v-slot:[`item.goPokedex.name`]="{ item }">
-                {{ appendRemarks(item.goPokedex.name, item.goPokedex.remarks) }}
+                {{ $editUtils.appendRemarks(item.goPokedex.name, item.goPokedex.remarks) }}
               </template>
             </v-data-table>
           </v-col>

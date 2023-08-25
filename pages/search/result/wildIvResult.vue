@@ -28,7 +28,7 @@
                       ポケモン
                     </v-col>
                     <v-col cols="5" md="6" lg="6" xl="6" class="pa-1">
-                      {{ appendRemarks(resData.name, resData.remarks) }}
+                      {{ $editUtils.appendRemarks(resData.name, resData.remarks) }}
                     </v-col>
                   </v-row>
                   <v-row class="searched-param">

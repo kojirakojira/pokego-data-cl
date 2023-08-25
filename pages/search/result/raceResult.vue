@@ -31,7 +31,7 @@
             ポケモン
           </v-col>
           <v-col cols="12" md="6" lg="6" xl="6">
-            {{ appendRemarks(resData.name, resData.remarks) }}
+            {{ $editUtils.appendRemarks(resData.name, resData.remarks) }}
           </v-col>
         </v-row>
         <v-row>
@@ -273,7 +273,7 @@
           </v-row>
         </template>
         <div v-else class="subtitle-2">
-          {{ `※${appendRemarks(resData.name, resData.remarks)}は、原作種族値が存在しません。` }}
+          {{ `※${$editUtils.appendRemarks(resData.name, resData.remarks)}は、原作種族値が存在しません。` }}
         </div>
       </v-container>
     </div>
