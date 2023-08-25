@@ -4,6 +4,11 @@
       {{ getSearchPatternName(searchPattern) }}
     </H2Common>
     <v-container>
+      <v-row v-if="resData.lastUpdated">
+        <v-col align="right">
+          {{ `最終更新日：${resData.lastUpdated}` }}
+        </v-col>
+      </v-row>
       <v-row>
         <v-col>
           <v-list v-if="!isLoading" outlined>
@@ -15,7 +20,7 @@
                 @click="clickRow(p.pokedexId)"
               > -->
               <v-list-item
-                v-for="p in unimplList"
+                v-for="p in resData.unimplList"
                 :key="p.pokedexId"
               >
                 <v-list-item-avatar>
@@ -48,19 +53,21 @@ export default {
   data () {
     return {
       searchPattern: 'unimplPokemon',
-      unimplList: [],
+      resData: {},
 
       isLoading: true
     }
   },
   async beforeMount () {
-    this.unimplList = (await this.get()).data.unimplList
+    this.resData = await this.get()
+
     this.isLoading = false
   },
   methods: {
     async get () {
-      return await this.$axios
+      const res = await this.$axios
         .get('/api/unimplPokemon')
+      return res.data
     }
   },
   head () {
