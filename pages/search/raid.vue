@@ -27,6 +27,21 @@
         </v-col>
       </v-row>
       <v-row>
+        <v-col cols="4" md="4" lg="4" xl="4" class="col-title">
+          シャドウ
+        </v-col>
+        <v-col cols="8" md="8" lg="8" xl="8">
+          <v-switch
+            v-model="searchParam.shadow"
+            inset
+            dense
+            hide-details
+            :label="searchParam.shadow ? 'シャドウとして算出' : ''"
+            style="margin-top: 0px;"
+          />
+        </v-col>
+      </v-row>
+      <v-row>
         <v-col cols="12" align="center">
           <v-btn
             rounded
@@ -64,6 +79,7 @@ export default {
     return {
       searchPattern: 'raid',
       searchParam: {
+        shadow: false,
         name: ''
       },
       psr: {

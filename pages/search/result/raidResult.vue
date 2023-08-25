@@ -33,6 +33,20 @@
             {{ $editUtils.appendRemarks(resData.name, resData.remarks) }}
           </v-col>
         </v-row>
+        <v-row v-if="shadow">
+          <v-col
+            cols="12"
+            md="6"
+            lg="6"
+            xl="6"
+            class="col-title"
+          >
+            シャドウ
+          </v-col>
+          <v-col cols="12" md="6" lg="6" xl="6">
+            シャドウとして算出
+          </v-col>
+        </v-row>
         <v-row>
           <v-col
             cols="12"
@@ -84,12 +98,14 @@ export default {
   data () {
     return {
       id: null, // pokedexId
+      shadow: false,
       resData: {},
       isLoading: true
     }
   },
   async beforeMount () {
     this.id = this.$route.query.pid
+    this.shadow = this.$route.query.shadow
     let resData = this.$route.params.rd
 
     if (!resData) {
@@ -110,7 +126,8 @@ export default {
       const res = await this.$axios
         .get('/api/raid', {
           params: {
-            id: this.id
+            id: this.id,
+            shadow: this.shadow
           }
         })
       const resData = res.data
