@@ -1,6 +1,6 @@
 import firebase from 'firebase/app'
 
-export default function ({ app, store, $axios }) {
+export default function ({ app, store, $axios, error }) {
   // baseURL
   $axios.setBaseURL(process.env.VUE_APP_API_URL)
 
@@ -11,11 +11,15 @@ export default function ({ app, store, $axios }) {
 
   // response
   $axios.onResponse((res) => {
-    if (res) {
-      const auth = res.headers.authorization
-      if (auth) {
-        store.dispatch('setJwt', auth)
-      }
+    const status = res?.status
+    if (status !== 200) {
+      error({ statusCode: 500 })
+      return
+    }
+
+    const auth = res?.headers.authorization
+    if (auth) {
+      store.dispatch('setJwt', auth)
     }
 
     return Promise.resolve(res)
