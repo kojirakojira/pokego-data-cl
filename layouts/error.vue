@@ -19,6 +19,9 @@
           <h2 v-else>
             {{ error.msg ? error.msg : '例外が発生しました。' }}
           </h2>
+          <div v-if="error.statusCode">
+            {{ `HTTP status: ${error.statusCode}` }}
+          </div>
           <NuxtLink to="/search">
             ホームへ移動する
           </NuxtLink>

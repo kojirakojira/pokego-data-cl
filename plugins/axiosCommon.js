@@ -11,12 +11,6 @@ export default function ({ app, store, $axios, error }) {
 
   // response
   $axios.onResponse((res) => {
-    const status = res?.status
-    if (status !== 200) {
-      error({ statusCode: 500 })
-      return
-    }
-
     const auth = res?.headers.authorization
     if (auth) {
       store.dispatch('setJwt', auth)
@@ -24,6 +18,20 @@ export default function ({ app, store, $axios, error }) {
 
     return Promise.resolve(res)
   })
+  /**
+   * APIで500エラーが発生したら、エラー画面に遷移させる。
+   * $axios.onErrorだとタイミングが遅い。
+   * （npm run devで起動するとこの記述無しでエラー画面に遷移できるが、
+   * npm run startで起動した場合は遷移できない。）
+   */
+  $axios.interceptors.response.use(
+    res => res, // 成功時のresponseはそのまま返す
+    (err) => {
+      if (err?.response.status === 500) {
+        error({ statusCode: err.response.status })
+      }
+    }
+  )
 
   // error
   $axios.onError((err) => {

@@ -7,6 +7,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env HOST=0.0.0.0 PORT=3000 NODE_ENV=development nuxt",
+    "build:dev": "cross-env NODE_ENV=development nuxt build",
     "build": "cross-env nuxt build",
     "start": "nuxt start",
     "generate": "cross-env nuxt generate",
