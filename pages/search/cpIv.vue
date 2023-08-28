@@ -73,6 +73,18 @@
             mdi-pen
           </v-icon>
           天候ブースト
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs}">
+              <v-icon
+                small
+                v-bind="attrs"
+                v-on="on"
+              >
+                mdi-help-circle
+              </v-icon>
+            </template>
+            <span>フィールドリサーチクリア後のボーナス、タマゴ孵化は、天候ブーストの影響を受けません。</span>
+          </v-tooltip>
         </v-col>
         <v-col cols="12" md="8" lg="8" xl="8">
           <v-switch

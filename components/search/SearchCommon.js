@@ -12,10 +12,10 @@ export default {
         captureCp: {
           name: '捕獲時CP',
           patternNames: {
-            raid: 'レイドボスCP',
+            raid: 'レイドボス勝利ボーナスCP',
             fRTask: 'フィールドリサーチCP',
             eggs: 'タマゴCP',
-            shadow: 'シャドウCP'
+            rocket: 'ロケット団勝利ボーナスCP'
           }
         },
         race: {
