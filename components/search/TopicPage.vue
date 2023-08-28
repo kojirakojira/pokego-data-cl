@@ -15,7 +15,7 @@
             :to="{name: `search-${p.page}`}"
           >
             <v-list-item-avatar>
-              <v-icon v-if="index <= 3" :color="getTrophyColor(index)">
+              <v-icon v-if="index < 3" :color="getTrophyColor(index)">
                 mdi-trophy
               </v-icon>
             </v-list-item-avatar>

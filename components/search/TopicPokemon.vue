@@ -16,7 +16,7 @@
           >
             <v-list-item-avatar style="positon:relative;">
               <v-img :src="p.image ? p.image : require('~/static/img/no-image.png')" />
-              <v-icon v-if="index <= 3" :color="getTrophyColor(index)" style="position:absolute;">
+              <v-icon v-if="index <= 2" :color="getTrophyColor(index)" style="position:absolute;">
                 mdi-trophy
               </v-icon>
             </v-list-item-avatar>
