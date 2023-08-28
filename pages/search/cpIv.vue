@@ -12,16 +12,18 @@
           シチュエーション
         </v-col>
         <v-col cols="12" md="8" lg="8" xl="8">
-          <v-select
-            v-model="searchParam.situation"
-            :items="$CONST.SITUATION"
-            item-value="k"
-            item-text="v"
-            label="シチュエーションを選択"
-            dense
-            outlined
-            hide-details
-          />
+          <client-only>
+            <v-select
+              v-model="searchParam.situation"
+              :items="$CONST.SITUATION"
+              item-value="k"
+              item-text="v"
+              label="シチュエーションを選択"
+              dense
+              outlined
+              hide-details
+            />
+          </client-only>
         </v-col>
       </v-row>
       <v-row>

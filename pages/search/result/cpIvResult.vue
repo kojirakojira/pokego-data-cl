@@ -124,11 +124,11 @@ export default {
 
       headers: [
         { text: '№', value: 'no' },
-        { text: 'PL', value: 'pl' },
         { text: 'AT', value: 'iva' },
         { text: 'DF', value: 'ivd' },
         { text: 'HP', value: 'ivh' },
-        { text: '%', value: 'percent' }],
+        { text: '%', value: 'percent' },
+        { text: 'PL', value: 'pl' }],
       isLoading: true
     }
   },
