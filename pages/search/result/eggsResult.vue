@@ -6,33 +6,41 @@
     <div v-if="!isLoading">
       <v-container>
         <v-row>
-          <v-col
-            cols="12"
-            md="6"
-            lg="6"
-            xl="6"
-            class="col-title"
-          >
-            図鑑No
-          </v-col>
-          <v-col cols="12" md="6" lg="6" xl="6">
-            {{ resData.pokedexId | dispPdx }}
+          <v-col align="center">
+            <v-card max-width="500px" class="searched-items">
+              <v-card-title class="d-block body-2 pa-2 searched-params-title">
+                検索条件
+              </v-card-title>
+              <v-card-text class="caption text-left py-1">
+                <v-container>
+                  <v-row>
+                    <v-col cols="7" md="6" lg="6" xl="6" class="pa-1">
+                      図鑑№
+                    </v-col>
+                    <v-col cols="5" md="6" lg="6" xl="6" class="pa-1">
+                      {{ resData.pokedexId | dispPdx }}
+                    </v-col>
+                  </v-row>
+                  <v-row class="searched-param">
+                    <v-col cols="7" md="6" lg="6" xl="6" class="pa-1">
+                      ポケモン
+                    </v-col>
+                    <v-col cols="5" md="6" lg="6" xl="6" class="pa-1">
+                      {{ $editUtils.appendRemarks(resData.name, resData.remarks) }}
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
+            </v-card>
           </v-col>
         </v-row>
-        <v-row>
-          <v-col
-            cols="12"
-            md="6"
-            lg="6"
-            xl="6"
-            class="col-title"
-          >
-            ポケモン
-          </v-col>
-          <v-col cols="12" md="6" lg="6" xl="6">
-            {{ $editUtils.appendRemarks(resData.name, resData.remarks) }}
-          </v-col>
-        </v-row>
+      </v-container>
+      <h3>
+        CP<span v-if="resData.mega" class="subtitle-2">
+          {{ `（${$editUtils.appendRemarks(resData.befMegaGp.name, resData.befMegaGp.remarks)}で算出）` }}
+        </span>
+      </h3>
+      <v-container>
         <v-row>
           <v-col
             cols="12"
@@ -105,7 +113,7 @@ export default {
           }
         })
       const resData = res.data
-      if (!this.dispDialog(resData)) {
+      if (!this.getToast(resData.message, resData.msgLevel)) {
         return
       }
       return resData
