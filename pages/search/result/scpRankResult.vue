@@ -44,7 +44,7 @@
             個体値<br>(攻撃 - 防御 - HP)
           </v-col>
           <v-col cols="12" md="6" lg="6" xl="6">
-            {{ resData.scpSlRank.rank ? `${resData.scpSlRank.iva} - ${resData.scpSlRank.ivd} - ${resData.scpSlRank.ivh}` : '' }}
+            {{ `${resData.scpSlRank.iva} - ${resData.scpSlRank.ivd} - ${resData.scpSlRank.ivh}` }}
           </v-col>
         </v-row>
         <v-row>
@@ -71,16 +71,20 @@
             xl="12"
             class="col-title"
           >
-            詳細   <span class="subtitle-2">※スマホの場合は画面を横にすると見やすいです。</span>
+            詳細
           </v-col>
           <v-col cols="12" md="12" lg="12" xl="12">
             <v-data-table
               :headers="headers"
-              :items="scpRankArr"
+              :items="[resData.scpSlRank, resData.scpHlRank, resData.scpMlRank]"
               hide-default-footer
+              mobile-breakpoint="300"
               no-data-text="loading now..."
               no-results-text="該当するデータがありません。"
             >
+              <template v-slot:[`item.league`]="{ item }">
+                {{ leagueDic[item.league] }}
+              </template>
               <template v-slot:[`item.percent`]="{ item }">
                 {{ item.percent + '%' }}
               </template>
@@ -113,11 +117,7 @@ export default {
         id: null, // pokedexId,
         iv: null // IndividualValue
       },
-      resData: {
-        scpSlRank: {},
-        scpHlRank: {},
-        scpMlRank: {}
-      },
+      resData: {},
       headers: [
         { text: 'リーグ', value: 'league' },
         { text: '順位', value: 'rank' },
@@ -126,8 +126,11 @@ export default {
         { text: '%', value: 'percent' },
         { text: '(SCP)', value: 'scp' },
         { text: '(ステ積)', value: 'sp' }],
-      scpRankArr: [],
-      search: '',
+      leagueDic: {
+        sl: 'スーパー',
+        hl: 'ハイパー',
+        ml: 'マスター'
+      },
       isLoading: true
 
     }
@@ -153,7 +156,6 @@ export default {
     }
 
     this.resData = resData
-    this.setScpRankArr(this.resData)
     this.isLoading = false
   },
   methods: {
@@ -172,22 +174,6 @@ export default {
         return
       }
       return resData
-    },
-    setScpRankArr (resData) {
-      const scpRankArr = [resData.scpSlRank, resData.scpHlRank, resData.scpMlRank]
-      const leagueArr = ['スーパーリーグ', 'ハイパーリーグ', 'マスターリーグ']
-      this.scpRankArr.splice(0)
-      for (const i in scpRankArr) {
-        this.scpRankArr.push({
-          league: leagueArr[i],
-          rank: scpRankArr[i].rank,
-          pl: scpRankArr[i].pl,
-          cp: scpRankArr[i].cp,
-          percent: scpRankArr[i].percent,
-          scp: scpRankArr[i].scp,
-          sp: scpRankArr[i].sp
-        })
-      }
     }
   },
   head () {

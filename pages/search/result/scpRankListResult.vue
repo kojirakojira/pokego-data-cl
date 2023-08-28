@@ -44,25 +44,42 @@
             リーグ
           </v-col>
           <v-col cols="12" md="6" lg="6" xl="6">
-            {{ leagueArr[resData.league] }}
+            {{ leagueDic[resData.league] }}
           </v-col>
         </v-row>
         <v-row>
           <v-col
-            cols="12"
-            md="12"
-            lg="12"
-            xl="12"
+            cols="5"
+            md="5"
+            lg="5"
+            xl="5"
             class="col-title"
           >
             PvP順位
+          </v-col>
+          <v-col
+            cols="7"
+            md="7"
+            lg="7"
+            xl="7"
+            align="right"
+            class="col-title"
+          >
+            <v-btn
+              rounded
+              color="info"
+              x-small
+              @click="onClickScpSpBtn"
+            >
+              {{ headers.length === 7 ? 'SCP,ステ積を表示する': 'SCP,ステ積を非表示にする' }}
+            </v-btn>
           </v-col>
           <v-col cols="12" md="12" lg="12" xl="12">
             <v-data-table
               :headers="headers"
               :items="resData.scpRankList"
-              :search="search"
-              :footer-props="{ 'items-per-page-options': [50, 100, 500, 1000, -1] }"
+              mobile-breakpoint="300"
+              :footer-props="{ 'items-per-page-options': [100, 500, 1000, -1] }"
               no-data-text="loading now..."
               no-results-text="該当するデータがありません。"
             >
@@ -102,7 +119,7 @@ export default {
         scpRankList: [],
         league: ''
       },
-      leagueArr: {
+      leagueDic: {
         sl: 'スーパーリーグ(CP1500以下)',
         gl: 'スーパーリーグ(CP1500以下)',
         hl: 'ハイパーリーグ(CP2500以下)',
@@ -117,10 +134,7 @@ export default {
         { text: 'HP', value: 'ivh' },
         { text: 'PL', value: 'pl' },
         { text: 'CP', value: 'cp' },
-        { text: '%', value: 'percent' },
-        { text: '(SCP)', value: 'scp' },
-        { text: '(ステ積)', value: 'sp' }],
-      search: '',
+        { text: '%', value: 'percent' }],
       isLoading: true
 
     }
@@ -153,6 +167,19 @@ export default {
         return
       }
       return resData
+    },
+    onClickScpSpBtn () {
+      const headers = this.headers
+      if (headers.length === 7) {
+        // 非表示時
+        headers.push({ text: '(SCP)', value: 'scp' })
+        headers.push({ text: '(ステ積)', value: 'sp' })
+      } else if (headers.length === 9) {
+        // 表示時
+        headers.pop()
+        headers.pop()
+      }
+      this.$set(this, 'headers', headers)
     }
   },
   head () {
