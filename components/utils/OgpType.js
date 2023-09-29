@@ -8,6 +8,7 @@ export default {
     const data = await $axios
       .get(process.env.VUE_APP_API_URL + '/api/ogpType', {
         params: {
+          id: query.pid,
           type1: query.type1,
           type2: query.type2
         }
