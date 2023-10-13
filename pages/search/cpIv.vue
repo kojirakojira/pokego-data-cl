@@ -67,7 +67,7 @@
           />
         </v-col>
       </v-row>
-      <v-row align="center">
+      <v-row>
         <v-col cols="12" md="4" lg="4" xl="4" class="col-title">
           <v-icon>
             mdi-pen
@@ -93,6 +93,7 @@
             dense
             hide-details
             :label="searchParam.wbFlg ? 'あり' : 'なし'"
+            style="margin-top: 0px;"
           />
         </v-col>
       </v-row>

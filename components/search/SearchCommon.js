@@ -53,6 +53,7 @@ export default {
           name: 'その他',
           patternNames: {
             unimplPokemon: '未実装ポケモン一覧',
+            evoCost: '進化コスト',
             evolution: '進化ツリーと別のすがた'
           }
         }

@@ -118,7 +118,6 @@ export default {
       this.resData = await this.get()
     }
 
-    console.log(this.resData)
     this.isLoading = !this.resData
   },
   methods: {
