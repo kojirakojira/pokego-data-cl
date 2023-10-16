@@ -7,33 +7,52 @@
       <v-container>
         <v-row>
           <v-col>
-            <div
-              v-for="(detailDic, costTypeKey, ctIdx) in resData?.costTypeMap"
-              :key="`cost-type-${costTypeKey}`"
-              :class="`cost-type-area cost-type-area--${getColor(ctIdx)}`"
-            >
-              <div class="cost-type-title">
-                {{ costTypeKey }}
-              </div>
-              <div
-                v-for="(pokeArr, detailKey, dIdx) in detailDic"
-                :key="`cost-detail-${detailKey}`"
-                :class="'detail-area detail-area--' + (dIdx % 2 === 0 ? `${getColor(ctIdx)}` : 'white')"
+            <v-list>
+              <v-list-group
+                v-for="(detailDic, costTypeKey) in resData?.costTypeMap"
+                :key="`cost-type-${costTypeKey}`"
+                :title="costTypeKey"
+                class="cost-type-area"
               >
-                <div class="detail-title">
-                  {{ `${detailKey}(${pokeArr.length})` }}
-                </div>
-                <div class="evo-edge-area">
-                  <EvoEdge
-                    v-for="(p, eeIdx) in pokeArr"
-                    :key="`${costTypeKey}-${detailKey}-${eeIdx}`"
-                    :go-pokedex1="p.beforeGoPokedex"
-                    :go-pokedex2="p.goPokedex"
-                    :annos="p.annos"
-                  />
-                </div>
-              </div>
-            </div>
+                <template v-slot:activator>
+                  <v-list-item-content>
+                    <v-list-item-title>{{ `${costTypeKey}(${Object.keys(detailDic).length})` }}</v-list-item-title>
+                  </v-list-item-content>
+                </template>
+                <v-list-item>
+                  <v-container>
+                    <v-row>
+                      <v-col class="pa-0">
+                        <v-list>
+                          <v-list-group
+                            v-for="(pokeArr, detailKey) in detailDic"
+                            :key="`cost-detail-${detailKey}`"
+                            :title="detailKey"
+                            class="detail-area"
+                          >
+                            <template v-slot:activator>
+                              <v-list-item-content>
+                                <v-list-item-title>{{ `${detailKey}(${pokeArr.length})` }}</v-list-item-title>
+                              </v-list-item-content>
+                            </template>
+                            <div class="evo-edge-area">
+                              <EvoEdge
+                                v-for="(p, eeIdx) in pokeArr"
+                                :key="`${costTypeKey}-${detailKey}-${eeIdx}`"
+                                :go-pokedex1="p.beforeGoPokedex"
+                                :go-pokedex2="p.goPokedex"
+                                :annos="p.annos"
+                                router-link="search-result-abundance"
+                              />
+                            </div>
+                          </v-list-group>
+                        </v-list>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-list-item>
+              </v-list-group>
+            </v-list>
           </v-col>
         </v-row>
       </v-container>
@@ -82,7 +101,6 @@ export default {
       this.resData = await this.get()
     }
 
-    console.log(this.resData)
     this.isLoading = !this.resData
   },
   methods: {
@@ -131,55 +149,16 @@ export default {
 
 <style lang="scss" scoped>
 .cost-type-area {
-  border: 0.1em solid gray;
-  margin: 12px 0px;
-  padding: 8px 0px;
+  border: thin solid rgba(0, 0, 0, 0.12);
 
-  &--red {
-    background: rgb(255, 200, 200);
-    border-color: rgb(255, 0, 0);
-  }
-
-  &--green {
-    background: rgb(200, 255, 200);
-    border-color: rgb(0, 255, 0);
-  }
-
-  &--blue {
-    background: rgb(200, 200, 255);
-    border-color: rgb(0, 0, 255);
-  }
-
-  .cost-type-title {
-    font-size: 22px;
-    padding: 0px 0px 8px 12px;
+  &:not(:last-child) {
+    border-bottom: none;
   }
 
   .detail-area {
-    border: 0.1em solid gray;
-    margin: 12px 8px 12px 16px;
-    padding: 8px 0px;
-
-    &--red {
-      background-color: rgb(255, 230, 230);
-    }
-
-    &--green {
-      background-color: rgb(230, 255, 230);
-    }
-
-    &--blue {
-      background-color: rgb(230, 230, 255);
-    }
-
-    &--white {
-      background-color: rgb(255, 255, 255);
-    }
-
-    .detail-title {
-      font-size: 20px;
-      padding: 0px 0px 8px 12px;
-    }
+    border-top: thin solid rgba(0, 0, 0, 0.12);
+    border-left: thin solid rgba(0, 0, 0, 0.12);
+    display: flow;
 
     .evo-edge-area {
       display: flex;
